@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 
-const COLORS = ["var(--gold)", "var(--red)", "var(--green)", "#ffffff"];
+const COLORS = ["var(--red)", "var(--green)", "#ffffff"];
 
 /** One CSS confetti burst on mount. Hidden entirely under prefers-reduced-motion. */
 export function Confetti({ pieces = 36 }: { pieces?: number }) {

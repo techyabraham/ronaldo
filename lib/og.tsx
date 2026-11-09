@@ -23,7 +23,7 @@ const C = {
   bg: "#0b0d0c",
   text: "#f4f1e8",
   muted: "#a9b0aa",
-  gold: "#f5c542",
+  accent: "#e4222f",
   red: "#e2483d",
   green: "#2fbf71",
   surface: "#151917",
@@ -70,9 +70,9 @@ export async function renderShareImage(mmdd: string, size: { width: number; heig
       >
         <div style={{ display: "flex" }}>
           <span>Scored</span>
-          <span style={{ color: C.gold }}>On</span>
+          <span style={{ color: C.accent }}>On</span>
           <span>My</span>
-          <span style={{ color: C.gold }}>Birthday</span>
+          <span style={{ color: C.accent }}>Birthday</span>
         </div>
         {!square && <div style={{ display: "flex", color: C.muted }}>Did Ronaldo score on your birthday?</div>}
       </div>
@@ -89,7 +89,7 @@ export async function renderShareImage(mmdd: string, size: { width: number; heig
           >
             <span style={{ fontSize: square ? 190 : 170, color: C.green }}>YES</span>
             <span style={{ fontSize: square ? 110 : 96, color: C.text, marginLeft: 28 }}>—</span>
-            <span style={{ fontSize: square ? 190 : 170, color: C.gold, marginLeft: 28 }}>{s.count}</span>
+            <span style={{ fontSize: square ? 190 : 170, color: C.accent, marginLeft: 28 }}>{s.count}</span>
             <span style={{ fontSize: square ? 90 : 80, color: C.text, marginLeft: 20 }}>
               {s.count === 1 ? "GOAL" : "GOALS"}
             </span>
@@ -108,7 +108,7 @@ export async function renderShareImage(mmdd: string, size: { width: number; heig
           </div>
         )}
         {mmdd === "02-05" && (
-          <div style={{ display: "flex", marginTop: 20, fontSize: square ? 40 : 34, fontWeight: 900, color: C.gold }}>
+          <div style={{ display: "flex", marginTop: 20, fontSize: square ? 40 : 34, fontWeight: 900, color: C.accent }}>
             Happy birthday to you AND Cristiano!
           </div>
         )}
@@ -142,8 +142,10 @@ export async function renderShareImage(mmdd: string, size: { width: number; heig
           fontWeight: 700,
         }}
       >
-        <div style={{ display: "flex", color: C.gold }}>{`${host}/birthday/${mmdd}`}</div>
-        <div style={{ display: "flex", background: C.gold, color: "#1a1405", padding: "12px 24px", borderRadius: 999 }}>
+        <div style={{ display: "flex", color: C.accent }}>{`${host}/birthday/${mmdd}`}</div>
+        <div
+          style={{ display: "flex", background: C.accent, color: "#ffffff", padding: "12px 24px", borderRadius: 999 }}
+        >
           Check yours
         </div>
       </div>

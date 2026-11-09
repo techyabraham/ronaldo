@@ -8,7 +8,7 @@ export function HomeInvite({ url }: { url: string }) {
   const s = useShare({ mmdd: "home", url, text: INVITE_TEXT, placement: "home" });
   return (
     <section aria-labelledby="invite-h" className="rounded-3xl border border-border bg-surface p-4">
-      <h2 id="invite-h" className="text-xl font-black">
+      <h2 id="invite-h" className="text-xl font-extrabold">
         Play it with your group chat 👥
       </h2>
       <p className="mt-1 text-sm text-muted">Everyone checks their birthday. Most Ronaldo goals wins.</p>
@@ -27,7 +27,7 @@ export function HomeInvite({ url }: { url: string }) {
         </button>
       </div>
       {s.toast && (
-        <p role="status" className="pt-2 text-center text-sm font-bold text-gold">
+        <p role="status" className="pt-2 text-center text-sm font-bold text-red-text">
           {s.toast}
         </p>
       )}

@@ -25,7 +25,7 @@ export function ReviewList({ items }: { items: ReviewItem[] }) {
       {items.map((m) => (
         <li key={m.matchId} className="rounded-2xl border border-border bg-surface p-4">
           <div className="flex flex-wrap items-baseline justify-between gap-2">
-            <p className="font-black">
+            <p className="font-extrabold">
               {m.date} · {m.title}
             </p>
             <p className="text-sm text-muted">
@@ -97,7 +97,7 @@ export function ReviewList({ items }: { items: ReviewItem[] }) {
               className="min-h-11 w-24 rounded-xl border border-border bg-surface-2 px-3"
             />
             <button className="min-h-11 rounded-xl border border-border px-4 font-bold">Set</button>
-            {state[m.matchId] && <span className="text-sm text-gold">→ {state[m.matchId]}</span>}
+            {state[m.matchId] && <span className="text-sm text-red-text">→ {state[m.matchId]}</span>}
           </form>
         </li>
       ))}

@@ -22,8 +22,8 @@ export function MatchCard({ m, mmdd }: { m: Match; mmdd: string }) {
     <article className="rounded-3xl border border-border bg-surface p-4 sm:p-5" aria-labelledby={`h-${m.matchId}`}>
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className="text-5xl font-black leading-none tracking-tighter text-gold">{m.year}</p>
-          <h2 id={`h-${m.matchId}`} className="mt-2 text-lg font-black leading-tight">
+          <p className="text-5xl font-extrabold leading-none tracking-tighter text-red-text">{m.year}</p>
+          <h2 id={`h-${m.matchId}`} className="mt-2 text-lg font-extrabold leading-tight">
             {teamLine(m)}
           </h2>
           <p className="mt-1 text-sm text-muted">
@@ -33,7 +33,7 @@ export function MatchCard({ m, mmdd }: { m: Match; mmdd: string }) {
           </p>
         </div>
         <p
-          className="shrink-0 rounded-2xl bg-surface-2 px-3 py-2 text-center font-black leading-none"
+          className="shrink-0 rounded-2xl bg-surface-2 px-3 py-2 text-center font-extrabold leading-none"
           aria-label={`${n} goal${n > 1 ? "s" : ""}`}
         >
           <span className="block text-2xl">{n}</span>

@@ -52,3 +52,6 @@ next-env.d.ts
 
 # weekly refresh scratch output
 /.refresh/
+
+# design canvas (reference only, never shipped)
+/design-reference/

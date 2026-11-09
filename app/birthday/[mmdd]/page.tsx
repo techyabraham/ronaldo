@@ -77,25 +77,25 @@ export default async function BirthdayPage({ params }: PageProps<"/birthday/[mmd
     : "📣 Know someone born on another day? Send it and see if Ronaldo scored on theirs.";
 
   return (
-    <div className="bg-pitch">
+    <div className="">
       {s.count > 0 && <Confetti />}
       <div className="mx-auto max-w-xl px-4 pt-6 pb-6">
         {isHisBirthday && (
-          <p className="mb-4 rounded-2xl bg-gold px-4 py-3 text-center font-black text-gold-ink">
+          <p className="mb-4 rounded-2xl bg-red px-4 py-3 text-center font-extrabold text-white">
             🎂 Happy birthday to you AND Cristiano! (born 5 February 1985)
           </p>
         )}
         {isLeap && (
-          <p className="mb-4 rounded-2xl border border-gold px-4 py-3 text-center font-bold">
+          <p className="mb-4 rounded-2xl border border-red px-4 py-3 text-center font-bold">
             🐸 A leap-year baby! Your birthday only comes round every four years, so the odds were always tough.
           </p>
         )}
 
         {s.count > 0 ? (
           <header>
-            <h1 className="text-4xl font-black leading-[0.95] tracking-tight sm:text-5xl" data-testid="headline">
-              YES! Ronaldo scored <span className="text-gold">{s.count}</span> goal{s.count === 1 ? "" : "s"} on {label}{" "}
-              <span aria-hidden="true">🐐</span>
+            <h1 className="text-4xl font-extrabold leading-[0.95] tracking-tight sm:text-5xl" data-testid="headline">
+              YES! Ronaldo scored <span className="text-red-text">{s.count}</span> goal{s.count === 1 ? "" : "s"} on{" "}
+              {label} <span aria-hidden="true">🐐</span>
             </h1>
             <p className="mt-3 text-lg text-muted">
               {s.years.length > 1 ? `Across ${s.years.length} different years` : `In ${s.years[0]}`}, for{" "}
@@ -104,7 +104,7 @@ export default async function BirthdayPage({ params }: PageProps<"/birthday/[mmd
           </header>
         ) : (
           <header>
-            <h1 className="text-4xl font-black leading-[0.95] tracking-tight sm:text-5xl" data-testid="headline">
+            <h1 className="text-4xl font-extrabold leading-[0.95] tracking-tight sm:text-5xl" data-testid="headline">
               Not on your birthday <span aria-hidden="true">😅</span>
             </h1>
             <p className="mt-3 text-lg text-muted">
@@ -120,7 +120,7 @@ export default async function BirthdayPage({ params }: PageProps<"/birthday/[mmd
 
         {s.count > 0 ? (
           <section aria-label={`Goals on ${label}`} className="space-y-4 pt-4">
-            <h2 className="text-xl font-black">Every goal on {label}</h2>
+            <h2 className="text-xl font-extrabold">Every goal on {label}</h2>
             {matches.map((m, i) => (
               <div key={m.matchId} className="space-y-4">
                 <MatchCard m={m} mmdd={mmdd} />
@@ -148,7 +148,7 @@ export default async function BirthdayPage({ params }: PageProps<"/birthday/[mmd
 
         <Link
           href="/"
-          className="flex min-h-14 w-full items-center justify-center rounded-2xl border-2 border-gold font-black uppercase text-gold"
+          className="flex min-h-14 w-full items-center justify-center rounded-2xl border-2 border-red font-extrabold uppercase text-red-text"
         >
           Check another date
         </Link>
@@ -167,7 +167,7 @@ function NearestDays({ mmdd }: { mmdd: string }) {
   ].filter(Boolean) as ((typeof after & {}) & { when: string })[];
   return (
     <section aria-labelledby="nearest" className="rounded-3xl border border-border bg-surface p-5">
-      <h2 id="nearest" className="text-xl font-black">
+      <h2 id="nearest" className="text-xl font-extrabold">
         …but he came close
       </h2>
       <ul className="mt-3 space-y-3">
@@ -178,14 +178,14 @@ function NearestDays({ mmdd }: { mmdd: string }) {
               className="flex min-h-14 items-center justify-between gap-3 rounded-2xl bg-surface-2 px-4 py-3"
             >
               <span>
-                <span className="block font-black">
+                <span className="block font-extrabold">
                   {d.when}: {d.label}
                 </span>
                 <span className="block text-sm text-muted">
                   {d.count} goal{d.count === 1 ? "" : "s"}, including {d.headline}
                 </span>
               </span>
-              <span aria-hidden="true" className="text-gold text-xl">
+              <span aria-hidden="true" className="text-red-text text-xl">
                 →
               </span>
             </Link>

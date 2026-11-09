@@ -1,48 +1,55 @@
 @import "tailwindcss";
 
-/* Dark is the default theme; light via [data-theme="light"]. */
+/* GOAT Day: dark only. Portugal red + green on near-black. Contrast notes are against --surface. */
 :root {
-  --bg: #0b0d0c;
-  --surface: #151917;
-  --surface-2: #1d2320;
-  --text: #f4f1e8;
-  --muted: #a9b0aa;
-  --border: #2a322e;
-  --gold: #f5c542;
-  --gold-ink: #1a1405;
-  --red: #e2483d;
-  --green: #2fbf71;
-  --focus: #ffd966;
-  color-scheme: dark;
-}
+  --bg: #0b0b0c; /* page */
+  --surface: #161618; /* cards, picker, panels */
+  --surface-2: #202023; /* chips, inputs inside cards */
+  --border: #2c2c30; /* card + input borders */
+  --hairline: #222226; /* dividers, tab underline track, tab bar top */
+  --text: #ffffff;
+  --muted: #a5a5ad; /* secondary text: 7.4:1 */
+  --faint: #8c8c94; /* tertiary labels: 5.4:1 */
 
-:root[data-theme="light"] {
-  --bg: #faf7ef;
-  --surface: #ffffff;
-  --surface-2: #f1ecdf;
-  --text: #15130e;
-  --muted: #59544a;
-  --border: #e2dccb;
-  --gold: #a87600;
-  --gold-ink: #ffffff;
-  --red: #b3261e;
-  --green: #12723f;
-  --focus: #8a5a00;
-  color-scheme: light;
+  --red: #e4222f; /* primary: CTAs, play buttons, active tab, big numbers. White on it = 4.6:1 */
+  --red-text: #ff4d57; /* red TEXT under 24px on dark (5.5:1). Never --red for small text */
+  --red-deep: #9e1620; /* tile backgrounds */
+  --green: #18a957; /* "he scored", WhatsApp button background */
+  --green-ink: #0b0b0c; /* text/icons ON --green (6.4:1); white on --green fails */
+  --green-text: #18c463; /* green TEXT on dark (8.5:1) */
+  --green-deep: #0e5a31; /* tile backgrounds */
+  --green-soft-bg: #0e3b22; /* badge background */
+  --green-soft-text: #5fe39a; /* badge text (7.8:1) */
+  --cell-empty: #26262a; /* calendar "rest day" cell */
+  --flag-green: #046a38; /* ONLY in flag panels */
+  --flag-red: #da291c; /* ONLY in flag panels */
+  --focus: #ffffff;
+  color-scheme: dark;
 }
 
 @theme inline {
   --color-bg: var(--bg);
   --color-surface: var(--surface);
   --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-hairline: var(--hairline);
   --color-text: var(--text);
   --color-muted: var(--muted);
-  --color-border: var(--border);
-  --color-gold: var(--gold);
-  --color-gold-ink: var(--gold-ink);
+  --color-faint: var(--faint);
   --color-red: var(--red);
+  --color-red-text: var(--red-text);
+  --color-red-deep: var(--red-deep);
   --color-green: var(--green);
+  --color-green-ink: var(--green-ink);
+  --color-green-text: var(--green-text);
+  --color-green-deep: var(--green-deep);
+  --color-green-soft-bg: var(--green-soft-bg);
+  --color-green-soft-text: var(--green-soft-text);
+  --color-cell-empty: var(--cell-empty);
+  --color-flag-green: var(--flag-green);
+  --color-flag-red: var(--flag-red);
   --font-sans: var(--font-archivo), system-ui, sans-serif;
+  --font-display: var(--font-anton), "Arial Narrow", Impact, sans-serif;
 }
 
 html {
@@ -62,10 +69,30 @@ body {
   border-radius: 6px;
 }
 
-.bg-pitch {
-  background:
-    radial-gradient(120% 60% at 50% -10%, color-mix(in srgb, var(--gold) 22%, transparent), transparent 60%),
-    radial-gradient(80% 50% at 100% 0%, color-mix(in srgb, var(--red) 18%, transparent), transparent 60%), var(--bg);
+/* Eyebrow labels: 12–13px Archivo 800, tracked, uppercase, muted. */
+.eyebrow {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Horizontal tile rows scroll inside their own box, never the page. */
+.snap-row {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+.snap-row::-webkit-scrollbar {
+  display: none;
+}
+.snap-row > * {
+  scroll-snap-align: start;
+  flex: none;
 }
 
 /* Confetti: one burst, removed by JS after it finishes. */

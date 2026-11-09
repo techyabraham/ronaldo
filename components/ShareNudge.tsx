@@ -18,8 +18,8 @@ export function ShareNudge({
 }) {
   const s = useShare({ mmdd, url, text, placement });
   return (
-    <aside className="rounded-3xl border border-dashed border-gold/70 bg-surface p-4" aria-label="Share">
-      <p className="font-black leading-snug">{title}</p>
+    <aside className="rounded-3xl border border-dashed border-red bg-surface p-4" aria-label="Share">
+      <p className="font-extrabold leading-snug">{title}</p>
       <div className="mt-3 flex gap-2">
         <a
           href={s.links.whatsapp}
@@ -35,7 +35,7 @@ export function ShareNudge({
         </button>
       </div>
       {s.toast && (
-        <p role="status" className="pt-2 text-center text-sm font-bold text-gold">
+        <p role="status" className="pt-2 text-center text-sm font-bold text-red-text">
           {s.toast}
         </p>
       )}

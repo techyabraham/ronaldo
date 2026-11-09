@@ -25,9 +25,9 @@ export function SharePanel({
     <section
       id="share"
       aria-labelledby="share-h"
-      className="scroll-mt-4 rounded-3xl border-2 border-gold bg-surface p-4 shadow-[0_0_40px_-12px_var(--gold)]"
+      className="scroll-mt-4 rounded-3xl border-2 border-red bg-surface p-4 "
     >
-      <h2 id="share-h" className="text-2xl font-black leading-tight">
+      <h2 id="share-h" className="text-2xl font-extrabold leading-tight">
         {preview.yes ? "Show your friends 🔥" : "Tell your friends 😅"}
       </h2>
       <p className="mt-1 text-sm text-muted">
@@ -38,10 +38,10 @@ export function SharePanel({
 
       {/* Mini preview of the link card / status image (HTML, so it costs no extra download). */}
       <div aria-hidden="true" className="mt-4 overflow-hidden rounded-2xl border border-border bg-bg">
-        <div className="bg-pitch px-4 py-4">
-          <p className="text-xs font-black uppercase tracking-widest text-muted">{preview.label}</p>
+        <div className="px-4 py-4">
+          <p className="text-xs font-extrabold uppercase tracking-widest text-muted">{preview.label}</p>
           <p
-            className={`mt-1 text-4xl font-black leading-none tracking-tight ${preview.yes ? "text-green" : "text-text"}`}
+            className={`mt-1 text-4xl font-extrabold leading-none tracking-tight ${preview.yes ? "text-green" : "text-text"}`}
           >
             {preview.big}
           </p>
@@ -110,7 +110,7 @@ export function SharePanel({
         Instagram &amp; TikTok: tap <strong>Post to Status / Story</strong>, then add a link sticker with the copied
         link.
       </p>
-      <p role="status" aria-live="polite" className="min-h-5 pt-2 text-center text-sm font-bold text-gold">
+      <p role="status" aria-live="polite" className="min-h-5 pt-2 text-center text-sm font-bold text-red-text">
         {s.toast}
       </p>
     </section>

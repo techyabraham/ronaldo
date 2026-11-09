@@ -1,8 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo } from "next/font/google";
+import { Anton, Archivo } from "next/font/google";
 import Link from "next/link";
 import { Analytics } from "@vercel/analytics/next";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { FlagBar } from "@/components/FlagBar";
+import { CrownIcon, SearchIcon } from "@/components/icons";
 import { DISCLAIMER, KEYWORDS, SITE_NAME, SITE_TAGLINE, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
@@ -10,13 +11,21 @@ const archivo = Archivo({
   variable: "--font-archivo",
   subsets: ["latin"],
   display: "swap",
-  weight: ["400", "700", "900"],
+  weight: ["400", "700", "800"],
+});
+
+const anton = Anton({
+  variable: "--font-anton",
+  subsets: ["latin"],
+  display: "swap",
+  weight: "400",
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: { default: `${SITE_TAGLINE} | ${SITE_NAME}`, template: `%s | ${SITE_NAME}` },
-  description: "Pick your birthday and see every official Cristiano Ronaldo goal scored on your day, with videos.",
+  description:
+    "Did the GOAT score on your birthday? Pick your day and see every official Cristiano Ronaldo goal scored on it, with videos.",
   keywords: KEYWORDS,
   applicationName: SITE_NAME,
   openGraph: { siteName: SITE_NAME, type: "website", locale: "en" },
@@ -24,45 +33,42 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#0b0d0c" },
-    { media: "(prefers-color-scheme: light)", color: "#0b0d0c" },
-  ],
+  themeColor: "#0B0B0C",
+  colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
 };
 
-// Applies the saved theme before paint (dark by default). Tiny and inline to avoid a flash.
-const themeScript = `try{var t=localStorage.getItem("theme");if(t==="light")document.documentElement.dataset.theme="light"}catch(e){}`;
-
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${archivo.variable} antialiased`} suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-      </head>
-      <body className="min-h-dvh flex flex-col bg-bg text-text">
+    <html lang="en" className={`${archivo.variable} ${anton.variable} antialiased`}>
+      <body className="flex min-h-dvh flex-col bg-bg text-text">
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-50 focus:bg-gold focus:text-gold-ink focus:px-3 focus:py-2 focus:rounded"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-50 focus:rounded focus:bg-red focus:px-3 focus:py-2 focus:text-white"
         >
           Skip to content
         </a>
-        <header className="mx-auto w-full max-w-xl px-4 pt-3 flex items-center justify-between">
-          <Link href="/" className="font-black tracking-tight text-base min-h-11 inline-flex items-center gap-2">
-            <span aria-hidden="true" className="text-xl">
-              ⚽
+        <header className="mx-auto flex w-full max-w-md items-center justify-between px-4 py-1.5">
+          <Link href="/" className="inline-flex min-h-11 items-center gap-2" aria-label={`${SITE_NAME} home`}>
+            <span className="flex w-7 flex-col items-stretch gap-[3px]" aria-hidden="true">
+              <CrownIcon className="h-6 w-7 text-red" />
+              <FlagBar height={3} />
             </span>
-            <span>
-              Scored<span className="text-gold">On</span>My<span className="text-gold">Birthday</span>
-            </span>
+            <span className="font-display text-2xl leading-none tracking-[0.02em]">GOAT DAY</span>
           </Link>
-          <ThemeToggle />
+          <Link
+            href="/#pick"
+            aria-label="Search a date"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full text-text"
+          >
+            <SearchIcon />
+          </Link>
         </header>
-        <main id="main" className="flex-1 w-full">
+        <main id="main" className="w-full flex-1">
           {children}
         </main>
-        <footer className="mx-auto w-full max-w-xl px-4 pt-10 pb-28 text-xs leading-relaxed text-muted">
+        <footer className="mx-auto w-full max-w-md px-4 pt-10 pb-36 text-xs leading-relaxed text-faint">
           <p>{DISCLAIMER}</p>
           <p className="mt-2">
             International goal data from{" "}
@@ -90,10 +96,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             ).
           </p>
           <nav className="mt-3 flex gap-4" aria-label="Footer">
-            <Link className="underline min-h-11 inline-flex items-center" href="/about">
+            <Link className="inline-flex min-h-11 items-center underline" href="/about">
               About &amp; sources
             </Link>
-            <Link className="underline min-h-11 inline-flex items-center" href="/">
+            <Link className="inline-flex min-h-11 items-center underline" href="/">
               Check a date
             </Link>
           </nav>

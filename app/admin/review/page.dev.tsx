@@ -43,7 +43,7 @@ export default async function ReviewPage({
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-6">
-      <h1 className="text-2xl font-black">
+      <h1 className="text-2xl font-extrabold">
         Video review <span className="text-sm text-muted">(dev only)</span>
       </h1>
       <nav className="mt-3 flex flex-wrap gap-2 text-sm">
@@ -51,7 +51,7 @@ export default async function ReviewPage({
           <a
             key={s}
             href={`?status=${s}`}
-            className={`rounded-full border px-3 py-1 ${s === filter ? "border-gold text-gold" : "border-border"}`}
+            className={`rounded-full border px-3 py-1 ${s === filter ? "border-red text-red-text" : "border-border"}`}
           >
             {s} ({counts[s] ?? 0})
           </a>

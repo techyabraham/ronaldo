@@ -1,4 +1,4 @@
-export const SITE_NAME = "Scored On My Birthday";
+export const SITE_NAME = "GOAT Day";
 export const SITE_TAGLINE = "Did Ronaldo score on your birthday?";
 
 export const SITE_URL = (

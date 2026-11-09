@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { BirthdayPicker } from "@/components/BirthdayPicker";
 import { HomeInvite } from "@/components/HomeInvite";
+import { TabBar } from "@/components/TabBar";
 import { SITE_URL } from "@/lib/site";
 import { TodayChip } from "@/components/TodayChip";
 import { chipCls } from "@/components/chip";
@@ -10,11 +11,11 @@ export default function Home() {
   const popular = popularDays(6);
   const counts = countsByDay();
   return (
-    <div className="bg-pitch">
+    <div className="mx-auto max-w-md">
       <section className="mx-auto max-w-xl px-4 pt-8 pb-10">
-        <p className="text-sm font-black uppercase tracking-widest text-gold">The birthday goal checker</p>
-        <h1 className="mt-2 text-[2.6rem] leading-[0.95] font-black tracking-tight sm:text-6xl">
-          Did Ronaldo score on <span className="text-gold">your</span> birthday?
+        <p className="text-sm font-extrabold uppercase tracking-widest text-red-text">The birthday goal checker</p>
+        <h1 className="mt-2 text-[2.6rem] leading-[0.95] font-extrabold tracking-tight sm:text-6xl">
+          Did Ronaldo score on <span className="text-red-text">your</span> birthday?
         </h1>
         <p className="mt-4 text-lg text-muted">
           Every one of his {TOTAL_GOALS} official goals, checked against your day.
@@ -25,7 +26,7 @@ export default function Home() {
       </section>
 
       <section className="mx-auto max-w-xl px-4 pb-6" aria-labelledby="popular">
-        <h2 id="popular" className="text-xl font-black">
+        <h2 id="popular" className="text-xl font-extrabold">
           Popular birthdays
         </h2>
         <div className="mt-3 flex flex-wrap gap-2">
@@ -49,6 +50,7 @@ export default function Home() {
       <div className="mx-auto max-w-xl px-4 pb-6">
         <HomeInvite url={`${SITE_URL}/`} />
       </div>
+      <TabBar url={`${SITE_URL}/`} />
     </div>
   );
 }

@@ -45,7 +45,7 @@ export function ShareBar({ mmdd, url, text }: { mmdd: string; url: string; text:
         </a>
       </div>
       {s.toast && (
-        <p role="status" className="pb-2 text-center text-sm font-bold text-gold">
+        <p role="status" className="pb-2 text-center text-sm font-bold text-red-text">
           {s.toast}
         </p>
       )}

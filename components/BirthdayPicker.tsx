@@ -75,7 +75,7 @@ export function BirthdayPicker({ initial }: { initial?: string }) {
       <button
         type="submit"
         disabled={!ready || pending}
-        className="mt-4 w-full min-h-14 rounded-2xl bg-gold text-gold-ink text-xl font-black uppercase tracking-tight shadow-[0_6px_0_0_rgba(0,0,0,0.35)] active:translate-y-0.5 disabled:opacity-50 transition"
+        className="mt-4 w-full min-h-14 rounded-2xl bg-red text-white text-xl font-extrabold uppercase tracking-tight shadow-[0_6px_0_0_rgba(0,0,0,0.35)] active:translate-y-0.5 disabled:opacity-50 transition"
       >
         {pending ? "Checking…" : "Check my birthday"}
       </button>
