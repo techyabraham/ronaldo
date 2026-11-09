@@ -118,14 +118,19 @@ const COMP_WEIGHT: [RegExp, number][] = [
   [/Nations League/, 10],
 ];
 
-/** The headline match of a day: prefer finals and knockouts, big tournaments, multi-goal games, then recency. */
-export function pickFamous(ms: Match[]): Match {
+/** Matches of a day, most famous first: finals and knockouts, big tournaments, multi-goal games, then recency. */
+export function rankFamous(ms: Match[]): Match[] {
   const score = (m: Match) =>
     (STAGE_WEIGHT.find(([re]) => re.test(m.stage ?? ""))?.[1] ?? 0) +
     (COMP_WEIGHT.find(([re]) => re.test(m.competition))?.[1] ?? 0) +
     m.goals.length * 8 +
     m.year / 1000;
-  return [...ms].sort((a, b) => score(b) - score(a))[0];
+  return [...ms].sort((a, b) => score(b) - score(a));
+}
+
+/** The headline match of a day. */
+export function pickFamous(ms: Match[]): Match {
+  return rankFamous(ms)[0];
 }
 
 export function popularDays(limit = 6): DaySummary[] {

@@ -1,155 +1,355 @@
 import "server-only";
-import fs from "node:fs/promises";
+import fs from "node:fs";
+import fsp from "node:fs/promises";
 import path from "node:path";
 import { ImageResponse } from "next/og";
 import { formatMmdd } from "./dates";
-import { matchesForDate, nearestScoringDays, pickFamous, summarise } from "./goals";
+import { excuseFor } from "./excuses";
+import { TOTAL_GOALS, matchesForDate, nearestScoringDays, rankFamous, summarise } from "./goals";
+import { competitionLabel, teamCode } from "./labels";
+import { MATCH_NOTES } from "./moments";
 import { SITE_URL } from "./site";
 
-let fontsPromise: Promise<{ name: string; data: Buffer; weight: 700 | 900; style: "normal" }[]> | null = null;
+/* Satori rules: flexbox only, explicit display:flex on every multi-child element, no repeating gradients. */
+
+const C = {
+  bg: "#0B0B0C",
+  surface: "#161618",
+  text: "#FFFFFF",
+  muted: "#A5A5AD",
+  hairline: "#222226",
+  red: "#E4222F",
+  flagGreen: "#046A38",
+  flagRed: "#DA291C",
+};
+const CROWN = "M3 18h18l-1.5-10-4.5 4-3-6-3 6-4.5-4z";
+
+type Font = { name: string; data: Buffer; weight: 400 | 700 | 800; style: "normal" };
+let fontsPromise: Promise<Font[]> | null = null;
 function fonts() {
-  fontsPromise ??= Promise.all(
-    ([700, 900] as const).map(async (weight) => ({
-      name: "Archivo",
-      data: await fs.readFile(path.join(process.cwd(), "assets", "fonts", `Archivo-${weight}.ttf`)),
-      weight,
-      style: "normal" as const,
-    })),
-  );
+  const dir = path.join(process.cwd(), "assets", "fonts");
+  fontsPromise ??= Promise.all([
+    fsp
+      .readFile(path.join(dir, "Anton-Regular.ttf"))
+      .then((data) => ({ name: "Anton", data, weight: 400 as const, style: "normal" as const })),
+    fsp
+      .readFile(path.join(dir, "Archivo-700.ttf"))
+      .then((data) => ({ name: "Archivo", data, weight: 700 as const, style: "normal" as const })),
+    fsp
+      .readFile(path.join(dir, "Archivo-900.ttf"))
+      .then((data) => ({ name: "Archivo", data, weight: 800 as const, style: "normal" as const })),
+  ]);
   return fontsPromise;
 }
 
-const C = {
-  bg: "#0b0d0c",
-  text: "#f4f1e8",
-  muted: "#a9b0aa",
-  accent: "#e4222f",
-  red: "#e2483d",
-  green: "#2fbf71",
-  surface: "#151917",
-};
+/** Optional transparent cut-out the site owner may place in public/hero/ (never fetched from the web). */
+const CUTOUT = path.join(process.cwd(), "public", "hero", "siuu-cutout.png");
+const cutoutDataUrl = fs.existsSync(CUTOUT)
+  ? `data:image/png;base64,${fs.readFileSync(CUTOUT).toString("base64")}`
+  : null;
 
-export async function renderShareImage(mmdd: string, size: { width: number; height: number }) {
-  const s = summarise(mmdd);
-  const matches = matchesForDate(mmdd);
-  const famous = matches.length ? pickFamous(matches) : null;
-  const near = s.count ? null : nearestScoringDays(mmdd);
-  const square = size.width === size.height;
-  const host = SITE_URL.replace(/^https?:\/\//, "");
-  const label = formatMmdd(mmdd).toUpperCase();
-  const pad = square ? 80 : 64;
+const host = () => SITE_URL.replace(/^https?:\/\//, "");
 
-  const famousLine = famous
-    ? `${famous.stage && /Final|Semi|Quarter|Round of/.test(famous.stage) ? `${famous.competition} ${famous.stage}` : famous.competition} · ${famous.team} vs ${famous.opponent} · ${famous.year}`
-    : near?.after
-      ? `But he scored ${near.after.offset} day${near.after.offset === 1 ? "" : "s"} later, ${near.after.headline}`
-      : "";
+function Crown({ size, color }: { size: number; color: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24">
+      <path d={CROWN} fill={color} />
+    </svg>
+  );
+}
 
-  return new ImageResponse(
+/** Words as separate flex items so a title can wrap and colour individual words. */
+function Words({
+  text,
+  red = [],
+  size,
+  color = C.text,
+}: {
+  text: string;
+  red?: string[];
+  size: number;
+  color?: string;
+}) {
+  return (
     <div
       style={{
-        width: "100%",
-        height: "100%",
         display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        padding: pad,
-        background: `radial-gradient(circle at 50% -20%, rgba(245,197,66,0.35), rgba(11,13,12,0) 60%), radial-gradient(circle at 100% 0%, rgba(226,72,61,0.28), rgba(11,13,12,0) 55%), ${C.bg}`,
-        color: C.text,
-        fontFamily: "Archivo",
+        flexWrap: "wrap",
+        fontFamily: "Anton",
+        fontSize: size,
+        lineHeight: 0.95,
+        textTransform: "uppercase",
       }}
+    >
+      {text.split(" ").map((w, i) => (
+        <span key={i} style={{ color: red.includes(w) ? C.red : color, marginRight: size * 0.22 }}>
+          {w}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+function FlagPanel({ width, height, crown }: { width: number; height: number; crown: number }) {
+  return (
+    <div style={{ display: "flex", position: "relative", width, height }}>
+      <div style={{ display: "flex", flex: 2, background: C.flagGreen }} />
+      <div style={{ display: "flex", flex: 3, background: C.flagRed }} />
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width,
+          height,
+          display: "flex",
+          alignItems: cutoutDataUrl ? "flex-end" : "center",
+          justifyContent: "center",
+        }}
+      >
+        {cutoutDataUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={cutoutDataUrl} alt="" style={{ height: height * 0.92, objectFit: "contain" }} />
+        ) : (
+          <Crown size={crown} color="#FFFFFF" />
+        )}
+      </div>
+    </div>
+  );
+}
+
+function Wordmark({ size, color = C.text }: { size: number; color?: string }) {
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: size * 0.3 }}>
+      <Crown size={size * 1.2} color={C.red} />
+      <span style={{ fontFamily: "Anton", fontSize: size, color, letterSpacing: 1 }}>GOAT DAY</span>
+    </div>
+  );
+}
+
+function Badge({ yes, size }: { yes: boolean; size: number }) {
+  return (
+    <span
+      style={{
+        display: "flex",
+        background: yes ? C.red : C.bg,
+        color: C.text,
+        border: yes ? "none" : `2px solid ${C.hairline}`,
+        borderRadius: size * 0.35,
+        padding: `${size * 0.3}px ${size * 0.55}px`,
+        fontFamily: "Archivo",
+        fontWeight: 800,
+        fontSize: size,
+        letterSpacing: size * 0.1,
+      }}
+    >
+      {yes ? "CERTIFIED" : "REST DAY"}
+    </span>
+  );
+}
+
+function titleFor(count: number) {
+  return count > 0
+    ? {
+        text: `The GOAT scored ${count} goal${count === 1 ? "" : "s"} on my birthday`,
+        red: [String(count), count === 1 ? "goal" : "goals"],
+      }
+    : { text: "Even the GOAT rests on my birthday", red: [] as string[] };
+}
+
+/** 1200×630 link preview (artboard "Share"). */
+export async function renderLinkPreview(mmdd: string) {
+  const s = summarise(mmdd);
+  const label = formatMmdd(mmdd).toUpperCase();
+  const t = titleFor(s.count);
+  return new ImageResponse(
+    <div
+      style={{ display: "flex", width: "100%", height: "100%", background: C.bg, color: C.text, fontFamily: "Archivo" }}
     >
       <div
         style={{
           display: "flex",
-          alignItems: "center",
+          flex: 1,
+          flexDirection: "column",
           justifyContent: "space-between",
-          fontSize: square ? 34 : 28,
-          fontWeight: 700,
+          padding: "52px 40px 48px 60px",
         }}
       >
-        <div style={{ display: "flex" }}>
-          <span>Scored</span>
-          <span style={{ color: C.accent }}>On</span>
-          <span>My</span>
-          <span style={{ color: C.accent }}>Birthday</span>
+        <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+          <Wordmark size={40} />
+          <Badge yes={s.count > 0} size={18} />
         </div>
-        {!square && <div style={{ display: "flex", color: C.muted }}>Did Ronaldo score on your birthday?</div>}
+        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+          <span style={{ fontSize: 22, fontWeight: 800, letterSpacing: 3, color: C.muted }}>MY BIRTHDAY · {label}</span>
+          <Words text={t.text} red={t.red} size={78} />
+        </div>
+        <div style={{ display: "flex", fontSize: 26, fontWeight: 700 }}>
+          <span>{host()}</span>
+          <span style={{ color: C.muted, marginLeft: 10 }}>· Is yours a GOAT Day?</span>
+        </div>
       </div>
+      <FlagPanel width={440} height={630} crown={230} />
+    </div>,
+    { width: 1200, height: 630, fonts: await fonts() },
+  );
+}
 
-      <div style={{ display: "flex", flexDirection: "column" }}>
+/** 1080×1920 Story / Status image (artboard "Story"). */
+export async function renderStory(mmdd: string) {
+  const s = summarise(mmdd);
+  const label = formatMmdd(mmdd).toUpperCase();
+  const t = titleFor(s.count);
+  const yes = s.count > 0;
+  const rows = yes
+    ? rankFamous(matchesForDate(mmdd))
+        .slice(0, 2)
+        .map((m) => {
+          const note = MATCH_NOTES[m.matchId];
+          const comp = competitionLabel(m.competition, m.year)
+            .replace(/ \d{4}$/, "")
+            .toUpperCase();
+          const score = m.result ? m.result.replace(/\s*\(.*\)$/, "").replace("-", "–") : "v";
+          return {
+            score: `${teamCode(m.team)} ${score} ${teamCode(m.opponent)}`,
+            tag: `${note?.record ? "WORLD RECORD" : comp} · ${m.year}`,
+          };
+        })
+    : [];
+  const near = yes ? null : nearestScoringDays(mmdd);
+  const excuse = yes ? null : excuseFor(mmdd, { count: 0, before: near?.before, after: near?.after });
+
+  return new ImageResponse(
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        width: "100%",
+        height: "100%",
+        background: C.bg,
+        color: C.text,
+        fontFamily: "Archivo",
+      }}
+    >
+      <div style={{ display: "flex", position: "relative", height: 900 }}>
+        <FlagPanel width={1080} height={900} crown={420} />
         <div
-          style={{ display: "flex", fontSize: square ? 64 : 52, fontWeight: 900, color: C.muted, letterSpacing: -1 }}
+          style={{
+            position: "absolute",
+            top: 60,
+            left: 64,
+            width: 952,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
         >
-          {label}
+          <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+            <Crown size={64} color="#FFFFFF" />
+            <span style={{ fontFamily: "Anton", fontSize: 56 }}>GOAT DAY</span>
+          </div>
+          <Badge yes={yes} size={28} />
         </div>
-        {s.count ? (
-          <div
-            style={{ display: "flex", alignItems: "baseline", fontWeight: 900, letterSpacing: -4, lineHeight: 0.95 }}
-          >
-            <span style={{ fontSize: square ? 190 : 170, color: C.green }}>YES</span>
-            <span style={{ fontSize: square ? 110 : 96, color: C.text, marginLeft: 28 }}>—</span>
-            <span style={{ fontSize: square ? 190 : 170, color: C.accent, marginLeft: 28 }}>{s.count}</span>
-            <span style={{ fontSize: square ? 90 : 80, color: C.text, marginLeft: 20 }}>
-              {s.count === 1 ? "GOAL" : "GOALS"}
-            </span>
-          </div>
-        ) : (
-          <div
-            style={{
-              display: "flex",
-              fontSize: square ? 150 : 140,
-              fontWeight: 900,
-              letterSpacing: -4,
-              lineHeight: 0.95,
-            }}
-          >
-            NOT THIS DAY
-          </div>
-        )}
-        {mmdd === "02-05" && (
-          <div style={{ display: "flex", marginTop: 20, fontSize: square ? 40 : 34, fontWeight: 900, color: C.accent }}>
-            Happy birthday to you AND Cristiano!
-          </div>
-        )}
-        {famousLine && (
-          <div
-            style={{
-              display: "flex",
-              marginTop: 24,
-              fontSize: square ? 38 : 34,
-              fontWeight: 700,
-              color: C.text,
-              maxWidth: size.width - pad * 2,
-            }}
-          >
-            {famousLine}
-          </div>
-        )}
-        {s.count > 0 && (
-          <div style={{ display: "flex", marginTop: 10, fontSize: square ? 30 : 28, color: C.muted }}>
-            {`for ${s.teams.join(", ")} · ${s.years.length} different year${s.years.length === 1 ? "" : "s"}`}
-          </div>
-        )}
       </div>
-
+      <div style={{ display: "flex", height: 10 }}>
+        <div style={{ display: "flex", flex: 2, background: "#18A957" }} />
+        <div style={{ display: "flex", flex: 3, background: C.red }} />
+      </div>
       <div
         style={{
           display: "flex",
-          alignItems: "center",
+          flex: 1,
+          flexDirection: "column",
           justifyContent: "space-between",
-          fontSize: square ? 34 : 30,
-          fontWeight: 700,
+          padding: "56px 70px 70px",
         }}
       >
-        <div style={{ display: "flex", color: C.accent }}>{`${host}/birthday/${mmdd}`}</div>
-        <div
-          style={{ display: "flex", background: C.accent, color: "#ffffff", padding: "12px 24px", borderRadius: 999 }}
-        >
-          Check yours
+        <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+          <span style={{ fontSize: 30, fontWeight: 800, letterSpacing: 4, color: C.muted }}>MY BIRTHDAY · {label}</span>
+          <Words text={t.text} red={t.red} size={yes ? 120 : 112} />
+          {rows.length > 0 && (
+            <div style={{ display: "flex", flexDirection: "column", marginTop: 16 }}>
+              {rows.map((r, i) => (
+                <div
+                  key={i}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    padding: "18px 0",
+                    borderTop: `2px solid ${C.hairline}`,
+                  }}
+                >
+                  <span style={{ fontFamily: "Anton", fontSize: 52 }}>{r.score}</span>
+                  <span style={{ fontSize: 24, fontWeight: 800, letterSpacing: 2, color: C.muted }}>{r.tag}</span>
+                </div>
+              ))}
+            </div>
+          )}
+          {excuse && (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 10,
+                marginTop: 10,
+                padding: 32,
+                borderRadius: 28,
+                background: C.surface,
+              }}
+            >
+              <span style={{ fontSize: 24, fontWeight: 800, letterSpacing: 4, color: C.muted }}>
+                THE OFFICIAL EXCUSE
+              </span>
+              <span style={{ fontFamily: "Anton", fontSize: 54, textTransform: "uppercase" }}>{excuse.title}</span>
+              <span style={{ fontSize: 34, fontWeight: 700, lineHeight: 1.3 }}>{excuse.line}</span>
+            </div>
+          )}
+        </div>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <span style={{ fontSize: 32, fontWeight: 700 }}>{host()}</span>
+          <span
+            style={{
+              display: "flex",
+              background: C.red,
+              borderRadius: 999,
+              padding: "18px 34px",
+              fontFamily: "Anton",
+              fontSize: 38,
+              textTransform: "uppercase",
+            }}
+          >
+            Is yours a GOAT Day?
+          </span>
         </div>
       </div>
     </div>,
-    { ...size, fonts: await fonts() },
+    { width: 1080, height: 1920, fonts: await fonts() },
+  );
+}
+
+/** 1200×630 home-page preview. */
+export async function renderHomePreview() {
+  return new ImageResponse(
+    <div
+      style={{ display: "flex", width: "100%", height: "100%", background: C.bg, color: C.text, fontFamily: "Archivo" }}
+    >
+      <div
+        style={{
+          display: "flex",
+          flex: 1,
+          flexDirection: "column",
+          justifyContent: "space-between",
+          padding: "52px 40px 48px 60px",
+        }}
+      >
+        <Wordmark size={40} />
+        <Words text="Did the GOAT score on your birthday?" red={["GOAT"]} size={84} />
+        <div style={{ display: "flex", fontSize: 26, fontWeight: 700, color: C.muted }}>
+          {TOTAL_GOALS} official goals · 366 days · {host()}
+        </div>
+      </div>
+      <FlagPanel width={440} height={630} crown={230} />
+    </div>,
+    { width: 1200, height: 630, fonts: await fonts() },
   );
 }

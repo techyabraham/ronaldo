@@ -1,9 +1,9 @@
 import { ALL_MMDD } from "@/lib/dates";
-import { renderShareImage } from "@/lib/og";
+import { renderLinkPreview } from "@/lib/og";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-export const alt = "Did Ronaldo score on your birthday? Result card";
+export const alt = "GOAT Day: did the GOAT score on my birthday?";
 export const dynamicParams = false;
 
 export function generateStaticParams() {
@@ -12,5 +12,5 @@ export function generateStaticParams() {
 
 export default async function Image({ params }: { params: Promise<{ mmdd: string }> }) {
   const { mmdd } = await params;
-  return renderShareImage(mmdd, size);
+  return renderLinkPreview(mmdd);
 }

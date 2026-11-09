@@ -25,8 +25,7 @@ export function resultContext(mmdd: string) {
     famous,
     label,
     url: `${SITE_URL}/birthday/${mmdd}`,
-    // Square image until M5 swaps in the 1080×1920 Story image.
-    imagePath: `/birthday/${mmdd}/square`,
+    imagePath: `/birthday/${mmdd}/story`,
     text: shareText({ count: s.count, label, highlight, hisBirthday }),
     hisBirthday,
   };

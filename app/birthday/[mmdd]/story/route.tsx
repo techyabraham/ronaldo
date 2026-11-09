@@ -1,7 +1,7 @@
 import { ALL_MMDD, isValidMmdd } from "@/lib/dates";
-import { renderShareImage } from "@/lib/og";
+import { renderStory } from "@/lib/og";
 
-/** 1080x1080 image for Instagram / WhatsApp status, generated at build time. */
+/** 1080×1920 image for WhatsApp Status / Instagram & TikTok Stories, generated at build time. */
 export const dynamic = "force-static";
 export const dynamicParams = false;
 
@@ -12,11 +12,11 @@ export function generateStaticParams() {
 export async function GET(_req: Request, { params }: { params: Promise<{ mmdd: string }> }) {
   const { mmdd } = await params;
   if (!isValidMmdd(mmdd)) return new Response("Not found", { status: 404 });
-  const img = await renderShareImage(mmdd, { width: 1080, height: 1080 });
+  const img = await renderStory(mmdd);
   return new Response(img.body, {
     headers: {
       "Content-Type": "image/png",
-      "Content-Disposition": `inline; filename="ronaldo-birthday-${mmdd}.png"`,
+      "Content-Disposition": `inline; filename="goat-day-${mmdd}.png"`,
       "Cache-Control": "public, max-age=86400, s-maxage=31536000",
     },
   });
