@@ -3,8 +3,8 @@ import goalsJson from "@/data/goals.json";
 import byDateJson from "@/data/generated/by-date.json";
 import videosJson from "@/data/videos.json";
 import expectedJson from "@/data/expected.json";
-import type { Goal, MatchVideo } from "./schema";
-import { ALL_MMDD, dayIndex, formatMmdd } from "./dates";
+import { TEAMS, type Goal, type MatchVideo, type Team } from "./schema";
+import { ALL_MMDD, DAYS_IN_MONTH, MONTH_NAMES, dayIndex, formatMmdd } from "./dates";
 
 const goals = goalsJson as Goal[];
 const byId = new Map(goals.map((g) => [g.id, g]));
@@ -142,4 +142,53 @@ export function scoringDayCount() {
 /** Light per-day index for the client "Today" chip: only counts, ~2 KB. */
 export function countsByDay(): Record<string, number> {
   return Object.fromEntries(ALL_MMDD.map((k) => [k, (byDate[k] ?? []).length]));
+}
+
+/** Calendar dates (of 366) on which he has never scored. */
+export function restDayCount() {
+  return ALL_MMDD.length - scoringDayCount();
+}
+
+export function portugalGoals() {
+  return goals.filter((g) => g.team === "Portugal").length;
+}
+
+/** Distinct football seasons (July–June) with at least one goal. */
+export function seasonCount() {
+  return new Set(
+    goals.map((g) => {
+      const y = parseInt(g.date.slice(0, 4), 10);
+      const m = parseInt(g.date.slice(5, 7), 10);
+      return y - (m < 7 ? 1 : 0);
+    }),
+  ).size;
+}
+
+/** Goals per team in the canonical TEAMS order (career chronology), for the Reveal ticker. */
+export function perTeamTotals(): { team: Team; goals: number }[] {
+  return TEAMS.map((team) => ({ team, goals: goals.filter((g) => g.team === team).length }));
+}
+
+/** Most goals on any single calendar date (for Trending progress bars). */
+export function maxDayCount() {
+  return Math.max(...ALL_MMDD.map((k) => (byDate[k] ?? []).length));
+}
+
+export type CalendarCell = { mmdd: string; day: number; state: "hit" | "miss" | "void"; count: number };
+export type CalendarRow = { month: number; initial: string; label: string; cells: CalendarCell[] };
+
+/** 12 rows × 31 cells. Days past a month's end are "void"; 29 Feb is a real (leap-year) day. */
+export function calendarRows(): CalendarRow[] {
+  const counts = countsByDay();
+  return DAYS_IN_MONTH.map((days, i) => ({
+    month: i + 1,
+    initial: MONTH_NAMES[i][0],
+    label: MONTH_NAMES[i],
+    cells: Array.from({ length: 31 }, (_, d) => {
+      const key = `${String(i + 1).padStart(2, "0")}-${String(d + 1).padStart(2, "0")}`;
+      if (d + 1 > days) return { mmdd: key, day: d + 1, state: "void" as const, count: 0 };
+      const count = counts[key] ?? 0;
+      return { mmdd: key, day: d + 1, state: count > 0 ? ("hit" as const) : ("miss" as const), count };
+    }),
+  }));
 }
