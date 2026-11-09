@@ -1,18 +1,23 @@
 "use client";
-import Link from "next/link";
-import { todayMmdd } from "@/lib/dates";
+import { formatMmdd, shortLabel, todayMmdd } from "@/lib/dates";
 import { useClientValue } from "@/lib/useClientValue";
-import { chipCls } from "./chip";
+import { TrendTile } from "./TrendTile";
 
-/** "Today" depends on the viewer's own calendar, so it only renders in the browser. */
-export function TodayChip({ counts }: { counts: Record<string, number> }) {
+/** "Today" tile: depends on the viewer's own calendar, so it only renders in the browser. */
+export function TodayChip({ counts, max }: { counts: Record<string, number>; max: number }) {
   const today = useClientValue<string | null>(() => todayMmdd(), null);
-  if (!today) return null;
+  // Reserve the tile's space before hydration so the row doesn't jump.
+  if (!today) return <div aria-hidden="true" className="h-[127px] w-[150px]" />;
   const n = counts[today] ?? 0;
   return (
-    <Link href={`/birthday/${today}`} className={chipCls}>
-      <span aria-hidden="true">📅</span> Today
-      <span className="text-muted font-normal">{n ? `· ${n} goal${n === 1 ? "" : "s"}` : ""}</span>
-    </Link>
+    <TrendTile
+      mmdd={today}
+      short={shortLabel(today)}
+      label={formatMmdd(today)}
+      count={n}
+      max={max}
+      caption="Today"
+      tone={n ? "red" : "neutral"}
+    />
   );
 }

@@ -60,7 +60,7 @@ export function useShare(cfg: ShareConfig) {
     log("native");
     if (!hasNativeShare()) {
       await copyToClipboard(full);
-      flash("Link copied! Paste it in your chats 🙌");
+      flash("Link copied! Paste it in your chats");
       return;
     }
     try {
@@ -91,13 +91,13 @@ export function useShare(cfg: ShareConfig) {
     log("save-image");
     download(cfg.imagePath, filename);
     await copyToClipboard(full);
-    flash("Image saved & link copied. Post it to your Status or Story 🔥");
+    flash("Image saved & link copied. Post it to your Status or Story");
   }, [cfg.imagePath, cfg.mmdd, full, flash, log]);
 
   const copy = useCallback(async () => {
     log("copy");
     await copyToClipboard(full);
-    flash("Link copied! Paste it anywhere 🙌");
+    flash("Link copied! Paste it anywhere");
   }, [full, flash, log]);
 
   return { canNative, links, native, image, copy, log, toast };

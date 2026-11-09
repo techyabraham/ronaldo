@@ -51,3 +51,9 @@ export function dayIndex(key: string) {
 export function todayMmdd(now = new Date()) {
   return mmdd(now.getMonth() + 1, now.getDate());
 }
+
+/** "06-23" -> "23 JUN" (tiles, calendar). */
+export function shortLabel(key: string): string {
+  const [m, d] = key.split("-");
+  return `${d} ${MONTH_NAMES[parseInt(m, 10) - 1].slice(0, 3).toUpperCase()}`;
+}

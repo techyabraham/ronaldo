@@ -7,6 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date(DATA_UPDATED);
   return [
     { url: `${SITE_URL}/`, lastModified, priority: 1 },
+    { url: `${SITE_URL}/calendar`, lastModified, priority: 0.8 },
     { url: `${SITE_URL}/about`, lastModified, priority: 0.3 },
     ...ALL_MMDD.map((mmdd) => ({ url: `${SITE_URL}/birthday/${mmdd}`, lastModified, priority: 0.7 })),
   ];

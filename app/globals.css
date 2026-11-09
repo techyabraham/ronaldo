@@ -86,6 +86,7 @@ body {
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   overscroll-behavior-x: contain;
+  overflow-anchor: none;
 }
 .snap-row::-webkit-scrollbar {
   display: none;
@@ -126,4 +127,44 @@ body {
   * {
     scroll-behavior: auto !important;
   }
+}
+
+/* Reveal: flip-board digits, one flip each, staggered via inline animation-delay. */
+@keyframes flip-in {
+  0% {
+    transform: perspective(400px) rotateX(-90deg);
+    opacity: 0;
+  }
+  60% {
+    transform: perspective(400px) rotateX(12deg);
+    opacity: 1;
+  }
+  100% {
+    transform: perspective(400px) rotateX(0deg);
+    opacity: 1;
+  }
+}
+.flip-digit {
+  animation: flip-in 300ms cubic-bezier(0.2, 0.7, 0.3, 1) both;
+  transform-origin: 50% 0;
+}
+@keyframes reveal-bar {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+.reveal-bar {
+  transform-origin: left;
+  animation: reveal-bar 1200ms linear both;
+}
+@keyframes reveal-dot {
+  50% {
+    opacity: 0.25;
+  }
+}
+.reveal-dot {
+  animation: reveal-dot 700ms ease-in-out infinite;
 }
