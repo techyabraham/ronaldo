@@ -1,47 +1,23 @@
 "use client";
-import { useEffect, useState } from "react";
-import { shareLinks, shareText } from "@/lib/share";
+import { useEffect } from "react";
 import { writeLast } from "@/lib/storage";
-import { track } from "@/lib/analytics";
-import { useClientValue } from "@/lib/useClientValue";
+import { useShare } from "@/lib/useShare";
+import { WhatsAppIcon, shareBtn } from "./shareStyles";
 
-const hasNativeShare = () => typeof navigator.share === "function";
-
-const base =
-  "flex-1 min-h-12 min-w-12 inline-flex items-center justify-center gap-1.5 rounded-xl border font-bold text-sm";
-const btn = `${base} border-border bg-surface-2 text-text`;
-
-export function ShareBar({ mmdd, count, url }: { mmdd: string; count: number; url: string }) {
-  const canShare = useClientValue(hasNativeShare, false);
-  const [copied, setCopied] = useState(false);
-  const text = shareText(count);
-  const links = shareLinks(text, url);
+/** Sticky, thumb-reachable share CTA on every result page. */
+export function ShareBar({ mmdd, url, text }: { mmdd: string; url: string; text: string }) {
+  const s = useShare({ mmdd, url, text, placement: "sticky" });
 
   // Remember this date for the "check again" link on the home page.
   useEffect(() => writeLast(mmdd), [mmdd]);
 
-  const native = async () => {
-    track({ name: "share_tapped", mmdd, channel: "native" });
-    try {
-      await navigator.share({ text, url });
-    } catch {
-      /* user cancelled */
-    }
-  };
-  const copy = async () => {
-    track({ name: "share_tapped", mmdd, channel: "copy" });
-    try {
-      await navigator.clipboard.writeText(`${text} ${url}`);
-    } catch {
-      const ta = document.createElement("textarea");
-      ta.value = `${text} ${url}`;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand("copy");
-      ta.remove();
-    }
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const main = () => {
+    if (s.canNative) return s.native();
+    // No OS share sheet (most desktops): jump to the full share panel instead.
+    s.log("native");
+    const panel = document.getElementById("share");
+    panel?.scrollIntoView({ behavior: "smooth", block: "start" });
+    panel?.querySelector<HTMLElement>("a,button")?.focus({ preventScroll: true });
   };
 
   return (
@@ -50,53 +26,29 @@ export function ShareBar({ mmdd, count, url }: { mmdd: string; count: number; ur
       role="region"
       aria-label="Share your result"
     >
-      <div className="mx-auto max-w-xl px-3 py-2">
-        <p className="sr-only" data-testid="share-text">
-          {text} {url}
-        </p>
-        <div className="flex gap-2">
-          {canShare && (
-            <button type="button" onClick={native} className={`${base} border-gold bg-gold text-gold-ink flex-[2]`}>
-              <span aria-hidden="true">📤</span> Share
-            </button>
-          )}
-          <a
-            href={links.whatsapp}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={btn}
-            onClick={() => track({ name: "share_tapped", mmdd, channel: "whatsapp" })}
-          >
-            <span className="sr-only">Share on </span>WhatsApp
-          </a>
-          <a
-            href={links.x}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={btn}
-            onClick={() => track({ name: "share_tapped", mmdd, channel: "x" })}
-          >
-            <span aria-hidden="true">𝕏</span>
-            <span className="sr-only">Share on X</span>
-          </a>
-          <a
-            href={links.facebook}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={btn}
-            onClick={() => track({ name: "share_tapped", mmdd, channel: "facebook" })}
-          >
-            <span aria-hidden="true">f</span>
-            <span className="sr-only">Share on Facebook</span>
-          </a>
-          <button type="button" onClick={copy} className={btn}>
-            <span aria-hidden="true">{copied ? "✓" : "🔗"}</span>
-            <span className="sr-only" aria-live="polite">
-              {copied ? "Link copied" : "Copy link"}
-            </span>
-          </button>
-        </div>
+      <p className="sr-only" data-testid="share-text">
+        {text} {url}
+      </p>
+      <div className="mx-auto flex max-w-xl gap-2 px-3 py-2">
+        <button type="button" onClick={main} className={`${shareBtn.primary} flex-1 text-lg uppercase tracking-tight`}>
+          <span aria-hidden="true">📣</span> Share my result
+        </button>
+        <a
+          href={s.links.whatsapp}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => s.log("whatsapp")}
+          className={`${shareBtn.whatsapp} w-14 px-0`}
+        >
+          <WhatsAppIcon className="h-6 w-6" />
+          <span className="sr-only">Share on WhatsApp</span>
+        </a>
       </div>
+      {s.toast && (
+        <p role="status" className="pb-2 text-center text-sm font-bold text-gold">
+          {s.toast}
+        </p>
+      )}
     </div>
   );
 }

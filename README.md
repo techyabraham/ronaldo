@@ -103,8 +103,8 @@ search button, never a broken embed.
 1. Push this repo to GitHub.
 2. In Vercel, choose **Add New → Project**, import the repo, and keep the defaults (framework: Next.js, build: `npm run build`).
 3. **Settings → Environment Variables**: add `NEXT_PUBLIC_SITE_URL` = your domain (e.g. `https://scoredonmybirthday.com`).
-4. **Analytics → Enable** (Vercel Web Analytics; no cookies, no banner). Events tracked: `date_searched`,
-   `share_tapped`, `video_played`.
+4. **Analytics → Enable** (Vercel Web Analytics; no cookies, no banner). Events tracked: `date_searched`, `share_tapped` (with `channel` = whatsapp/image/x/facebook/telegram/copy/native and `placement` = panel/sticky/nudge-mid/nudge-end/home), `video_played`.
+
 5. **Domains**: add your domain, then redeploy so the share images pick up the URL.
 6. In GitHub, add the secrets `YOUTUBE_API_KEY` (and optionally `REFRESH_TOKEN`), and under **Settings → Actions →
    General**, allow GitHub Actions to create pull requests.

@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { BirthdayPicker } from "@/components/BirthdayPicker";
+import { HomeInvite } from "@/components/HomeInvite";
+import { SITE_URL } from "@/lib/site";
 import { TodayChip } from "@/components/TodayChip";
 import { chipCls } from "@/components/chip";
 import { TOTAL_GOALS, countsByDay, popularDays, scoringDayCount } from "@/lib/goals";
@@ -43,6 +45,10 @@ export default function Home() {
           He has scored on {scoringDayCount()} of the 366 days of the year. Is yours one of them?
         </p>
       </section>
+
+      <div className="mx-auto max-w-xl px-4 pb-6">
+        <HomeInvite url={`${SITE_URL}/`} />
+      </div>
     </div>
   );
 }

@@ -4,8 +4,11 @@ import { notFound } from "next/navigation";
 import { Confetti } from "@/components/Confetti";
 import { MatchCard } from "@/components/MatchCard";
 import { ShareBar } from "@/components/ShareBar";
+import { ShareNudge } from "@/components/ShareNudge";
+import { SharePanel, type SharePreview } from "@/components/SharePanel";
 import { ALL_MMDD, formatMmdd, isValidMmdd } from "@/lib/dates";
-import { matchesForDate, nearestScoringDays, summarise } from "@/lib/goals";
+import { matchesForDate, nearestScoringDays, pickFamous, summarise } from "@/lib/goals";
+import { highlightPhrase, shareText, type ShareMatch } from "@/lib/share";
 import { SITE_URL } from "@/lib/site";
 
 export const dynamicParams = false;
@@ -46,6 +49,33 @@ export default async function BirthdayPage({ params }: PageProps<"/birthday/[mmd
   const isHisBirthday = mmdd === "02-05";
   const isLeap = mmdd === "02-29";
 
+  // Everything the share UI needs is computed here at build time; the client only gets strings.
+  const famous = matches.length ? pickFamous(matches) : null;
+  const highlight: ShareMatch | null = famous
+    ? {
+        opponent: famous.opponent,
+        year: famous.year,
+        competition: famous.competition,
+        stage: famous.stage,
+        goals: famous.goals.length,
+      }
+    : null;
+  const text = shareText({ count: s.count, label, highlight, hisBirthday: isHisBirthday });
+  const near = s.count ? null : nearestScoringDays(mmdd);
+  const preview: SharePreview = {
+    label: label.toUpperCase(),
+    yes: s.count > 0,
+    big: s.count ? `YES: ${s.count} GOAL${s.count === 1 ? "" : "S"}` : "NOT THIS DAY",
+    small: highlight
+      ? `Including ${highlightPhrase(highlight)}`
+      : near?.after
+        ? `But he scored ${near.after.offset} day${near.after.offset === 1 ? "" : "s"} later, ${near.after.headline}`
+        : "",
+  };
+  const nudgeTitle = s.count
+    ? `📣 ${s.count} goal${s.count === 1 ? "" : "s"} on your birthday. Your group chat needs to see this.`
+    : "📣 Know someone born on another day? Send it and see if Ronaldo scored on theirs.";
+
   return (
     <div className="bg-pitch">
       {s.count > 0 && <Confetti />}
@@ -85,33 +115,46 @@ export default async function BirthdayPage({ params }: PageProps<"/birthday/[mmd
         )}
       </div>
 
-      <div className="mx-auto max-w-xl px-4">
+      <div className="mx-auto max-w-xl space-y-4 px-4">
+        <SharePanel mmdd={mmdd} url={url} text={text} preview={preview} />
+
         {s.count > 0 ? (
-          <section aria-label={`Goals on ${label}`} className="space-y-4">
-            {matches.map((m) => (
-              <MatchCard key={m.matchId} m={m} mmdd={mmdd} />
+          <section aria-label={`Goals on ${label}`} className="space-y-4 pt-4">
+            <h2 className="text-xl font-black">Every goal on {label}</h2>
+            {matches.map((m, i) => (
+              <div key={m.matchId} className="space-y-4">
+                <MatchCard m={m} mmdd={mmdd} />
+                {i === 0 && matches.length > 1 && (
+                  <ShareNudge mmdd={mmdd} url={url} text={text} title={nudgeTitle} placement="nudge-mid" />
+                )}
+              </div>
             ))}
           </section>
         ) : (
           <NearestDays mmdd={mmdd} />
         )}
 
+        <ShareNudge
+          mmdd={mmdd}
+          url={url}
+          text={text}
+          placement="nudge-end"
+          title={
+            s.count
+              ? `🏆 Think a friend can beat ${s.count} goal${s.count === 1 ? "" : "s"}? Challenge them.`
+              : "🤝 Find out who in your group shares a birthday with a Ronaldo goal."
+          }
+        />
+
         <Link
           href="/"
-          className="mt-8 flex min-h-14 w-full items-center justify-center rounded-2xl border-2 border-gold font-black uppercase text-gold"
+          className="flex min-h-14 w-full items-center justify-center rounded-2xl border-2 border-gold font-black uppercase text-gold"
         >
           Check another date
         </Link>
-        <a
-          href={`/birthday/${mmdd}/square`}
-          download={`ronaldo-${mmdd}.png`}
-          className="mt-3 flex min-h-12 w-full items-center justify-center rounded-2xl border border-border bg-surface font-bold"
-        >
-          <span aria-hidden="true">🖼️</span>&nbsp;Save image for your status
-        </a>
       </div>
 
-      <ShareBar mmdd={mmdd} count={s.count} url={url} />
+      <ShareBar mmdd={mmdd} url={url} text={text} />
     </div>
   );
 }

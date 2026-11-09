@@ -10,7 +10,7 @@ test.describe("birthday checker on a 360px phone", () => {
     await expect(page).toHaveURL(/\/birthday\/03-10$/);
     await expect(page.getByTestId("headline")).toContainText("YES! Ronaldo scored 11 goals on 10 March");
     await expect(page.getByTestId("share-text")).toHaveText(
-      /^Ronaldo scored 11 goals on my birthday 🐐 Check yours: https?:\/\/.+\/birthday\/03-10$/,
+      /^Ronaldo scored 11 goals on my birthday \(10 March\), including .+ 🐐 Did he score on yours\? 👇 https?:\/\/.+\/birthday\/03-10$/,
     );
     // Facade only: no YouTube iframe before a tap.
     await expect(page.locator("iframe")).toHaveCount(0);
@@ -35,7 +35,40 @@ test.describe("birthday checker on a 360px phone", () => {
     await expect(page.getByText(/leap-year baby/i)).toBeVisible();
     await expect(page.getByRole("heading", { name: /came close/i })).toBeVisible();
     await expect(page.getByRole("link", { name: /later:/ })).toBeVisible();
-    await expect(page.getByTestId("share-text")).toContainText("Ronaldo never scored on my birthday");
+    await expect(page.getByTestId("share-text")).toContainText("Ronaldo has NEVER scored on my birthday (29 February)");
+  });
+
+  test("sharing comes first: the share panel sits above the goals, in the first screen", async ({ page }) => {
+    await page.goto("/birthday/05-02");
+    const panel = page.locator("#share");
+    await expect(panel.getByRole("heading", { name: /show your friends/i })).toBeVisible();
+    // Panel is above the first goal card.
+    const panelTop = (await panel.boundingBox())!.y;
+    const firstCardTop = (await page.locator("article").first().boundingBox())!.y;
+    expect(panelTop).toBeLessThan(firstCardTop);
+    // WhatsApp is the primary action and carries the full message + link.
+    const wa = panel.getByRole("link", { name: /send on whatsapp/i });
+    await expect(wa).toBeVisible();
+    const href = decodeURIComponent((await wa.getAttribute("href"))!);
+    expect(href).toContain("https://wa.me/?text=Ronaldo scored 12 goals on my birthday (2 May)");
+    expect(href).toMatch(/\/birthday\/05-02$/);
+    // Status/Story image share, X, Facebook, Telegram and copy are all there.
+    await expect(panel.getByRole("button", { name: /status \/ story/i })).toBeVisible();
+    await expect(panel.getByRole("link", { name: /share on x/i })).toBeVisible();
+    await expect(panel.getByRole("link", { name: /facebook/i })).toBeVisible();
+    await expect(panel.getByRole("link", { name: /telegram/i })).toBeVisible();
+    await expect(panel.getByRole("button", { name: /copy link/i })).toBeVisible();
+    // Sticky CTA is always on screen.
+    await expect(page.getByRole("button", { name: /share my result/i })).toBeInViewport();
+    // Mid-list and end-of-page nudges.
+    await expect(page.getByRole("complementary", { name: "Share" })).toHaveCount(2);
+  });
+
+  test("home page invites the group chat", async ({ page }) => {
+    await page.goto("/");
+    const wa = page.getByRole("link", { name: /send to group/i });
+    await expect(wa).toBeVisible();
+    expect(decodeURIComponent((await wa.getAttribute("href"))!)).toContain("Did Ronaldo score on your birthday?");
   });
 
   test("5 February shows the shared-birthday banner", async ({ page }) => {
