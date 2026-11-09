@@ -1,0 +1,29 @@
+{
+  "_comment": "Official channels get a scoring boost. 'ids' is the reliable allowlist (YouTube channel ids, add them from /admin/review as you verify videos). 'names' is a weaker fallback matched against the channel title, case-insensitive and exact.",
+  "ids": [],
+  "names": [
+    "Real Madrid",
+    "Manchester United",
+    "Juventus",
+    "Sporting CP",
+    "Al Nassr FC",
+    "AlNassr FC",
+    "Roshn Saudi League",
+    "Saudi Pro League",
+    "SPL",
+    "UEFA",
+    "UEFA Champions League",
+    "FIFA",
+    "Portugal",
+    "Seleções de Portugal",
+    "FPF",
+    "LALIGA EA SPORTS",
+    "LaLiga",
+    "Premier League",
+    "Serie A",
+    "AFC Asian Cup",
+    "The AFC Channel",
+    "Cristiano Ronaldo",
+    "UR · Cristiano"
+  ]
+}

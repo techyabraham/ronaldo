@@ -1,0 +1,47 @@
+[
+  {
+    "date": "2004-06-12",
+    "team": "Portugal",
+    "opponent": "Greece",
+    "count": 1,
+    "label": "First international goal, Euro 2004"
+  },
+  { "date": "2016-07-06", "team": "Portugal", "opponent": "Wales", "count": 1, "label": "Euro 2016 semi-final" },
+  {
+    "date": "2017-06-03",
+    "team": "Real Madrid",
+    "opponent": "Juventus",
+    "count": 2,
+    "label": "Champions League final, Cardiff"
+  },
+  { "date": "2018-06-15", "team": "Portugal", "opponent": "Spain", "count": 3, "label": "World Cup 2018 hat-trick" },
+  {
+    "date": "2021-06-23",
+    "team": "Portugal",
+    "opponent": "France",
+    "count": 2,
+    "label": "Euro 2020, equalled Ali Daei's record (108-109)"
+  },
+  {
+    "date": "2026-07-02",
+    "team": "Portugal",
+    "opponent": "Croatia",
+    "count": 1,
+    "label": "146th and final international goal, World Cup Round of 32"
+  },
+  {
+    "date": "2026-10-29",
+    "team": "Al Nassr",
+    "opponent": "Al-Kholood",
+    "count": 3,
+    "label": "Hat-trick, Saudi Pro League"
+  },
+  { "date": "2002-10-07", "team": "Sporting CP", "opponent": "Moreirense", "count": 2, "label": "First senior goals" },
+  {
+    "date": "2026-10-23",
+    "team": "Al Nassr",
+    "opponent": "Al Faisaly",
+    "count": 1,
+    "label": "Disputed goal credited by the Saudi Pro League"
+  }
+]

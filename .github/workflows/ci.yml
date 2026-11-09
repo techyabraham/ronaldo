@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      NEXT_PUBLIC_SITE_URL: https://example.test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Typecheck
+        run: npx next typegen && npm run typecheck
+      - name: Validate dataset
+        run: npm run data:build && npm run data:validate
+      - name: Dataset must be committed as built
+        run: git diff --exit-code -- data/goals.json data/generated/by-date.json
+      - name: Unit + data tests
+        run: npm test
+      - name: Build (366 pages + 732 share images)
+        run: npm run build
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+      - name: E2E (360x740)
+        run: npm run test:e2e
+      - name: Lighthouse CI (mobile; perf >= 90, a11y >= 95, SEO >= 95, median of 3)
+        run: npx lhci autorun
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: reports
+          path: |
+            playwright-report
+            test-results
+            .lighthouseci
+          retention-days: 7

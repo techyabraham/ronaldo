@@ -1,26 +1,102 @@
 @import "tailwindcss";
 
+/* Dark is the default theme; light via [data-theme="light"]. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #0b0d0c;
+  --surface: #151917;
+  --surface-2: #1d2320;
+  --text: #f4f1e8;
+  --muted: #a9b0aa;
+  --border: #2a322e;
+  --gold: #f5c542;
+  --gold-ink: #1a1405;
+  --red: #e2483d;
+  --green: #2fbf71;
+  --focus: #ffd966;
+  color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  --bg: #faf7ef;
+  --surface: #ffffff;
+  --surface-2: #f1ecdf;
+  --text: #15130e;
+  --muted: #59544a;
+  --border: #e2dccb;
+  --gold: #a87600;
+  --gold-ink: #ffffff;
+  --red: #b3261e;
+  --green: #12723f;
+  --focus: #8a5a00;
+  color-scheme: light;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-gold: var(--gold);
+  --color-gold-ink: var(--gold-ink);
+  --color-red: var(--red);
+  --color-green: var(--green);
+  --font-sans: var(--font-archivo), system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.bg-pitch {
+  background:
+    radial-gradient(120% 60% at 50% -10%, color-mix(in srgb, var(--gold) 22%, transparent), transparent 60%),
+    radial-gradient(80% 50% at 100% 0%, color-mix(in srgb, var(--red) 18%, transparent), transparent 60%), var(--bg);
+}
+
+/* Confetti: one burst, removed by JS after it finishes. */
+@keyframes confetti-fall {
+  0% {
+    transform: translate3d(0, -10vh, 0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(var(--dx), 105vh, 0) rotate(var(--rot));
+    opacity: 0.9;
+  }
+}
+.confetti-piece {
+  position: fixed;
+  top: 0;
+  width: 8px;
+  height: 14px;
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 60;
+  will-change: transform;
+  contain: layout paint;
+  animation: confetti-fall var(--dur) cubic-bezier(0.2, 0.6, 0.4, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .confetti-piece {
+    display: none;
+  }
+  * {
+    scroll-behavior: auto !important;
+  }
 }

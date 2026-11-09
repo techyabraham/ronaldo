@@ -1,0 +1,6 @@
+.next
+node_modules
+data/raw
+data/generated
+data/goals.json
+package-lock.json

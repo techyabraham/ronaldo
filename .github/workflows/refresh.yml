@@ -1,0 +1,58 @@
+name: Weekly data refresh
+
+on:
+  schedule:
+    - cron: "0 6 * * 1" # Mondays 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+
+      - name: Fetch new club goals, rebuild, cross-check, bump expected.json
+        run: npm run data:refresh
+
+      - name: Validate (non-blocking here; the PR's own CI run will show the result)
+        id: validate
+        continue-on-error: true
+        run: npm run data:validate
+
+      - name: Check saved videos still play (~15 units)
+        if: ${{ env.YOUTUBE_API_KEY != '' }}
+        run: npm run data:check-videos
+
+      - name: Find videos for new matches (newest first, max 20 searches)
+        if: ${{ env.YOUTUBE_API_KEY != '' }}
+        run: npm run data:videos -- --limit 20
+
+      - name: Open a pull request (never pushes to main)
+        uses: peter-evans/create-pull-request@v7
+        with:
+          # A fine-grained PAT (contents + pull-requests: write) lets the PR trigger CI; GITHUB_TOKEN-created PRs do not.
+          token: ${{ secrets.REFRESH_TOKEN || github.token }}
+          branch: data/weekly-refresh
+          delete-branch: true
+          commit-message: "data: weekly refresh"
+          title: "data: weekly goal refresh"
+          body-path: .refresh/pr-body.md
+          labels: data
+          add-paths: |
+            data/goals.json
+            data/generated/by-date.json
+            data/expected.json
+            data/videos.json
+            data/raw/club-recent.json

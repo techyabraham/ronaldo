@@ -4,23 +4,51 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "tsx scripts/build-index.ts && tsx scripts/validate.ts --quiet",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "data:fetch": "tsx scripts/fetch-international.ts && tsx scripts/fetch-club-historic.ts && tsx scripts/fetch-club-recent.ts",
+    "data:refresh": "tsx scripts/refresh.ts",
+    "data:build": "tsx scripts/build-dataset.ts && tsx scripts/build-index.ts",
+    "data:validate": "tsx scripts/validate.ts",
+    "data:videos": "tsx scripts/find-videos.ts",
+    "data:check-videos": "tsx scripts/check-videos.ts",
+    "data:all": "npm run data:fetch && npm run data:build && npm run data:validate",
+    "lhci": "lhci autorun"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "next": "16.4.5",
     "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "react-dom": "19.3.0",
+    "server-only": "^0.0.1",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@lhci/cli": "^0.16.0",
+    "@playwright/test": "^1.65.0",
     "@tailwindcss/turbopack": "^4",
-    "@types/node": "^20",
+    "@types/node": "^24.19.2",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "cheerio": "^1.2.0",
+    "csv-parse": "^7.0.3",
     "eslint": "^9",
     "eslint-config-next": "16.4.5",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.9.10",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "tsx": "^4.23.15",
+    "typescript": "^5",
+    "vitest": "^5.1.0"
+  },
+  "engines": {
+    "node": ">=20.9"
   }
 }

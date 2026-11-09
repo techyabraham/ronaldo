@@ -1,0 +1,4 @@
+date,team,opponent,competition,stage,venue,minute,scoreAfter,result,type,source,notes,action
+# Rows here are ADDED to (or, with action=remove, removed from) the goals parsed from Wikipedia season articles.
+# Wikipedia's 2026-27 season article lists this as an own goal by Andrei Girotto; the Saudi Pro League's official match sheet credits Ronaldo (counted in the official 985 total).
+2026-10-23,Al Nassr,Al Faisaly,Saudi Pro League,,A,49,2-0,3-1,Header,saudi-pro-league-match-sheet,"Disputed: credited to Ronaldo by the Saudi Pro League; Opta records it as an own goal by Andrei Girotto.",

@@ -1,0 +1,2509 @@
+[
+  {
+    "no": 1,
+    "cap": 8,
+    "venueText": "Estádio do Dragão, Porto, Portugal",
+    "date": "2004-06-12",
+    "team": "Portugal",
+    "opponent": "Greece",
+    "competition": "European Championship",
+    "stage": "Group stage",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "1-2",
+    "result": "1-2",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 2,
+    "cap": 12,
+    "venueText": "Estádio José Alvalade, Lisbon, Portugal",
+    "date": "2004-06-30",
+    "team": "Portugal",
+    "opponent": "Netherlands",
+    "competition": "European Championship",
+    "stage": "Semi-final",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "1-0",
+    "result": "2-1",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 3,
+    "cap": 14,
+    "venueText": "Skonto Stadium, Riga, Latvia",
+    "date": "2004-09-04",
+    "team": "Portugal",
+    "opponent": "Latvia",
+    "competition": "World Cup qualifying",
+    "venue": "A",
+    "minute": null,
+    "scoreAfter": "1-0",
+    "result": "2-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 4,
+    "cap": 15,
+    "venueText": "Estádio Dr. Magalhães Pessoa, Leiria, Portugal",
+    "date": "2004-09-08",
+    "team": "Portugal",
+    "opponent": "Estonia",
+    "competition": "World Cup qualifying",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "1-0",
+    "result": "4-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 5,
+    "cap": 17,
+    "venueText": "Estádio José Alvalade, Lisbon, Portugal",
+    "date": "2004-10-13",
+    "team": "Portugal",
+    "opponent": "Russia",
+    "competition": "World Cup qualifying",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "2-0",
+    "result": "7-1",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 6,
+    "cap": 17,
+    "venueText": "Estádio José Alvalade, Lisbon, Portugal",
+    "date": "2004-10-13",
+    "team": "Portugal",
+    "opponent": "Russia",
+    "competition": "World Cup qualifying",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "4-0",
+    "result": "7-1",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 7,
+    "cap": 18,
+    "venueText": "Stade Josy Barthel, Luxembourg City, Luxembourg",
+    "date": "2004-11-17",
+    "team": "Portugal",
+    "opponent": "Luxembourg",
+    "competition": "World Cup qualifying",
+    "venue": "A",
+    "minute": null,
+    "scoreAfter": "2-0",
+    "result": "5-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 8,
+    "cap": 22,
+    "venueText": "Estádio da Luz, Lisbon, Portugal",
+    "date": "2005-06-04",
+    "team": "Portugal",
+    "opponent": "Slovakia",
+    "competition": "World Cup qualifying",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "2-0",
+    "result": "2-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 9,
+    "cap": 23,
+    "venueText": "A. Le Coq Arena, Tallinn, Estonia",
+    "date": "2005-06-08",
+    "team": "Portugal",
+    "opponent": "Estonia",
+    "competition": "World Cup qualifying",
+    "venue": "A",
+    "minute": null,
+    "scoreAfter": "1-0",
+    "result": "1-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 10,
+    "cap": 30,
+    "venueText": "LTU Arena, Düsseldorf, Germany",
+    "date": "2006-03-01",
+    "team": "Portugal",
+    "opponent": "Saudi Arabia",
+    "competition": "Friendly",
+    "venue": "N",
+    "minute": null,
+    "scoreAfter": "1-0",
+    "result": "3-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 11,
+    "cap": 30,
+    "venueText": "LTU Arena, Düsseldorf, Germany",
+    "date": "2006-03-01",
+    "team": "Portugal",
+    "opponent": "Saudi Arabia",
+    "competition": "Friendly",
+    "venue": "N",
+    "minute": null,
+    "scoreAfter": "3-0",
+    "result": "3-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 12,
+    "cap": 34,
+    "venueText": "Waldstadion, Frankfurt, Germany",
+    "date": "2006-06-17",
+    "team": "Portugal",
+    "opponent": "Iran",
+    "competition": "World Cup",
+    "stage": "Group stage",
+    "venue": "N",
+    "minute": null,
+    "scoreAfter": "2-0",
+    "result": "2-0",
+    "type": "penalty",
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 13,
+    "cap": 41,
+    "venueText": "Estádio do Bessa, Porto, Portugal",
+    "date": "2006-10-07",
+    "team": "Portugal",
+    "opponent": "Azerbaijan",
+    "competition": "Euro qualifying",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "1-0",
+    "result": "3-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 14,
+    "cap": 41,
+    "venueText": "Estádio do Bessa, Porto, Portugal",
+    "date": "2006-10-07",
+    "team": "Portugal",
+    "opponent": "Azerbaijan",
+    "competition": "Euro qualifying",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "3-0",
+    "result": "3-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 15,
+    "cap": 43,
+    "venueText": "Estádio Cidade de Coimbra, Coimbra, Portugal",
+    "date": "2006-11-15",
+    "team": "Portugal",
+    "opponent": "Kazakhstan",
+    "competition": "Euro qualifying",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "2-0",
+    "result": "3-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 16,
+    "cap": 45,
+    "venueText": "Estádio José Alvalade, Lisbon, Portugal",
+    "date": "2007-03-24",
+    "team": "Portugal",
+    "opponent": "Belgium",
+    "competition": "Euro qualifying",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "2-0",
+    "result": "4-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 17,
+    "cap": 45,
+    "venueText": "Estádio José Alvalade, Lisbon, Portugal",
+    "date": "2007-03-24",
+    "team": "Portugal",
+    "opponent": "Belgium",
+    "competition": "Euro qualifying",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "4-0",
+    "result": "4-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 18,
+    "cap": 47,
+    "venueText": "Hanrapetakan Stadium, Yerevan, Armenia",
+    "date": "2007-08-22",
+    "team": "Portugal",
+    "opponent": "Armenia",
+    "competition": "Euro qualifying",
+    "venue": "A",
+    "minute": null,
+    "scoreAfter": "1-1",
+    "result": "1-1",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 19,
+    "cap": 48,
+    "venueText": "Estádio da Luz, Lisbon, Portugal",
+    "date": "2007-09-08",
+    "team": "Portugal",
+    "opponent": "Poland",
+    "competition": "Euro qualifying",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "2-1",
+    "result": "2-2",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 20,
+    "cap": 51,
+    "venueText": "Almaty Central Stadium, Almaty, Kazakhstan",
+    "date": "2007-10-17",
+    "team": "Portugal",
+    "opponent": "Kazakhstan",
+    "competition": "Euro qualifying",
+    "venue": "A",
+    "minute": null,
+    "scoreAfter": "2-0",
+    "result": "2-1",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 21,
+    "cap": 57,
+    "venueText": "Stade de Genève, Geneva, Switzerland",
+    "date": "2008-06-11",
+    "team": "Portugal",
+    "opponent": "Czech Republic",
+    "competition": "European Championship",
+    "stage": "Group stage",
+    "venue": "N",
+    "minute": null,
+    "scoreAfter": "2-1",
+    "result": "3-1",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 22,
+    "cap": 62,
+    "venueText": "Estádio Algarve, Faro, Portugal",
+    "date": "2009-02-11",
+    "team": "Portugal",
+    "opponent": "Finland",
+    "competition": "Friendly",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "1-0",
+    "result": "1-0",
+    "type": "penalty",
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 23,
+    "cap": 74,
+    "venueText": "Cape Town Stadium, Cape Town, South Africa",
+    "date": "2010-06-21",
+    "team": "Portugal",
+    "opponent": "North Korea",
+    "competition": "World Cup",
+    "stage": "Group stage",
+    "venue": "N",
+    "minute": null,
+    "scoreAfter": "6-0",
+    "result": "7-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 24,
+    "cap": 77,
+    "venueText": "Estádio do Dragão, Porto, Portugal",
+    "date": "2010-10-08",
+    "team": "Portugal",
+    "opponent": "Denmark",
+    "competition": "Euro qualifying",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "3-1",
+    "result": "3-1",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 25,
+    "cap": 78,
+    "venueText": "Laugardalsvöllur, Reykjavík, Iceland",
+    "date": "2010-10-12",
+    "team": "Portugal",
+    "opponent": "Iceland",
+    "competition": "Euro qualifying",
+    "venue": "A",
+    "minute": null,
+    "scoreAfter": "1-0",
+    "result": "3-1",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 26,
+    "cap": 80,
+    "venueText": "Stade de Genève, Geneva, Switzerland",
+    "date": "2011-02-09",
+    "team": "Portugal",
+    "opponent": "Argentina",
+    "competition": "Friendly",
+    "venue": "N",
+    "minute": null,
+    "scoreAfter": "1-1",
+    "result": "1-2",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 27,
+    "cap": 82,
+    "venueText": "Estádio Algarve, Faro, Portugal",
+    "date": "2011-08-10",
+    "team": "Portugal",
+    "opponent": "Luxembourg",
+    "competition": "Friendly",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "2-0",
+    "result": "5-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 28,
+    "cap": 83,
+    "venueText": "GSP Stadium, Nicosia, Cyprus",
+    "date": "2011-09-02",
+    "team": "Portugal",
+    "opponent": "Cyprus",
+    "competition": "Euro qualifying",
+    "venue": "A",
+    "minute": null,
+    "scoreAfter": "1-0",
+    "result": "4-0",
+    "type": "penalty",
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 29,
+    "cap": 83,
+    "venueText": "GSP Stadium, Nicosia, Cyprus",
+    "date": "2011-09-02",
+    "team": "Portugal",
+    "opponent": "Cyprus",
+    "competition": "Euro qualifying",
+    "venue": "A",
+    "minute": null,
+    "scoreAfter": "2-0",
+    "result": "4-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 30,
+    "cap": 85,
+    "venueText": "Parken Stadium, Copenhagen, Denmark",
+    "date": "2011-10-11",
+    "team": "Portugal",
+    "opponent": "Denmark",
+    "competition": "Euro qualifying",
+    "venue": "A",
+    "minute": null,
+    "scoreAfter": "1-2",
+    "result": "1-2",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 31,
+    "cap": 87,
+    "venueText": "Estádio da Luz, Lisbon, Portugal",
+    "date": "2011-11-15",
+    "team": "Portugal",
+    "opponent": "Bosnia and Herzegovina",
+    "competition": "Euro qualifying",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "1-0",
+    "result": "6-2",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 32,
+    "cap": 87,
+    "venueText": "Estádio da Luz, Lisbon, Portugal",
+    "date": "2011-11-15",
+    "team": "Portugal",
+    "opponent": "Bosnia and Herzegovina",
+    "competition": "Euro qualifying",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "3-1",
+    "result": "6-2",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 33,
+    "cap": 93,
+    "venueText": "Metalist Stadium, Kharkiv, Ukraine",
+    "date": "2012-06-17",
+    "team": "Portugal",
+    "opponent": "Netherlands",
+    "competition": "European Championship",
+    "stage": "Group stage",
+    "venue": "N",
+    "minute": null,
+    "scoreAfter": "1-1",
+    "result": "2-1",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 34,
+    "cap": 93,
+    "venueText": "Metalist Stadium, Kharkiv, Ukraine",
+    "date": "2012-06-17",
+    "team": "Portugal",
+    "opponent": "Netherlands",
+    "competition": "European Championship",
+    "stage": "Group stage",
+    "venue": "N",
+    "minute": null,
+    "scoreAfter": "2-1",
+    "result": "2-1",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 35,
+    "cap": 94,
+    "venueText": "National Stadium, Warsaw, Poland",
+    "date": "2012-06-21",
+    "team": "Portugal",
+    "opponent": "Czech Republic",
+    "competition": "European Championship",
+    "venue": "N",
+    "minute": null,
+    "scoreAfter": "1-0",
+    "result": "1-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 36,
+    "cap": 96,
+    "venueText": "Estádio Algarve, Faro, Portugal",
+    "date": "2012-08-15",
+    "team": "Portugal",
+    "opponent": "Panama",
+    "competition": "Friendly",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "2-0",
+    "result": "2-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 37,
+    "cap": 97,
+    "venueText": "Stade Josy Barthel, Luxembourg City, Luxembourg",
+    "date": "2012-09-07",
+    "team": "Portugal",
+    "opponent": "Luxembourg",
+    "competition": "World Cup qualifying",
+    "venue": "A",
+    "minute": null,
+    "scoreAfter": "1-1",
+    "result": "2-1",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 38,
+    "cap": 101,
+    "venueText": "Estádio D. Afonso Henriques, Guimarães, Portugal",
+    "date": "2013-02-06",
+    "team": "Portugal",
+    "opponent": "Ecuador",
+    "competition": "Friendly",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "1-1",
+    "result": "2-3",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 39,
+    "cap": 104,
+    "venueText": "Stade de Genève, Geneva, Switzerland",
+    "date": "2013-06-10",
+    "team": "Portugal",
+    "opponent": "Croatia",
+    "competition": "Friendly",
+    "venue": "N",
+    "minute": null,
+    "scoreAfter": "1-0",
+    "result": "1-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 40,
+    "cap": 105,
+    "venueText": "Estádio Algarve, Faro, Portugal",
+    "date": "2013-08-14",
+    "team": "Portugal",
+    "opponent": "Netherlands",
+    "competition": "Friendly",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "1-1",
+    "result": "1-1",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 41,
+    "cap": 106,
+    "venueText": "Windsor Park, Belfast, Northern Ireland",
+    "date": "2013-09-06",
+    "team": "Portugal",
+    "opponent": "Northern Ireland",
+    "competition": "World Cup qualifying",
+    "venue": "A",
+    "minute": "68",
+    "scoreAfter": "2-2",
+    "result": "4-2",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 42,
+    "cap": 106,
+    "venueText": "Windsor Park, Belfast, Northern Ireland",
+    "date": "2013-09-06",
+    "team": "Portugal",
+    "opponent": "Northern Ireland",
+    "competition": "World Cup qualifying",
+    "venue": "A",
+    "minute": "77",
+    "scoreAfter": "3-2",
+    "result": "4-2",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 43,
+    "cap": 106,
+    "venueText": "Windsor Park, Belfast, Northern Ireland",
+    "date": "2013-09-06",
+    "team": "Portugal",
+    "opponent": "Northern Ireland",
+    "competition": "World Cup qualifying",
+    "venue": "A",
+    "minute": "83",
+    "scoreAfter": "4-2",
+    "result": "4-2",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 44,
+    "cap": 108,
+    "venueText": "Estádio da Luz, Lisbon, Portugal",
+    "date": "2013-11-15",
+    "team": "Portugal",
+    "opponent": "Sweden",
+    "competition": "World Cup qualifying",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "1-0",
+    "result": "1-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 45,
+    "cap": 109,
+    "venueText": "Friends Arena, Solna, Sweden",
+    "date": "2013-11-19",
+    "team": "Portugal",
+    "opponent": "Sweden",
+    "competition": "World Cup qualifying",
+    "venue": "A",
+    "minute": "50",
+    "scoreAfter": "1-0",
+    "result": "3-2",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 46,
+    "cap": 109,
+    "venueText": "Friends Arena, Solna, Sweden",
+    "date": "2013-11-19",
+    "team": "Portugal",
+    "opponent": "Sweden",
+    "competition": "World Cup qualifying",
+    "venue": "A",
+    "minute": "77",
+    "scoreAfter": "2-2",
+    "result": "3-2",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 47,
+    "cap": 109,
+    "venueText": "Friends Arena, Solna, Sweden",
+    "date": "2013-11-19",
+    "team": "Portugal",
+    "opponent": "Sweden",
+    "competition": "World Cup qualifying",
+    "venue": "A",
+    "minute": "79",
+    "scoreAfter": "3-2",
+    "result": "3-2",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 48,
+    "cap": 110,
+    "venueText": "Estádio Dr. Magalhães Pessoa, Leiria, Portugal",
+    "date": "2014-03-05",
+    "team": "Portugal",
+    "opponent": "Cameroon",
+    "competition": "Friendly",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "1-0",
+    "result": "5-1",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 49,
+    "cap": 110,
+    "venueText": "Estádio Dr. Magalhães Pessoa, Leiria, Portugal",
+    "date": "2014-03-05",
+    "team": "Portugal",
+    "opponent": "Cameroon",
+    "competition": "Friendly",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "5-1",
+    "result": "5-1",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 50,
+    "cap": 114,
+    "venueText": "Estádio Nacional Mané Garrincha, Brasília, Brazil",
+    "date": "2014-06-26",
+    "team": "Portugal",
+    "opponent": "Ghana",
+    "competition": "World Cup",
+    "stage": "Group stage",
+    "venue": "N",
+    "minute": null,
+    "scoreAfter": "2-1",
+    "result": "2-1",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 51,
+    "cap": 116,
+    "venueText": "Parken Stadium, Copenhagen, Denmark",
+    "date": "2014-10-14",
+    "team": "Portugal",
+    "opponent": "Denmark",
+    "competition": "Euro qualifying",
+    "venue": "A",
+    "minute": null,
+    "scoreAfter": "1-0",
+    "result": "1-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 52,
+    "cap": 117,
+    "venueText": "Estádio Algarve, Faro, Portugal",
+    "date": "2014-11-14",
+    "team": "Portugal",
+    "opponent": "Armenia",
+    "competition": "Euro qualifying",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "1-0",
+    "result": "1-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 53,
+    "cap": 120,
+    "venueText": "Vazgen Sargsyan Republican Stadium, Yerevan, Armenia",
+    "date": "2015-06-13",
+    "team": "Portugal",
+    "opponent": "Armenia",
+    "competition": "Euro qualifying",
+    "venue": "A",
+    "minute": "29",
+    "scoreAfter": "1-1",
+    "result": "3-2",
+    "type": "penalty",
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 54,
+    "cap": 120,
+    "venueText": "Vazgen Sargsyan Republican Stadium, Yerevan, Armenia",
+    "date": "2015-06-13",
+    "team": "Portugal",
+    "opponent": "Armenia",
+    "competition": "Euro qualifying",
+    "venue": "A",
+    "minute": "55",
+    "scoreAfter": "2-1",
+    "result": "3-2",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 55,
+    "cap": 120,
+    "venueText": "Vazgen Sargsyan Republican Stadium, Yerevan, Armenia",
+    "date": "2015-06-13",
+    "team": "Portugal",
+    "opponent": "Armenia",
+    "competition": "Euro qualifying",
+    "venue": "A",
+    "minute": "58",
+    "scoreAfter": "3-1",
+    "result": "3-2",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 56,
+    "cap": 125,
+    "venueText": "Estádio Dr. Magalhães Pessoa, Leiria, Portugal",
+    "date": "2016-03-29",
+    "team": "Portugal",
+    "opponent": "Belgium",
+    "competition": "Friendly",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "2-0",
+    "result": "2-1",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 57,
+    "cap": 126,
+    "venueText": "Estádio da Luz, Lisbon, Portugal",
+    "date": "2016-06-08",
+    "team": "Portugal",
+    "opponent": "Estonia",
+    "competition": "Friendly",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "1-0",
+    "result": "7-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 58,
+    "cap": 126,
+    "venueText": "Estádio da Luz, Lisbon, Portugal",
+    "date": "2016-06-08",
+    "team": "Portugal",
+    "opponent": "Estonia",
+    "competition": "Friendly",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "3-0",
+    "result": "7-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 59,
+    "cap": 129,
+    "venueText": "Parc Olympique Lyonnais, Lyon, France",
+    "date": "2016-06-22",
+    "team": "Portugal",
+    "opponent": "Hungary",
+    "competition": "European Championship",
+    "stage": "Group stage",
+    "venue": "N",
+    "minute": null,
+    "scoreAfter": "2-2",
+    "result": "3-3",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 60,
+    "cap": 129,
+    "venueText": "Parc Olympique Lyonnais, Lyon, France",
+    "date": "2016-06-22",
+    "team": "Portugal",
+    "opponent": "Hungary",
+    "competition": "European Championship",
+    "stage": "Group stage",
+    "venue": "N",
+    "minute": null,
+    "scoreAfter": "3-3",
+    "result": "3-3",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 61,
+    "cap": 132,
+    "venueText": "Parc Olympique Lyonnais, Lyon, France",
+    "date": "2016-07-06",
+    "team": "Portugal",
+    "opponent": "Wales",
+    "competition": "European Championship",
+    "stage": "Semi-final",
+    "venue": "N",
+    "minute": null,
+    "scoreAfter": "1-0",
+    "result": "2-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 62,
+    "cap": 134,
+    "venueText": "Estádio Municipal de Aveiro, Aveiro, Portugal",
+    "date": "2016-10-07",
+    "team": "Portugal",
+    "opponent": "Andorra",
+    "competition": "World Cup qualifying",
+    "venue": "H",
+    "minute": "2",
+    "scoreAfter": "1-0",
+    "result": "6-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 63,
+    "cap": 134,
+    "venueText": "Estádio Municipal de Aveiro, Aveiro, Portugal",
+    "date": "2016-10-07",
+    "team": "Portugal",
+    "opponent": "Andorra",
+    "competition": "World Cup qualifying",
+    "venue": "H",
+    "minute": "4",
+    "scoreAfter": "2-0",
+    "result": "6-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 64,
+    "cap": 134,
+    "venueText": "Estádio Municipal de Aveiro, Aveiro, Portugal",
+    "date": "2016-10-07",
+    "team": "Portugal",
+    "opponent": "Andorra",
+    "competition": "World Cup qualifying",
+    "venue": "H",
+    "minute": "47",
+    "scoreAfter": "4-0",
+    "result": "6-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 65,
+    "cap": 134,
+    "venueText": "Estádio Municipal de Aveiro, Aveiro, Portugal",
+    "date": "2016-10-07",
+    "team": "Portugal",
+    "opponent": "Andorra",
+    "competition": "World Cup qualifying",
+    "venue": "H",
+    "minute": "68",
+    "scoreAfter": "5-0",
+    "result": "6-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 66,
+    "cap": 135,
+    "venueText": "Tórsvøllur, Tórshavn, Faroe Islands",
+    "date": "2016-10-10",
+    "team": "Portugal",
+    "opponent": "Faroe Islands",
+    "competition": "World Cup qualifying",
+    "venue": "A",
+    "minute": null,
+    "scoreAfter": "4-0",
+    "result": "6-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 67,
+    "cap": 136,
+    "venueText": "Estádio Algarve, Faro, Portugal",
+    "date": "2016-11-13",
+    "team": "Portugal",
+    "opponent": "Latvia",
+    "competition": "World Cup qualifying",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "1-0",
+    "result": "4-1",
+    "type": "penalty",
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 68,
+    "cap": 136,
+    "venueText": "Estádio Algarve, Faro, Portugal",
+    "date": "2016-11-13",
+    "team": "Portugal",
+    "opponent": "Latvia",
+    "competition": "World Cup qualifying",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "3-1",
+    "result": "4-1",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 69,
+    "cap": 137,
+    "venueText": "Estádio da Luz, Lisbon, Portugal",
+    "date": "2017-03-25",
+    "team": "Portugal",
+    "opponent": "Hungary",
+    "competition": "World Cup qualifying",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "2-0",
+    "result": "3-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 70,
+    "cap": 137,
+    "venueText": "Estádio da Luz, Lisbon, Portugal",
+    "date": "2017-03-25",
+    "team": "Portugal",
+    "opponent": "Hungary",
+    "competition": "World Cup qualifying",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "3-0",
+    "result": "3-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 71,
+    "cap": 138,
+    "venueText": "Estádio do Marítimo, Funchal, Portugal",
+    "date": "2017-03-28",
+    "team": "Portugal",
+    "opponent": "Sweden",
+    "competition": "Friendly",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "1-0",
+    "result": "2-3",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 72,
+    "cap": 139,
+    "venueText": "Skonto Stadium, Riga, Latvia",
+    "date": "2017-06-09",
+    "team": "Portugal",
+    "opponent": "Latvia",
+    "competition": "World Cup qualifying",
+    "venue": "A",
+    "minute": null,
+    "scoreAfter": "1-0",
+    "result": "3-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 73,
+    "cap": 139,
+    "venueText": "Skonto Stadium, Riga, Latvia",
+    "date": "2017-06-09",
+    "team": "Portugal",
+    "opponent": "Latvia",
+    "competition": "World Cup qualifying",
+    "venue": "A",
+    "minute": null,
+    "scoreAfter": "2-0",
+    "result": "3-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 74,
+    "cap": 141,
+    "venueText": "Spartak Stadium, Moscow, Russia",
+    "date": "2017-06-21",
+    "team": "Portugal",
+    "opponent": "Russia",
+    "competition": "Confederations Cup",
+    "venue": "A",
+    "minute": null,
+    "scoreAfter": "1-0",
+    "result": "1-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 75,
+    "cap": 142,
+    "venueText": "Krestovsky Stadium, Saint Petersburg, Russia",
+    "date": "2017-06-24",
+    "team": "Portugal",
+    "opponent": "New Zealand",
+    "competition": "Confederations Cup",
+    "venue": "N",
+    "minute": null,
+    "scoreAfter": "1-0",
+    "result": "4-0",
+    "type": "penalty",
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 76,
+    "cap": 144,
+    "venueText": "Estádio do Bessa, Porto, Portugal",
+    "date": "2017-08-31",
+    "team": "Portugal",
+    "opponent": "Faroe Islands",
+    "competition": "World Cup qualifying",
+    "venue": "H",
+    "minute": "3",
+    "scoreAfter": "1-0",
+    "result": "5-1",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 77,
+    "cap": 144,
+    "venueText": "Estádio do Bessa, Porto, Portugal",
+    "date": "2017-08-31",
+    "team": "Portugal",
+    "opponent": "Faroe Islands",
+    "competition": "World Cup qualifying",
+    "venue": "H",
+    "minute": "29",
+    "scoreAfter": "2-0",
+    "result": "5-1",
+    "type": "penalty",
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 78,
+    "cap": 144,
+    "venueText": "Estádio do Bessa, Porto, Portugal",
+    "date": "2017-08-31",
+    "team": "Portugal",
+    "opponent": "Faroe Islands",
+    "competition": "World Cup qualifying",
+    "venue": "H",
+    "minute": "65",
+    "scoreAfter": "4-1",
+    "result": "5-1",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 79,
+    "cap": 146,
+    "venueText": "Estadi Nacional, Andorra la Vella, Andorra",
+    "date": "2017-10-07",
+    "team": "Portugal",
+    "opponent": "Andorra",
+    "competition": "World Cup qualifying",
+    "venue": "A",
+    "minute": null,
+    "scoreAfter": "1-0",
+    "result": "2-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 80,
+    "cap": 148,
+    "venueText": "Letzigrund, Zürich, Switzerland",
+    "date": "2018-03-23",
+    "team": "Portugal",
+    "opponent": "Egypt",
+    "competition": "Friendly",
+    "venue": "N",
+    "minute": null,
+    "scoreAfter": "1-1",
+    "result": "2-1",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 81,
+    "cap": 148,
+    "venueText": "Letzigrund, Zürich, Switzerland",
+    "date": "2018-03-23",
+    "team": "Portugal",
+    "opponent": "Egypt",
+    "competition": "Friendly",
+    "venue": "N",
+    "minute": null,
+    "scoreAfter": "2-1",
+    "result": "2-1",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 82,
+    "cap": 151,
+    "venueText": "Fisht Olympic Stadium, Sochi, Russia",
+    "date": "2018-06-15",
+    "team": "Portugal",
+    "opponent": "Spain",
+    "competition": "World Cup",
+    "stage": "Group stage",
+    "venue": "N",
+    "minute": "4",
+    "scoreAfter": "1-0",
+    "result": "3-3",
+    "type": "penalty",
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 83,
+    "cap": 151,
+    "venueText": "Fisht Olympic Stadium, Sochi, Russia",
+    "date": "2018-06-15",
+    "team": "Portugal",
+    "opponent": "Spain",
+    "competition": "World Cup",
+    "stage": "Group stage",
+    "venue": "N",
+    "minute": "44",
+    "scoreAfter": "2-1",
+    "result": "3-3",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 84,
+    "cap": 151,
+    "venueText": "Fisht Olympic Stadium, Sochi, Russia",
+    "date": "2018-06-15",
+    "team": "Portugal",
+    "opponent": "Spain",
+    "competition": "World Cup",
+    "stage": "Group stage",
+    "venue": "N",
+    "minute": "88",
+    "scoreAfter": "3-3",
+    "result": "3-3",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 85,
+    "cap": 152,
+    "venueText": "Luzhniki Stadium, Moscow, Russia",
+    "date": "2018-06-20",
+    "team": "Portugal",
+    "opponent": "Morocco",
+    "competition": "World Cup",
+    "venue": "N",
+    "minute": null,
+    "scoreAfter": "1-0",
+    "result": "1-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 86,
+    "cap": 157,
+    "venueText": "Estádio do Dragão, Porto, Portugal",
+    "date": "2019-06-05",
+    "team": "Portugal",
+    "opponent": "Switzerland",
+    "competition": "Nations League",
+    "stage": "Semi-final",
+    "venue": "H",
+    "minute": "25",
+    "scoreAfter": "1-0",
+    "result": "3-1",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 87,
+    "cap": 157,
+    "venueText": "Estádio do Dragão, Porto, Portugal",
+    "date": "2019-06-05",
+    "team": "Portugal",
+    "opponent": "Switzerland",
+    "competition": "Nations League",
+    "stage": "Semi-final",
+    "venue": "H",
+    "minute": "88",
+    "scoreAfter": "2-1",
+    "result": "3-1",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 88,
+    "cap": 157,
+    "venueText": "Estádio do Dragão, Porto, Portugal",
+    "date": "2019-06-05",
+    "team": "Portugal",
+    "opponent": "Switzerland",
+    "competition": "Nations League",
+    "stage": "Semi-final",
+    "venue": "H",
+    "minute": "90",
+    "scoreAfter": "3-1",
+    "result": "3-1",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 89,
+    "cap": 159,
+    "venueText": "Red Star Stadium, Belgrade, Serbia",
+    "date": "2019-09-07",
+    "team": "Portugal",
+    "opponent": "Serbia",
+    "competition": "Euro qualifying",
+    "venue": "A",
+    "minute": null,
+    "scoreAfter": "3-1",
+    "result": "4-2",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 90,
+    "cap": 160,
+    "venueText": "LFF Stadium, Vilnius, Lithuania",
+    "date": "2019-09-10",
+    "team": "Portugal",
+    "opponent": "Lithuania",
+    "competition": "Euro qualifying",
+    "venue": "A",
+    "minute": "7",
+    "scoreAfter": "1-0",
+    "result": "5-1",
+    "type": "penalty",
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 91,
+    "cap": 160,
+    "venueText": "LFF Stadium, Vilnius, Lithuania",
+    "date": "2019-09-10",
+    "team": "Portugal",
+    "opponent": "Lithuania",
+    "competition": "Euro qualifying",
+    "venue": "A",
+    "minute": "62",
+    "scoreAfter": "2-1",
+    "result": "5-1",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 92,
+    "cap": 160,
+    "venueText": "LFF Stadium, Vilnius, Lithuania",
+    "date": "2019-09-10",
+    "team": "Portugal",
+    "opponent": "Lithuania",
+    "competition": "Euro qualifying",
+    "venue": "A",
+    "minute": "65",
+    "scoreAfter": "3-1",
+    "result": "5-1",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 93,
+    "cap": 160,
+    "venueText": "LFF Stadium, Vilnius, Lithuania",
+    "date": "2019-09-10",
+    "team": "Portugal",
+    "opponent": "Lithuania",
+    "competition": "Euro qualifying",
+    "venue": "A",
+    "minute": "76",
+    "scoreAfter": "4-1",
+    "result": "5-1",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 94,
+    "cap": 161,
+    "venueText": "Estádio José Alvalade, Lisbon, Portugal",
+    "date": "2019-10-11",
+    "team": "Portugal",
+    "opponent": "Luxembourg",
+    "competition": "Euro qualifying",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "2-0",
+    "result": "3-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 95,
+    "cap": 162,
+    "venueText": "Olimpiyskiy National Sports Complex, Kyiv, Ukraine",
+    "date": "2019-10-14",
+    "team": "Portugal",
+    "opponent": "Ukraine",
+    "competition": "Euro qualifying",
+    "venue": "A",
+    "minute": null,
+    "scoreAfter": "1-2",
+    "result": "1-2",
+    "type": "penalty",
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 96,
+    "cap": 163,
+    "venueText": "Estádio Algarve, Faro, Portugal",
+    "date": "2019-11-14",
+    "team": "Portugal",
+    "opponent": "Lithuania",
+    "competition": "Euro qualifying",
+    "venue": "H",
+    "minute": "7",
+    "scoreAfter": "1-0",
+    "result": "6-0",
+    "type": "penalty",
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 97,
+    "cap": 163,
+    "venueText": "Estádio Algarve, Faro, Portugal",
+    "date": "2019-11-14",
+    "team": "Portugal",
+    "opponent": "Lithuania",
+    "competition": "Euro qualifying",
+    "venue": "H",
+    "minute": "22",
+    "scoreAfter": "2-0",
+    "result": "6-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 98,
+    "cap": 163,
+    "venueText": "Estádio Algarve, Faro, Portugal",
+    "date": "2019-11-14",
+    "team": "Portugal",
+    "opponent": "Lithuania",
+    "competition": "Euro qualifying",
+    "venue": "H",
+    "minute": "65",
+    "scoreAfter": "6-0",
+    "result": "6-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 99,
+    "cap": 164,
+    "venueText": "Stade Josy Barthel, Luxembourg City, Luxembourg",
+    "date": "2019-11-17",
+    "team": "Portugal",
+    "opponent": "Luxembourg",
+    "competition": "Euro qualifying",
+    "venue": "A",
+    "minute": null,
+    "scoreAfter": "2-0",
+    "result": "2-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 100,
+    "cap": 165,
+    "venueText": "Friends Arena, Solna, Sweden",
+    "date": "2020-09-08",
+    "team": "Portugal",
+    "opponent": "Sweden",
+    "competition": "Nations League",
+    "venue": "A",
+    "minute": null,
+    "scoreAfter": "1-0",
+    "result": "2-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 101,
+    "cap": 165,
+    "venueText": "Friends Arena, Solna, Sweden",
+    "date": "2020-09-08",
+    "team": "Portugal",
+    "opponent": "Sweden",
+    "competition": "Nations League",
+    "venue": "A",
+    "minute": null,
+    "scoreAfter": "2-0",
+    "result": "2-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 102,
+    "cap": 168,
+    "venueText": "Estádio da Luz, Lisbon, Portugal",
+    "date": "2020-11-11",
+    "team": "Portugal",
+    "opponent": "Andorra",
+    "competition": "Friendly",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "6-0",
+    "result": "7-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 103,
+    "cap": 173,
+    "venueText": "Stade Josy Barthel, Luxembourg City, Luxembourg",
+    "date": "2021-03-30",
+    "team": "Portugal",
+    "opponent": "Luxembourg",
+    "competition": "World Cup qualifying",
+    "venue": "A",
+    "minute": null,
+    "scoreAfter": "2-1",
+    "result": "3-1",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 104,
+    "cap": 175,
+    "venueText": "Estádio José Alvalade, Lisbon, Portugal",
+    "date": "2021-06-09",
+    "team": "Portugal",
+    "opponent": "Israel",
+    "competition": "Friendly",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "2-0",
+    "result": "4-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 105,
+    "cap": 176,
+    "venueText": "Puskás Aréna, Budapest, Hungary",
+    "date": "2021-06-15",
+    "team": "Portugal",
+    "opponent": "Hungary",
+    "competition": "European Championship",
+    "stage": "Group stage",
+    "venue": "A",
+    "minute": null,
+    "scoreAfter": "2-0",
+    "result": "3-0",
+    "type": "penalty",
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 106,
+    "cap": 176,
+    "venueText": "Puskás Aréna, Budapest, Hungary",
+    "date": "2021-06-15",
+    "team": "Portugal",
+    "opponent": "Hungary",
+    "competition": "European Championship",
+    "stage": "Group stage",
+    "venue": "A",
+    "minute": null,
+    "scoreAfter": "3-0",
+    "result": "3-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 107,
+    "cap": 177,
+    "venueText": "Allianz Arena, Munich, Germany",
+    "date": "2021-06-19",
+    "team": "Portugal",
+    "opponent": "Germany",
+    "competition": "European Championship",
+    "venue": "A",
+    "minute": null,
+    "scoreAfter": "1-0",
+    "result": "2-4",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 108,
+    "cap": 178,
+    "venueText": "Puskás Aréna, Budapest, Hungary",
+    "date": "2021-06-23",
+    "team": "Portugal",
+    "opponent": "France",
+    "competition": "European Championship",
+    "venue": "N",
+    "minute": null,
+    "scoreAfter": "1-0",
+    "result": "2-2",
+    "type": "penalty",
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 109,
+    "cap": 178,
+    "venueText": "Puskás Aréna, Budapest, Hungary",
+    "date": "2021-06-23",
+    "team": "Portugal",
+    "opponent": "France",
+    "competition": "European Championship",
+    "venue": "N",
+    "minute": null,
+    "scoreAfter": "2-2",
+    "result": "2-2",
+    "type": "penalty",
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 110,
+    "cap": 180,
+    "venueText": "Estádio Algarve, Faro, Portugal",
+    "date": "2021-09-01",
+    "team": "Portugal",
+    "opponent": "Republic of Ireland",
+    "competition": "World Cup qualifying",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "1-1",
+    "result": "2-1",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 111,
+    "cap": 180,
+    "venueText": "Estádio Algarve, Faro, Portugal",
+    "date": "2021-09-01",
+    "team": "Portugal",
+    "opponent": "Republic of Ireland",
+    "competition": "World Cup qualifying",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "2-1",
+    "result": "2-1",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 112,
+    "cap": 181,
+    "venueText": "Estádio Algarve, Faro, Portugal",
+    "date": "2021-10-09",
+    "team": "Portugal",
+    "opponent": "Qatar",
+    "competition": "Friendly",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "1-0",
+    "result": "3-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 113,
+    "cap": 182,
+    "venueText": "Estádio Algarve, Faro, Portugal",
+    "date": "2021-10-12",
+    "team": "Portugal",
+    "opponent": "Luxembourg",
+    "competition": "World Cup qualifying",
+    "venue": "H",
+    "minute": "8",
+    "scoreAfter": "1-0",
+    "result": "5-0",
+    "type": "penalty",
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 114,
+    "cap": 182,
+    "venueText": "Estádio Algarve, Faro, Portugal",
+    "date": "2021-10-12",
+    "team": "Portugal",
+    "opponent": "Luxembourg",
+    "competition": "World Cup qualifying",
+    "venue": "H",
+    "minute": "13",
+    "scoreAfter": "2-0",
+    "result": "5-0",
+    "type": "penalty",
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 115,
+    "cap": 182,
+    "venueText": "Estádio Algarve, Faro, Portugal",
+    "date": "2021-10-12",
+    "team": "Portugal",
+    "opponent": "Luxembourg",
+    "competition": "World Cup qualifying",
+    "venue": "H",
+    "minute": "87",
+    "scoreAfter": "5-0",
+    "result": "5-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 116,
+    "cap": 188,
+    "venueText": "Estádio José Alvalade, Lisbon, Portugal",
+    "date": "2022-06-05",
+    "team": "Portugal",
+    "opponent": "Switzerland",
+    "competition": "Nations League",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "2-0",
+    "result": "4-0",
+    "type": "penalty",
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 117,
+    "cap": 188,
+    "venueText": "Estádio José Alvalade, Lisbon, Portugal",
+    "date": "2022-06-05",
+    "team": "Portugal",
+    "opponent": "Switzerland",
+    "competition": "Nations League",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "3-0",
+    "result": "4-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 118,
+    "cap": 192,
+    "venueText": "Stadium 974, Doha, Qatar",
+    "date": "2022-11-24",
+    "team": "Portugal",
+    "opponent": "Ghana",
+    "competition": "World Cup",
+    "stage": "Group stage",
+    "venue": "N",
+    "minute": null,
+    "scoreAfter": "1-0",
+    "result": "3-2",
+    "type": "penalty",
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 119,
+    "cap": 197,
+    "venueText": "Estádio José Alvalade, Lisbon, Portugal",
+    "date": "2023-03-23",
+    "team": "Portugal",
+    "opponent": "Liechtenstein",
+    "competition": "Euro qualifying",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "3-0",
+    "result": "4-0",
+    "type": "penalty",
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 120,
+    "cap": 197,
+    "venueText": "Estádio José Alvalade, Lisbon, Portugal",
+    "date": "2023-03-23",
+    "team": "Portugal",
+    "opponent": "Liechtenstein",
+    "competition": "Euro qualifying",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "4-0",
+    "result": "4-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 121,
+    "cap": 198,
+    "venueText": "Stade de Luxembourg, Luxembourg City, Luxembourg",
+    "date": "2023-03-26",
+    "team": "Portugal",
+    "opponent": "Luxembourg",
+    "competition": "Euro qualifying",
+    "venue": "A",
+    "minute": null,
+    "scoreAfter": "1-0",
+    "result": "6-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 122,
+    "cap": 198,
+    "venueText": "Stade de Luxembourg, Luxembourg City, Luxembourg",
+    "date": "2023-03-26",
+    "team": "Portugal",
+    "opponent": "Luxembourg",
+    "competition": "Euro qualifying",
+    "venue": "A",
+    "minute": null,
+    "scoreAfter": "4-0",
+    "result": "6-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 123,
+    "cap": 200,
+    "venueText": "Laugardalsvöllur, Reykjavík, Iceland",
+    "date": "2023-06-20",
+    "team": "Portugal",
+    "opponent": "Iceland",
+    "competition": "Euro qualifying",
+    "venue": "A",
+    "minute": null,
+    "scoreAfter": "1-0",
+    "result": "1-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 124,
+    "cap": 202,
+    "venueText": "Estádio do Dragão, Porto, Portugal",
+    "date": "2023-10-13",
+    "team": "Portugal",
+    "opponent": "Slovakia",
+    "competition": "Euro qualifying",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "2-0",
+    "result": "3-2",
+    "type": "penalty",
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 125,
+    "cap": 202,
+    "venueText": "Estádio do Dragão, Porto, Portugal",
+    "date": "2023-10-13",
+    "team": "Portugal",
+    "opponent": "Slovakia",
+    "competition": "Euro qualifying",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "3-1",
+    "result": "3-2",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 126,
+    "cap": 203,
+    "venueText": "Bilino Polje Stadium, Zenica, Bosnia and Herzegovina",
+    "date": "2023-10-16",
+    "team": "Portugal",
+    "opponent": "Bosnia and Herzegovina",
+    "competition": "Euro qualifying",
+    "venue": "A",
+    "minute": null,
+    "scoreAfter": "1-0",
+    "result": "5-0",
+    "type": "penalty",
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 127,
+    "cap": 203,
+    "venueText": "Bilino Polje Stadium, Zenica, Bosnia and Herzegovina",
+    "date": "2023-10-16",
+    "team": "Portugal",
+    "opponent": "Bosnia and Herzegovina",
+    "competition": "Euro qualifying",
+    "venue": "A",
+    "minute": null,
+    "scoreAfter": "2-0",
+    "result": "5-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 128,
+    "cap": 204,
+    "venueText": "Rheinpark Stadion, Vaduz, Liechtenstein",
+    "date": "2023-11-16",
+    "team": "Portugal",
+    "opponent": "Liechtenstein",
+    "competition": "Euro qualifying",
+    "venue": "A",
+    "minute": null,
+    "scoreAfter": "1-0",
+    "result": "2-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 129,
+    "cap": 207,
+    "venueText": "Estádio Municipal de Aveiro, Aveiro, Portugal",
+    "date": "2024-06-11",
+    "team": "Portugal",
+    "opponent": "Republic of Ireland",
+    "competition": "Friendly",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "2-0",
+    "result": "3-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 130,
+    "cap": 207,
+    "venueText": "Estádio Municipal de Aveiro, Aveiro, Portugal",
+    "date": "2024-06-11",
+    "team": "Portugal",
+    "opponent": "Republic of Ireland",
+    "competition": "Friendly",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "3-0",
+    "result": "3-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 131,
+    "cap": 213,
+    "venueText": "Estádio da Luz, Lisbon, Portugal",
+    "date": "2024-09-05",
+    "team": "Portugal",
+    "opponent": "Croatia",
+    "competition": "Nations League",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "2-0",
+    "result": "2-1",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 132,
+    "cap": 214,
+    "venueText": "Estádio da Luz, Lisbon, Portugal",
+    "date": "2024-09-08",
+    "team": "Portugal",
+    "opponent": "Scotland",
+    "competition": "Nations League",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "2-1",
+    "result": "2-1",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 133,
+    "cap": 215,
+    "venueText": "Kazimierz Górski National Stadium, Warsaw, Poland",
+    "date": "2024-10-12",
+    "team": "Portugal",
+    "opponent": "Poland",
+    "competition": "Nations League",
+    "venue": "A",
+    "minute": null,
+    "scoreAfter": "2-0",
+    "result": "3-1",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 134,
+    "cap": 217,
+    "venueText": "Estádio do Dragão, Porto, Portugal",
+    "date": "2024-11-15",
+    "team": "Portugal",
+    "opponent": "Poland",
+    "competition": "Nations League",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "2-0",
+    "result": "5-1",
+    "type": "penalty",
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 135,
+    "cap": 217,
+    "venueText": "Estádio do Dragão, Porto, Portugal",
+    "date": "2024-11-15",
+    "team": "Portugal",
+    "opponent": "Poland",
+    "competition": "Nations League",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "5-0",
+    "result": "5-1",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 136,
+    "cap": 219,
+    "venueText": "Estádio José Alvalade, Lisbon, Portugal",
+    "date": "2025-03-23",
+    "team": "Portugal",
+    "opponent": "Denmark",
+    "competition": "Nations League",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "2-1",
+    "result": "5-2 (a.e.t.)",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 137,
+    "cap": 220,
+    "venueText": "Allianz Arena, Munich, Germany",
+    "date": "2025-06-04",
+    "team": "Portugal",
+    "opponent": "Germany",
+    "competition": "Nations League",
+    "stage": "Semi-final",
+    "venue": "A",
+    "minute": null,
+    "scoreAfter": "2-1",
+    "result": "2-1",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 138,
+    "cap": 221,
+    "venueText": "Allianz Arena, Munich, Germany",
+    "date": "2025-06-08",
+    "team": "Portugal",
+    "opponent": "Spain",
+    "competition": "Nations League",
+    "stage": "Final",
+    "venue": "N",
+    "minute": null,
+    "scoreAfter": "2-2",
+    "result": "2-2 (a.e.t., 5-3 pens)",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 139,
+    "cap": 222,
+    "venueText": "Vazgen Sargsyan Republican Stadium, Yerevan, Armenia",
+    "date": "2025-09-06",
+    "team": "Portugal",
+    "opponent": "Armenia",
+    "competition": "World Cup qualifying",
+    "venue": "A",
+    "minute": null,
+    "scoreAfter": "2-0",
+    "result": "5-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 140,
+    "cap": 222,
+    "venueText": "Vazgen Sargsyan Republican Stadium, Yerevan, Armenia",
+    "date": "2025-09-06",
+    "team": "Portugal",
+    "opponent": "Armenia",
+    "competition": "World Cup qualifying",
+    "venue": "A",
+    "minute": null,
+    "scoreAfter": "4-0",
+    "result": "5-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 141,
+    "cap": 223,
+    "venueText": "Puskás Aréna, Budapest, Hungary",
+    "date": "2025-09-09",
+    "team": "Portugal",
+    "opponent": "Hungary",
+    "competition": "World Cup qualifying",
+    "venue": "A",
+    "minute": null,
+    "scoreAfter": "2-1",
+    "result": "3-2",
+    "type": "penalty",
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 142,
+    "cap": 225,
+    "venueText": "Estádio José Alvalade, Lisbon, Portugal",
+    "date": "2025-10-14",
+    "team": "Portugal",
+    "opponent": "Hungary",
+    "competition": "World Cup qualifying",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "1-1",
+    "result": "2-2",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 143,
+    "cap": 225,
+    "venueText": "Estádio José Alvalade, Lisbon, Portugal",
+    "date": "2025-10-14",
+    "team": "Portugal",
+    "opponent": "Hungary",
+    "competition": "World Cup qualifying",
+    "venue": "H",
+    "minute": null,
+    "scoreAfter": "2-1",
+    "result": "2-2",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 144,
+    "cap": 230,
+    "venueText": "NRG Stadium, Houston, United States",
+    "date": "2026-06-23",
+    "team": "Portugal",
+    "opponent": "Uzbekistan",
+    "competition": "World Cup",
+    "stage": "Group stage",
+    "venue": "N",
+    "minute": null,
+    "scoreAfter": "1-0",
+    "result": "5-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 145,
+    "cap": 230,
+    "venueText": "NRG Stadium, Houston, United States",
+    "date": "2026-06-23",
+    "team": "Portugal",
+    "opponent": "Uzbekistan",
+    "competition": "World Cup",
+    "stage": "Group stage",
+    "venue": "N",
+    "minute": null,
+    "scoreAfter": "3-0",
+    "result": "5-0",
+    "type": null,
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  },
+  {
+    "no": 146,
+    "cap": 232,
+    "venueText": "BMO Field, Toronto, Canada",
+    "date": "2026-07-02",
+    "team": "Portugal",
+    "opponent": "Croatia",
+    "competition": "World Cup",
+    "stage": "Round of 32",
+    "venue": "N",
+    "minute": null,
+    "scoreAfter": "1-1",
+    "result": "2-1",
+    "type": "penalty",
+    "sources": [
+      "wikipedia:List_of_international_goals_scored_by_Cristiano_Ronaldo@1383963551"
+    ]
+  }
+]

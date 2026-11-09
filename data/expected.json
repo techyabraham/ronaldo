@@ -1,0 +1,23 @@
+{
+  "total": 985,
+  "perTeam": {
+    "Sporting CP": 5,
+    "Manchester United": 145,
+    "Real Madrid": 450,
+    "Juventus": 101,
+    "Al Nassr": 138,
+    "Portugal": 146
+  },
+  "latestGoalDate": "2026-10-29",
+  "checkedAt": "2026-11-09",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Cristiano_Ronaldo#Career_statistics (club table, 'updated match played 29 October 2026')",
+    "https://en.wikipedia.org/wiki/List_of_international_goals_scored_by_Cristiano_Ronaldo (146 goals, retired 5 November 2026)"
+  ],
+  "notes": [
+    "Manchester United = 118 (2003-09) + 27 (2021-22).",
+    "Al Nassr by season: 2022-23 14, 2023-24 50, 2024-25 35, 2025-26 30, 2026-27 9.",
+    "Sporting CP B (2 apps, 0 goals) is not counted as a separate team.",
+    "Wikipedia notes a disputed goal vs Real Sociedad on 18 Sep 2010 that is NOT counted in the 450 Real Madrid goals."
+  ]
+}
