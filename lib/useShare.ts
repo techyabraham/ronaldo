@@ -74,25 +74,44 @@ export function useShare(cfg: ShareConfig) {
    * Share the actual result image (for WhatsApp Status, Instagram/TikTok/Snapchat Stories).
    * Uses the Web Share API with files where supported; otherwise saves the PNG and copies the link.
    */
-  const image = useCallback(async () => {
-    if (!cfg.imagePath) return;
-    const filename = `ronaldo-birthday-${cfg.mmdd}.png`;
+  const filename = `goat-day-${cfg.mmdd}.png`;
+
+  /** Try to hand the PNG to the OS share sheet. Returns "shared", "cancelled" or "unsupported". */
+  const shareFile = useCallback(async (): Promise<"shared" | "cancelled" | "unsupported"> => {
+    if (!cfg.imagePath || typeof navigator.canShare !== "function") return "unsupported";
     try {
       const blob = await (await fetch(cfg.imagePath)).blob();
       const file = new File([blob], filename, { type: "image/png" });
-      if (navigator.canShare?.({ files: [file] })) {
-        log("image");
-        await navigator.share({ files: [file], text: full });
-        return;
-      }
+      if (!navigator.canShare({ files: [file] })) return "unsupported";
+      log("image");
+      await navigator.share({ files: [file], text: full });
+      return "shared";
     } catch (e) {
-      if ((e as Error).name === "AbortError") return; // user closed the sheet
+      return (e as Error).name === "AbortError" ? "cancelled" : "unsupported";
     }
+  }, [cfg.imagePath, filename, full, log]);
+
+  const image = useCallback(async () => {
+    if (!cfg.imagePath) return;
+    if ((await shareFile()) !== "unsupported") return;
     log("save-image");
     download(cfg.imagePath, filename);
     await copyToClipboard(full);
     flash("Image saved & link copied. Post it to your Status or Story");
-  }, [cfg.imagePath, cfg.mmdd, full, flash, log]);
+  }, [cfg.imagePath, filename, full, flash, log, shareFile]);
+
+  /**
+   * The one big "Post my GOAT Day" action: the Story image where the phone can share files,
+   * otherwise the OS share sheet with text + link, otherwise (desktop) jump to the full share panel.
+   */
+  const post = useCallback(async () => {
+    if ((await shareFile()) !== "unsupported") return;
+    if (hasNativeShare()) return native();
+    log("native");
+    const panel = document.getElementById("share");
+    panel?.scrollIntoView({ behavior: "smooth", block: "start" });
+    panel?.querySelector<HTMLElement>("a,button")?.focus({ preventScroll: true });
+  }, [shareFile, native, log]);
 
   const copy = useCallback(async () => {
     log("copy");
@@ -100,5 +119,5 @@ export function useShare(cfg: ShareConfig) {
     flash("Link copied! Paste it anywhere");
   }, [full, flash, log]);
 
-  return { canNative, links, native, image, copy, log, toast };
+  return { canNative, links, native, image, post, copy, log, toast };
 }

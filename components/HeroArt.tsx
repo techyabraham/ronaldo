@@ -31,7 +31,8 @@ export function HeroArt({ variant, priority = false }: { variant: "home" | "resu
   }
 
   // Designed fallback: Portugal flag field, a big white crown, and an oversized faint "GOAT" behind it.
-  const crownTop = variant === "home" ? "top-[9%]" : "top-1/2 -translate-y-1/2";
+  // On result pages the centred play button is the focal point, so the crown is left out there.
+  const crownTop = "top-[9%]";
   return (
     <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
       <div className="absolute inset-0 flex">
@@ -43,13 +44,15 @@ export function HeroArt({ variant, priority = false }: { variant: "home" | "resu
       >
         GOAT
       </span>
-      <svg
-        viewBox="0 0 24 24"
-        className={`absolute left-1/2 ${crownTop} h-[45%] w-auto -translate-x-1/2 text-white drop-shadow-[0_8px_24px_rgba(0,0,0,0.35)]`}
-        fill="currentColor"
-      >
-        <path d={CROWN_PATH} />
-      </svg>
+      {variant === "home" && (
+        <svg
+          viewBox="0 0 24 24"
+          className={`absolute left-1/2 ${crownTop} h-[45%] w-auto -translate-x-1/2 text-white drop-shadow-[0_8px_24px_rgba(0,0,0,0.35)]`}
+          fill="currentColor"
+        >
+          <path d={CROWN_PATH} />
+        </svg>
+      )}
     </div>
   );
 }

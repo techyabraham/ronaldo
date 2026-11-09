@@ -1,6 +1,10 @@
 import type { Match } from "@/lib/goals";
+import { competitionLabel } from "@/lib/labels";
+import type { MatchNote } from "@/lib/moments";
 import { youtubeSearchUrl } from "@/lib/share";
-import { VideoFacade } from "./VideoFacade";
+import { EpisodeTile } from "./EpisodeTile";
+import { PlayIcon } from "./icons";
+import { VideoEpisode } from "./VideoFacade";
 
 const TYPE_LABEL: Record<string, string> = {
   penalty: "Penalty",
@@ -9,71 +13,89 @@ const TYPE_LABEL: Record<string, string> = {
   "open-play": "Open play",
 };
 
-function teamLine(m: Match) {
-  // Home team first when known.
-  if (m.venue === "A") return `${m.opponent} vs ${m.team}`;
-  return `${m.team} vs ${m.opponent}`;
+/** "3-0 (a.e.t.)" -> "3–0 (a.e.t.)" (en dash between the scores). */
+function dash(result: string) {
+  return result.replace(/(\d)-(\d)/g, "$1–$2");
 }
 
-export function MatchCard({ m, mmdd }: { m: Match; mmdd: string }) {
+function chipText(g: Match["goals"][number]) {
+  const type = g.type ? TYPE_LABEL[g.type] : null;
+  if (g.minute) return `${g.minute}′${type ? ` ${type}` : ""}`;
+  if (type) return type;
+  return `Goal #${g.n}`;
+}
+
+/** One match on a date, styled as a streaming "episode". Server component. */
+export function MatchCard({ m, index, mmdd, note }: { m: Match; index: number; mmdd: string; note?: MatchNote }) {
   const n = m.goals.length;
-  const videoLabel = `Play: Ronaldo goal${n > 1 ? "s" : ""} vs ${m.opponent}, ${m.year}`;
+  const badge = `${n} GOAL${n === 1 ? "" : "S"}`;
+  const scoreline = m.result ? `${m.team} ${dash(m.result)} ${m.opponent}` : `${m.team} vs ${m.opponent}`;
+  const comp = [competitionLabel(m.competition, m.year), m.stage].filter(Boolean).join(" · ");
+  const disputed = m.goals.find((g) => g.notes)?.notes;
+
+  const details = (
+    <div className="flex min-w-0 flex-col gap-0.5">
+      <p className="text-xs font-extrabold text-muted">
+        E{index} · {m.year}
+        {note?.record && <span className="text-red-text"> · RECORD</span>}
+      </p>
+      <h3 className="text-base font-extrabold leading-tight">{scoreline}</h3>
+      <p className="text-xs text-muted">{comp}</p>
+    </div>
+  );
+
   return (
-    <article className="rounded-3xl border border-border bg-surface p-4 sm:p-5" aria-labelledby={`h-${m.matchId}`}>
-      <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <p className="text-5xl font-extrabold leading-none tracking-tighter text-red-text">{m.year}</p>
-          <h2 id={`h-${m.matchId}`} className="mt-2 text-lg font-extrabold leading-tight">
-            {teamLine(m)}
-          </h2>
-          <p className="mt-1 text-sm text-muted">
-            {m.competition}
-            {m.stage ? ` · ${m.stage}` : ""}
-            {m.result ? ` · Final score ${m.result}` : ""}
-          </p>
-        </div>
-        <p
-          className="shrink-0 rounded-2xl bg-surface-2 px-3 py-2 text-center font-extrabold leading-none"
-          aria-label={`${n} goal${n > 1 ? "s" : ""}`}
+    <article className="flex flex-col gap-2.5" aria-labelledby={`ep-${m.matchId}`}>
+      <span id={`ep-${m.matchId}`} className="sr-only">
+        {scoreline}, {m.year}
+      </span>
+      {m.video ? (
+        <VideoEpisode
+          youtubeId={m.video.youtubeId}
+          startSeconds={m.video.startSeconds}
+          label={`Play: Ronaldo goal${n > 1 ? "s" : ""} vs ${m.opponent}, ${m.year}`}
+          badge={badge}
+          mmdd={mmdd}
+          matchId={m.matchId}
         >
-          <span className="block text-2xl">{n}</span>
-          <span className="block text-[10px] uppercase tracking-wide text-muted">goal{n > 1 ? "s" : ""}</span>
-        </p>
-      </div>
-
-      <ul className="mt-3 flex flex-wrap gap-2" aria-label="Goals in this match">
-        {m.goals.map((g) => (
-          <li key={g.id} className="rounded-full bg-surface-2 px-3 py-1.5 text-sm font-bold">
-            {g.minute ? `${g.minute}'` : "⚽"}
-            {g.type ? ` · ${TYPE_LABEL[g.type]}` : ""}
-            <span className="font-normal text-muted"> · career goal #{g.n}</span>
-          </li>
-        ))}
-      </ul>
-      {m.goals.some((g) => g.notes) && <p className="mt-2 text-xs text-muted">{m.goals.find((g) => g.notes)!.notes}</p>}
-
-      <div className="mt-4">
-        {m.video ? (
-          <VideoFacade
-            youtubeId={m.video.youtubeId}
-            startSeconds={m.video.startSeconds}
-            label={videoLabel}
-            mmdd={mmdd}
-            matchId={m.matchId}
-          />
-        ) : (
+          {details}
+        </VideoEpisode>
+      ) : (
+        <div className="flex gap-3">
           <a
             href={youtubeSearchUrl(m)}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-border bg-surface-2 font-bold"
+            aria-label={`Watch ${m.team} vs ${m.opponent}, ${m.year} on YouTube`}
+            className="flex-none"
           >
-            <span aria-hidden="true" className="text-red">
-              ▶
-            </span>{" "}
-            Watch on YouTube
+            <EpisodeTile
+              tone={index % 2 ? "green" : "red"}
+              badge={badge}
+              badgePosition="bottom-right"
+              className="h-[86px] w-[150px] rounded-[10px]"
+            >
+              <span className="absolute inset-0 m-auto flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-white ring-1 ring-white/30">
+                <PlayIcon className="h-4 w-4" />
+              </span>
+            </EpisodeTile>
           </a>
-        )}
+          {details}
+        </div>
+      )}
+
+      <ul className="flex flex-wrap gap-1.5" aria-label="Goals in this match">
+        {m.goals.map((g) => (
+          <li key={g.id} className="rounded-md bg-surface-2 px-2.5 py-1.5 text-[13px] font-extrabold">
+            {chipText(g)}
+            {(g.minute || g.type) && <span className="font-normal text-faint"> · career goal #{g.n}</span>}
+          </li>
+        ))}
+      </ul>
+      {note && <p className="text-[13px] leading-snug text-muted">{note.headline}</p>}
+      {disputed && <p className="text-xs text-faint">{disputed}</p>}
+      <div aria-hidden="true" className="h-[3px] rounded-full bg-hairline">
+        <div className="h-[3px] w-full rounded-full bg-red" />
       </div>
     </article>
   );

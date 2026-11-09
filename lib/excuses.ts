@@ -133,5 +133,5 @@ export function excuseFor(mmdd: string, ctx: ExcuseContext): Excuse | null {
   const w = WINDOWS.find((win) => win.test(m, d));
   if (w) return { title: w.title, line: w.lines[h % w.lines.length] };
   const lines = GENERIC.map((f) => f(ctx)).filter((x): x is string => !!x);
-  return { title: "Rest day", line: lines[h % lines.length] };
+  return { title: "The real reason", line: lines[h % lines.length] };
 }

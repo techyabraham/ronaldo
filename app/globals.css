@@ -168,3 +168,106 @@ body {
 .reveal-dot {
   animation: reveal-dot 700ms ease-in-out infinite;
 }
+
+/* SIUUU celebration (components/SiuuCelebration.tsx). Transform/opacity only: no layout shift. */
+.siuu-pop,
+.siuu-stretch {
+  transform-box: fill-box;
+}
+.siuu-pop {
+  transform-origin: 100% 100%;
+  animation: siuu-pop 460ms cubic-bezier(0.2, 1.4, 0.4, 1) both;
+}
+.siuu-stretch {
+  transform-origin: 0% 100%;
+  animation: siuu-stretch 520ms 350ms cubic-bezier(0.3, 1.3, 0.5, 1) both;
+}
+.siuu-jolt {
+  animation: siuu-jolt 320ms 900ms ease-out both;
+}
+.siuu-out {
+  animation: siuu-out 450ms 1550ms ease-in forwards;
+}
+.siuu-vignette {
+  background: radial-gradient(closest-side, rgba(11, 11, 12, 0.55), rgba(11, 11, 12, 0));
+  animation: siuu-fade 2000ms ease-in-out both;
+}
+.siuu-ring {
+  opacity: 0;
+  animation: siuu-ring 700ms 900ms ease-out both;
+}
+.siuu-ring-2 {
+  animation-delay: 1000ms;
+}
+@keyframes siuu-pop {
+  0% {
+    transform: scale(0.2) rotate(-6deg);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.12) rotate(1deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+@keyframes siuu-stretch {
+  0% {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    transform: scaleX(1.15);
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+@keyframes siuu-jolt {
+  0% {
+    transform: translateY(-26px);
+  }
+  45% {
+    transform: translateY(8px) scaleY(0.94);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+@keyframes siuu-out {
+  to {
+    opacity: 0;
+    transform: scale(1.08);
+  }
+}
+@keyframes siuu-fade {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  20%,
+  75% {
+    opacity: 1;
+  }
+}
+@keyframes siuu-ring {
+  0% {
+    transform: scale(0.2);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(2.8);
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-testid="siuu"] {
+    display: none;
+  }
+}

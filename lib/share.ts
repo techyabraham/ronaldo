@@ -25,16 +25,16 @@ export function shareText(opts: {
   hisBirthday?: boolean;
 }) {
   const { count, label, highlight, hisBirthday } = opts;
-  const bday = hisBirthday ? "I share a birthday with Cristiano 🎂 " : "";
+  const bday = hisBirthday ? "I share a birthday with the GOAT 🎂 " : "";
   if (count > 0) {
     const incl = highlight ? `, including ${highlightPhrase(highlight)}` : "";
-    return `${bday}Ronaldo scored ${count} goal${count === 1 ? "" : "s"} on my birthday (${label})${incl} 🐐 Did he score on yours? 👇`;
+    return `${bday}The GOAT scored ${count} goal${count === 1 ? "" : "s"} on my birthday (${label})${incl} 🐐 Is yours a GOAT Day? 👇`;
   }
-  return `${bday}Ronaldo has NEVER scored on my birthday (${label}) 😅 Did he score on yours? 👇`;
+  return `${bday}Even the GOAT takes a day off: Ronaldo has never scored on my birthday (${label}) 😅 Is yours a GOAT Day? 👇`;
 }
 
-/** Short invite used on the home page (no result yet). */
-export const INVITE_TEXT = "Did Ronaldo score on your birthday? 🐐 I just checked mine, find out yours 👇";
+/** Short invite used on the home page and tab bar (no result yet). */
+export const INVITE_TEXT = "Did the GOAT score on your birthday? 🐐 I just checked mine. Is yours a GOAT Day? 👇";
 
 export function shareLinks(text: string, url: string) {
   const t = encodeURIComponent(text);
