@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { BirthdayPicker } from "@/components/BirthdayPicker";
 import { FlagBar } from "@/components/FlagBar";
@@ -22,7 +23,14 @@ import {
 import { GOAT_MOMENTS } from "@/lib/moments";
 import { thumbPhotoFor } from "@/lib/photos";
 import { TeamPhoto } from "@/components/TeamPhoto";
+import { HOME_DESCRIPTION, HOME_TITLE, socialMeta } from "@/lib/seo";
 import { SITE_URL } from "@/lib/site";
+
+export const metadata: Metadata = {
+  title: { absolute: HOME_TITLE },
+  description: HOME_DESCRIPTION,
+  ...socialMeta({ title: HOME_TITLE, description: HOME_DESCRIPTION, path: "/" }),
+};
 
 export default function Home() {
   const counts = countsByDay();

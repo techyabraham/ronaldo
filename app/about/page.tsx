@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import { DATA_UPDATED, LATEST_GOAL_DATE, TOTAL_GOALS } from "@/lib/goals";
 import { CORRECTIONS_URL, CREATOR, DISCLAIMER, SITE_URL } from "@/lib/site";
+import { ABOUT_DESCRIPTION, ABOUT_TITLE, socialMeta, withBrand } from "@/lib/seo";
 import { FlagBar } from "@/components/FlagBar";
 import { TabBar } from "@/components/TabBar";
 
 export const metadata: Metadata = {
-  title: "About GOAT Day",
-  description:
-    "How we count Cristiano Ronaldo's official goals, where the data comes from, and how to report a correction.",
-  alternates: { canonical: "/about" },
+  title: ABOUT_TITLE,
+  description: ABOUT_DESCRIPTION,
+  ...socialMeta({ title: withBrand(ABOUT_TITLE), description: ABOUT_DESCRIPTION, path: "/about", homeImage: true }),
 };
 
 function fmt(iso: string) {

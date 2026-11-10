@@ -4,7 +4,8 @@ import Link from "next/link";
 import { Analytics } from "@vercel/analytics/next";
 import { FlagBar } from "@/components/FlagBar";
 import { CrownIcon, SearchIcon } from "@/components/icons";
-import { CREATOR, DISCLAIMER, KEYWORDS, SITE_NAME, SITE_TAGLINE, SITE_URL } from "@/lib/site";
+import { HOME_DESCRIPTION, HOME_TITLE, KEYWORDS, isProductionDeploy } from "@/lib/seo";
+import { CREATOR, DISCLAIMER, SITE_NAME, SITE_TAGLINE, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const archivo = Archivo({
@@ -23,14 +24,18 @@ const anton = Anton({
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: { default: `${SITE_TAGLINE} | ${SITE_NAME}`, template: `%s | ${SITE_NAME}` },
-  description:
-    "Has Ronaldo scored on your birthday? Pick your day and see every official Cristiano Ronaldo goal scored on it, with videos.",
+  title: { default: HOME_TITLE, template: `%s | ${SITE_NAME}` },
+  description: HOME_DESCRIPTION,
   keywords: KEYWORDS,
   applicationName: SITE_NAME,
   authors: [{ name: CREATOR.name, url: CREATOR.portfolioUrl }],
   creator: CREATOR.name,
-  openGraph: { siteName: SITE_NAME, type: "website", locale: "en" },
+  category: "sports",
+  formatDetection: { telephone: false },
+  // Previews, CI and local builds must never be indexed; only the Vercel production deployment is.
+  robots: isProductionDeploy() ? { index: true, follow: true } : { index: false, follow: false },
+  // No canonical here on purpose: every route sets its own (a layout canonical would leak "/" to all pages).
+  openGraph: { siteName: SITE_NAME, type: "website", locale: "en_GB" },
   twitter: { card: "summary_large_image", creator: `@${CREATOR.handle}` },
 };
 

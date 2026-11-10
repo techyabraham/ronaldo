@@ -1,5 +1,9 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { GoalFrameIcon } from "@/components/icons";
+
+// Next already answers 404 and injects noindex here; this makes both explicit and gives the tab a title.
+export const metadata: Metadata = { title: "Page not found", robots: { index: false, follow: true } };
 
 export default function NotFound() {
   return (

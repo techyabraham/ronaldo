@@ -18,7 +18,16 @@ const nextConfig: NextConfig = {
   outputFileTracingExcludes: { "*": ["data/raw/**"] },
   // The 1080×1080 "square" image was replaced by the 1080×1920 Story image; keep old shared links working.
   async redirects() {
-    return [{ source: "/birthday/:mmdd/square", destination: "/birthday/:mmdd/story", permanent: false }];
+    return [
+      { source: "/birthday/:mmdd/square", destination: "/birthday/:mmdd/story", permanent: false },
+      // The per-date OG image moved under /card (generateImageMetadata) so each date gets its own alt text.
+      // Links cached by social platforms keep working.
+      {
+        source: "/birthday/:mmdd/opengraph-image",
+        destination: "/birthday/:mmdd/opengraph-image/card",
+        permanent: true,
+      },
+    ];
   },
 };
 

@@ -4,13 +4,18 @@ import { FlagBar } from "@/components/FlagBar";
 import { TabBar } from "@/components/TabBar";
 import { MONTH_NAMES } from "@/lib/dates";
 import { calendarRows, scoringDayCount } from "@/lib/goals";
+import { CALENDAR_DESCRIPTION, CALENDAR_TITLE, socialMeta, withBrand } from "@/lib/seo";
 import { SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Ronaldo goal calendar: every date he has scored",
-  description:
-    "Every calendar date Cristiano Ronaldo has scored an official goal on, at a glance. Tap any day to see Ronaldo's goals.",
-  alternates: { canonical: "/calendar" },
+  title: CALENDAR_TITLE,
+  description: CALENDAR_DESCRIPTION,
+  ...socialMeta({
+    title: withBrand(CALENDAR_TITLE),
+    description: CALENDAR_DESCRIPTION,
+    path: "/calendar",
+    homeImage: true,
+  }),
 };
 
 export default function CalendarPage() {

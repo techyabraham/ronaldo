@@ -252,9 +252,16 @@ test.describe("GOAT Day on a 360px phone", () => {
 
   test("result pages keep SEO titles and OG images; Story image and square redirect", async ({ page, request }) => {
     await page.goto("/birthday/05-02");
-    await expect(page).toHaveTitle("Did Ronaldo score on 2 May? Yes — 12 goals");
+    await expect(page).toHaveTitle("Did Ronaldo score on 2 May? Yes, 12 goals (2010–2022)");
     const og = await page.locator('meta[property="og:image"]').first().getAttribute("content");
-    expect(og).toMatch(/\/birthday\/05-02\/opengraph-image/);
+    expect(og).toMatch(/\/birthday\/05-02\/opengraph-image\/card/);
+    await expect(page.locator('meta[property="og:image:alt"]').first()).toHaveAttribute(
+      "content",
+      "Ronaldo scored 12 goals on 2 May",
+    );
+    const oldOg = await request.get("/birthday/05-02/opengraph-image", { maxRedirects: 0 });
+    expect(oldOg.status()).toBe(308);
+    expect(oldOg.headers()["location"]).toMatch(/\/birthday\/05-02\/opengraph-image\/card$/);
     const story = await request.get("/birthday/06-23/story");
     expect(story.status()).toBe(200);
     expect(story.headers()["content-type"]).toBe("image/png");
