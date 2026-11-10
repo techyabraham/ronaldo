@@ -7,7 +7,9 @@ import { PostButton } from "@/components/ResultControls";
 import { ShareBar } from "@/components/ShareBar";
 import { ShareNudge } from "@/components/ShareNudge";
 import { SharePanel } from "@/components/SharePanel";
+import { TeamPhoto } from "@/components/TeamPhoto";
 import { shortLabel } from "@/lib/dates";
+import { thumbPhotoFor } from "@/lib/photos";
 import { excuseFor } from "@/lib/excuses";
 import { nearestScoringDays, restDayCount, scoringDayCount } from "@/lib/goals";
 import { SpecialBanner, resultContext } from "./shared";
@@ -41,7 +43,15 @@ export function NoResult({ mmdd }: { mmdd: string }) {
         {/* Rest-day card */}
         <header className="overflow-hidden rounded-[20px] bg-surface">
           <FlagBar height={6} className="rounded-none" />
-          <div className="flex flex-col gap-2.5 p-[18px]">
+          {/* Greyscale "off duty" photo that fades into the card */}
+          <div className="relative h-[230px]" aria-hidden="true">
+            <TeamPhoto photo="rest" sizes="(max-width: 448px) 100vw, 448px" grayscale decorative />
+            <div className="absolute inset-0 bg-gradient-to-b from-surface/10 via-surface/30 to-surface" />
+            <span className="absolute top-3 right-3 rounded-md bg-bg/80 px-2 py-1 text-[11px] font-extrabold tracking-[0.08em] text-muted">
+              OFF DUTY
+            </span>
+          </div>
+          <div className="relative -mt-14 flex flex-col gap-2.5 p-[18px] pt-0">
             <span className="w-fit rounded-md bg-green-soft-bg px-2.5 py-1 text-[11px] font-extrabold tracking-[0.1em] text-green-soft-text">
               RARE · 1 OF {rest}
             </span>
@@ -90,7 +100,12 @@ export function NoResult({ mmdd }: { mmdd: string }) {
           </h2>
           {upNext.map((d) => (
             <Link key={d.mmdd} href={`/birthday/${d.mmdd}`} className="flex items-center gap-3 text-text">
-              <EpisodeTile tone={d.tone} className="h-[74px] w-[130px] flex-none">
+              <EpisodeTile
+                tone={d.tone}
+                photo={thumbPhotoFor(d.team)}
+                photoSizes="130px"
+                className="h-[74px] w-[130px] flex-none"
+              >
                 <span className="absolute bottom-2 left-2.5 font-display text-[26px] leading-none">
                   {shortLabel(d.mmdd)}
                 </span>

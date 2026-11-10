@@ -8,6 +8,7 @@ import { excuseFor } from "./excuses";
 import { TOTAL_GOALS, matchesForDate, nearestScoringDays, rankFamous, summarise } from "./goals";
 import { competitionLabel, teamCode } from "./labels";
 import { MATCH_NOTES } from "./moments";
+import { heroPhotoFor, type PhotoKey } from "./photos";
 import { SITE_URL } from "./site";
 
 /* Satori rules: flexbox only, explicit display:flex on every multi-child element, no repeating gradients. */
@@ -86,6 +87,85 @@ function Words({
           {w}
         </span>
       ))}
+    </div>
+  );
+}
+
+/** Pre-cropped JPEGs from scripts/prepare-photos.ts (Satori can't decode WebP). */
+const photoCache = new Map<string, string | null>();
+function photoDataUrl(key: PhotoKey, variant: "og" | "story") {
+  const id = `${key}-${variant}`;
+  if (!photoCache.has(id)) {
+    const file = path.join(process.cwd(), "assets", "og", `${id}.jpg`);
+    photoCache.set(
+      id,
+      fs.existsSync(file) ? `data:image/jpeg;base64,${fs.readFileSync(file).toString("base64")}` : null,
+    );
+  }
+  return photoCache.get(id)!;
+}
+
+/** The photo for a date's share image: famous match's team (falling back down the ranking), or the rest shot. */
+function sharePhotoFor(mmdd: string): PhotoKey | null {
+  const ms = rankFamous(matchesForDate(mmdd));
+  if (!ms.length) return "rest";
+  const m = ms.find((x) => heroPhotoFor(x.team));
+  return m ? heroPhotoFor(m.team) : null;
+}
+
+/** Celebration photo with Portugal-green/red light washing in from the sides; flag + crown if no photo. */
+function Panel({
+  width,
+  height,
+  crown,
+  photo,
+  variant,
+  fadeTo,
+}: {
+  width: number;
+  height: number;
+  crown: number;
+  photo: PhotoKey | null;
+  variant: "og" | "story";
+  fadeTo: "left" | "bottom";
+}) {
+  const url = photo ? photoDataUrl(photo, variant) : null;
+  if (!url) return <FlagPanel width={width} height={height} crown={crown} />;
+  return (
+    <div style={{ display: "flex", position: "relative", width, height }}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={url}
+        alt=""
+        width={width}
+        height={height}
+        style={{ position: "absolute", top: 0, left: 0, width, height }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width,
+          height,
+          display: "flex",
+          backgroundImage: `linear-gradient(90deg, rgba(4,106,56,0.55) 0%, rgba(4,106,56,0) 30%, rgba(218,41,28,0) 70%, rgba(218,41,28,0.55) 100%)`,
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width,
+          height,
+          display: "flex",
+          backgroundImage:
+            fadeTo === "left"
+              ? `linear-gradient(90deg, ${C.bg} 0%, rgba(11,11,12,0) 22%)`
+              : `linear-gradient(180deg, rgba(11,11,12,0.35) 0%, rgba(11,11,12,0) 25%, rgba(11,11,12,0) 70%, ${C.bg} 100%)`,
+        }}
+      />
     </div>
   );
 }
@@ -188,7 +268,7 @@ export async function renderLinkPreview(mmdd: string) {
           <span style={{ color: C.muted, marginLeft: 10 }}>· Is yours a GOAT Day?</span>
         </div>
       </div>
-      <FlagPanel width={440} height={630} crown={230} />
+      <Panel width={440} height={630} crown={230} photo={sharePhotoFor(mmdd)} variant="og" fadeTo="left" />
     </div>,
     { width: 1200, height: 630, fonts: await fonts() },
   );
@@ -231,7 +311,7 @@ export async function renderStory(mmdd: string) {
       }}
     >
       <div style={{ display: "flex", position: "relative", height: 900 }}>
-        <FlagPanel width={1080} height={900} crown={420} />
+        <Panel width={1080} height={900} crown={420} photo={sharePhotoFor(mmdd)} variant="story" fadeTo="bottom" />
         <div
           style={{
             position: "absolute",
@@ -348,7 +428,7 @@ export async function renderHomePreview() {
           {TOTAL_GOALS} official goals · 366 days · {host()}
         </div>
       </div>
-      <FlagPanel width={440} height={630} crown={230} />
+      <Panel width={440} height={630} crown={230} photo="portugal-back" variant="og" fadeTo="left" />
     </div>,
     { width: 1200, height: 630, fonts: await fonts() },
   );

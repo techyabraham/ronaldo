@@ -9,7 +9,10 @@ import { ShareBar } from "@/components/ShareBar";
 import { ShareNudge } from "@/components/ShareNudge";
 import { SharePanel } from "@/components/SharePanel";
 import { SiuuCelebration } from "@/components/SiuuCelebration";
-import { TOTAL_GOALS, portugalGoals, scoringDayCount } from "@/lib/goals";
+import { TeamPhoto } from "@/components/TeamPhoto";
+import { TOTAL_GOALS, portugalGoals, rankFamous, scoringDayCount } from "@/lib/goals";
+import { heroPhotoFor, thumbPhotoFor } from "@/lib/photos";
+import type { Team } from "@/lib/schema";
 import { competitionLabel } from "@/lib/labels";
 import { MATCH_NOTES } from "@/lib/moments";
 import { youtubeSearchUrl } from "@/lib/share";
@@ -28,14 +31,25 @@ export function YesResult({ mmdd }: { mmdd: string }) {
   const comps = [...new Set(matches.map((m) => competitionLabel(m.competition, m.year).replace(/ \d{4}$/, "")))];
   const firstVideo = matches.find((m) => m.video)?.matchId;
   const fallbackHref = youtubeSearchUrl(famous!);
+  // Hero photo: the kit of the day's most famous match (falling back down the ranking if a team has no photo).
+  const heroMatch = rankFamous(matches).find((m) => heroPhotoFor(m.team)) ?? null;
+  const heroPhoto = heroMatch ? heroPhotoFor(heroMatch.team) : null;
+  const avatars = s.teams
+    .map((t) => ({ team: t, photo: thumbPhotoFor(t as Team) }))
+    .filter((a): a is { team: string; photo: NonNullable<typeof a.photo> } => !!a.photo);
 
   return (
     <div className="mx-auto max-w-md">
       <SiuuCelebration />
 
       {/* Hero */}
-      <div className="relative h-[300px] overflow-hidden">
-        <HeroArt variant="result" />
+      <div className="relative h-[340px] overflow-hidden">
+        <HeroArt variant="result" photo={heroPhoto} priority />
+        {heroMatch && (
+          <span className="absolute top-3.5 right-3 rounded-md bg-bg/80 px-2 py-1 text-[11px] font-extrabold tracking-[0.08em] text-text backdrop-blur-sm">
+            {heroMatch.team.toUpperCase()} · {heroMatch.year}
+          </span>
+        )}
         <Link
           href="/"
           aria-label="Back to home"
@@ -43,7 +57,7 @@ export function YesResult({ mmdd }: { mmdd: string }) {
         >
           <BackIcon />
         </Link>
-        <div className="absolute inset-0 m-auto h-[76px] w-[76px]">
+        <div className={`absolute ${heroPhoto ? "right-4 bottom-5" : "inset-0 m-auto"} h-[76px] w-[76px]`}>
           <WatchGoals videoMatchId={firstVideo} fallbackHref={fallbackHref} variant="hero" />
         </div>
         <FlagBar height={6} className="absolute inset-x-0 bottom-0 rounded-none" />
@@ -65,7 +79,18 @@ export function YesResult({ mmdd }: { mmdd: string }) {
               ONE OF {scoringDayCount()}
             </span>
           </div>
-          <p className="eyebrow">YOUR BIRTHDAY · {label.toUpperCase()}</p>
+          <div className="flex items-center gap-2.5">
+            {avatars.length > 0 && (
+              <span className="flex -space-x-2" aria-hidden="true">
+                {avatars.map((a) => (
+                  <span key={a.team} className="relative h-8 w-8 overflow-hidden rounded-full ring-2 ring-bg">
+                    <TeamPhoto photo={a.photo} sizes="32px" decorative />
+                  </span>
+                ))}
+              </span>
+            )}
+            <p className="eyebrow">YOUR BIRTHDAY · {label.toUpperCase()}</p>
+          </div>
           <h1 data-testid="headline" className="font-display text-[52px] uppercase leading-[0.94]">
             The GOAT scored{" "}
             <span className="text-red">

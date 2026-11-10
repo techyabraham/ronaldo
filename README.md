@@ -26,17 +26,27 @@ with a video of each match and a shareable result page (`/birthday/MM-DD`) that 
   dates he never scored on (`lib/excuses.ts`; deterministic, affectionate, and any number it quotes comes from the
   data).
 
-### Hero image (optional, owner-supplied)
+### Celebration photos (owner-supplied)
 
-The hero shows a designed flag-and-crown fallback until **you** add a licensed photo. Never hot-link or scrape
-press photos: they are editorial-only.
+The site owner supplied one Siuu photo per era. **Only use photos you have the rights to**, and never crop out a
+photographer's or agency's watermark (that's why a Reuters-watermarked shot was left out). Nothing is ever
+hot-linked or scraped from the web.
 
-| File | Spec | Used by |
-|---|---|---|
-| `public/hero/siuu.webp` | 4:5 portrait, ≥ 1200 px tall, < 200 KB | Home and result heroes (`components/HeroArt.tsx`) |
-| `public/hero/siuu-cutout.png` | transparent cut-out, < 400 KB | Link preview and Story images (`lib/og.tsx`) |
+| Key (`lib/photos.ts`) | Used for |
+|---|---|
+| `portugal-back` | Home hero; hero of any date whose most famous match was for Portugal; home link preview |
+| `portugal`, `real-madrid`, `juventus`, `man-utd`, `al-nassr` | That team's result heroes, episode thumbnails, Trending tiles, GOAT moments, team avatars and share images |
+| `rest` (shown in greyscale) | The "off duty" header on dates he never scored, and their share images |
 
-Both are detected at build time; rebuild after adding them.
+Each goal page uses the kit of its most famous match (`rankFamous`); Sporting CP has no photo, so those fall back
+to the flag-and-crown artwork. To replace or add photos, update `SOURCES` in `scripts/prepare-photos.ts` and run:
+
+```bash
+npx tsx scripts/prepare-photos.ts "C:/path/to/photo/folder"
+```
+
+It writes responsive WebP files to `public/siu/` and pre-cropped JPEGs for the share images to `assets/og/`
+(the share-image renderer can't read WebP). Commit both, then rebuild.
 
 ## Quick start
 

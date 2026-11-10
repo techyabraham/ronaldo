@@ -1,6 +1,7 @@
 import type { Match } from "@/lib/goals";
 import { competitionLabel } from "@/lib/labels";
 import type { MatchNote } from "@/lib/moments";
+import { thumbPhotoFor } from "@/lib/photos";
 import { youtubeSearchUrl } from "@/lib/share";
 import { EpisodeTile } from "./EpisodeTile";
 import { PlayIcon } from "./icons";
@@ -62,23 +63,22 @@ export function MatchCard({ m, index, mmdd, note }: { m: Match; index: number; m
         </VideoEpisode>
       ) : (
         <div className="flex gap-3">
-          <a
-            href={youtubeSearchUrl(m)}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`Watch ${m.team} vs ${m.opponent}, ${m.year} on YouTube (${n} goal${n === 1 ? "" : "s"})`}
-            className="flex-none"
-          >
+          <a href={youtubeSearchUrl(m)} target="_blank" rel="noopener noreferrer" className="flex-none">
             <EpisodeTile
               tone={index % 2 ? "green" : "red"}
               badge={badge}
               badgePosition="bottom-right"
+              photo={thumbPhotoFor(m.team)}
+              photoSizes="150px"
               className="h-[86px] w-[150px] rounded-[10px]"
             >
               <span className="absolute inset-0 m-auto flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-white ring-1 ring-white/30">
                 <PlayIcon className="h-4 w-4" />
               </span>
             </EpisodeTile>
+            <span className="sr-only">
+              Watch {m.team} vs {m.opponent}, {m.year} on YouTube ({n} goal{n === 1 ? "" : "s"})
+            </span>
           </a>
           {details}
         </div>

@@ -1,3 +1,5 @@
+import type { Team } from "./schema";
+
 /**
  * Hand-written context for famous matches. Copy only; every number here is either derived from
  * data/goals.json (and unit-tested against it) or one of the brief's static facts.
@@ -20,10 +22,11 @@ export const MATCH_NOTES: Record<string, MatchNote> = {
   },
 };
 
-export type GoatMoment = { matchId: string; title: string; subtitle: string; href: string };
+export type GoatMoment = { matchId: string; team: Team; title: string; subtitle: string; href: string };
 
-const moment = (matchId: string, title: string, subtitle: string): GoatMoment => ({
+const moment = (matchId: string, team: Team, title: string, subtitle: string): GoatMoment => ({
   matchId,
+  team,
   title,
   subtitle,
   href: `/birthday/${matchId.slice(5, 10)}`,
@@ -31,7 +34,7 @@ const moment = (matchId: string, title: string, subtitle: string): GoatMoment =>
 
 /** Home-page Top 3, in this order. */
 export const GOAT_MOMENTS: GoatMoment[] = [
-  moment("2018-06-15-spain", "Hat-trick vs Spain", "15 Jun 2018 · World Cup · free kick at 88′"),
-  moment("2019-03-12-atletico-madrid", "Hat-trick vs Atlético", "12 Mar 2019 · Champions League comeback"),
-  moment("2021-06-23-france", "Goal 109 — world record", "23 Jun 2021 · Euro 2020 vs France"),
+  moment("2018-06-15-spain", "Portugal", "Hat-trick vs Spain", "15 Jun 2018 · World Cup · free kick at 88′"),
+  moment("2019-03-12-atletico-madrid", "Juventus", "Hat-trick vs Atlético", "12 Mar 2019 · Champions League comeback"),
+  moment("2021-06-23-france", "Portugal", "Goal 109 — world record", "23 Jun 2021 · Euro 2020 vs France"),
 ];

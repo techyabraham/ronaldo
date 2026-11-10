@@ -20,6 +20,8 @@ import {
   seasonCount,
 } from "@/lib/goals";
 import { GOAT_MOMENTS } from "@/lib/moments";
+import { thumbPhotoFor } from "@/lib/photos";
+import { TeamPhoto } from "@/components/TeamPhoto";
 import { SITE_URL } from "@/lib/site";
 
 export default function Home() {
@@ -28,14 +30,19 @@ export default function Home() {
   const seasons = seasonCount();
   const trending = popularDays(6).map((d, i) => {
     const top = pickFamous(matchesForDate(d.mmdd));
-    return { ...d, caption: `vs ${top.opponent}, ${top.year}`, tone: i % 2 ? ("red" as const) : ("green" as const) };
+    return {
+      ...d,
+      caption: `vs ${top.opponent}, ${top.year}`,
+      tone: i % 2 ? ("red" as const) : ("green" as const),
+      photo: thumbPhotoFor(top.team),
+    };
   });
 
   return (
     <div className="mx-auto max-w-md">
       {/* Hero */}
       <section className="relative mx-4 mt-1 flex h-[420px] flex-col justify-end overflow-hidden rounded-[22px]">
-        <HeroArt variant="home" priority />
+        <HeroArt variant="home" photo="portugal-back" priority />
         <div className="absolute top-3.5 left-3.5 flex gap-1.5">
           <span className="rounded-md bg-red px-2 py-1 text-[11px] font-extrabold tracking-[0.08em] text-white">
             GOAT ORIGINAL
@@ -93,6 +100,7 @@ export default function Home() {
               max={max}
               caption={d.caption}
               tone={d.tone}
+              photo={d.photo}
             />
           ))}
         </div>
@@ -110,10 +118,15 @@ export default function Home() {
                 <span className="w-[34px] font-display text-[40px] leading-none text-red" aria-hidden="true">
                   {i + 1}
                 </span>
-                <span className="flex flex-col gap-0.5">
+                <span className="flex min-w-0 flex-1 flex-col gap-0.5">
                   <span className="text-[15px] font-extrabold">{m.title}</span>
                   <span className="text-xs text-muted">{m.subtitle}</span>
                 </span>
+                {thumbPhotoFor(m.team) && (
+                  <span className="relative h-14 w-12 flex-none overflow-hidden rounded-lg" aria-hidden="true">
+                    <TeamPhoto photo={thumbPhotoFor(m.team)!} sizes="48px" decorative />
+                  </span>
+                )}
               </Link>
             </li>
           ))}
