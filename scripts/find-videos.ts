@@ -78,6 +78,7 @@ async function main() {
         title: best.it.snippet.title,
         channel: best.it.snippet.channelTitle,
         channelId: best.it.snippet.channelId,
+        publishedAt: best.it.snippet.publishedAt,
         status: "auto",
         confidence: Number(best.confidence.toFixed(2)),
         checkedAt: now,

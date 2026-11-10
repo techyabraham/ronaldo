@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { JsonLd } from "@/components/JsonLd";
 import { NoResult } from "@/components/result/NoResult";
 import { YesResult } from "@/components/result/YesResult";
 import { ALL_MMDD, isValidMmdd } from "@/lib/dates";
 import { summarise } from "@/lib/goals";
+import { dateGraph } from "@/lib/jsonld";
 import { dateDescription, dateTitle, socialMeta } from "@/lib/seo";
 
 export const dynamicParams = false;
@@ -28,5 +30,10 @@ export async function generateMetadata({ params }: PageProps<"/birthday/[mmdd]">
 export default async function BirthdayPage({ params }: PageProps<"/birthday/[mmdd]">) {
   const { mmdd } = await params;
   if (!isValidMmdd(mmdd)) notFound();
-  return summarise(mmdd).count > 0 ? <YesResult mmdd={mmdd} /> : <NoResult mmdd={mmdd} />;
+  return (
+    <>
+      {summarise(mmdd).count > 0 ? <YesResult mmdd={mmdd} /> : <NoResult mmdd={mmdd} />}
+      <JsonLd data={dateGraph(mmdd)} />
+    </>
+  );
 }

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { FlagBar } from "@/components/FlagBar";
+import { JsonLd } from "@/components/JsonLd";
+import { calendarGraph } from "@/lib/jsonld";
 import { TabBar } from "@/components/TabBar";
 import { MONTH_NAMES } from "@/lib/dates";
 import { calendarRows, scoringDayCount } from "@/lib/goals";
@@ -70,6 +72,7 @@ export default function CalendarPage() {
         </div>
       </div>
       <TabBar url={`${SITE_URL}/`} />
+      <JsonLd data={calendarGraph()} />
     </>
   );
 }

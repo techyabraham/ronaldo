@@ -16,7 +16,17 @@ export const TOTAL_GOALS = goals.length;
 export const DATA_UPDATED = (expectedJson as { checkedAt: string }).checkedAt;
 export const LATEST_GOAL_DATE = (expectedJson as { latestGoalDate: string }).latestGoalDate;
 
-export type VideoInfo = { youtubeId: string; startSeconds?: number; title?: string; channel?: string; status: string };
+/** Date of his first official goal (the start of the dataset). */
+export const FIRST_GOAL_DATE = goals.reduce((min, g) => (g.date < min ? g.date : min), goals[0].date);
+
+export type VideoInfo = {
+  youtubeId: string;
+  startSeconds?: number;
+  title?: string;
+  channel?: string;
+  status: string;
+  publishedAt?: string;
+};
 
 export type Match = {
   matchId: string;
@@ -39,8 +49,45 @@ export function goalsForDate(mmdd: string): Goal[] {
 function videoFor(matchId: string): VideoInfo | null {
   const v = videos[matchId];
   if (!v || !v.youtubeId || (v.status !== "verified" && v.status !== "auto")) return null;
-  return { youtubeId: v.youtubeId, startSeconds: v.startSeconds, title: v.title, channel: v.channel, status: v.status };
+  return {
+    youtubeId: v.youtubeId,
+    startSeconds: v.startSeconds,
+    title: v.title,
+    channel: v.channel,
+    status: v.status,
+    publishedAt: v.publishedAt,
+  };
 }
+
+/** Latest goal date (YYYY-MM-DD) among the given MM-DDs, or null if none of them has a goal. */
+function latestGoalOn(keys: string[]): string | null {
+  let best: string | null = null;
+  for (const k of keys) for (const g of goalsForDate(k)) if (!best || g.date > best) best = g.date;
+  return best;
+}
+
+const asDate = (iso: string) => new Date(`${iso}T00:00:00Z`);
+
+/**
+ * When a date page's content last changed: its newest goal. A no-goal page changes when its nearest-goal content
+ * does, so it takes the newer of its two nearest scoring days' latest goals.
+ */
+export function lastModifiedFor(mmdd: string): Date {
+  const own = latestGoalOn([mmdd]);
+  if (own) return asDate(own);
+  const { before, after } = nearestScoringDays(mmdd);
+  const near = latestGoalOn([before?.mmdd, after?.mmdd].filter((k): k is string => !!k));
+  return asDate(near ?? LATEST_GOAL_DATE);
+}
+
+/** Month hub (1–12): its newest goal. */
+export function lastModifiedForMonth(month: number): Date {
+  const prefix = `${String(month).padStart(2, "0")}-`;
+  return asDate(latestGoalOn(ALL_MMDD.filter((k) => k.startsWith(prefix))) ?? LATEST_GOAL_DATE);
+}
+
+/** "2026-10-29" from a Date (UTC), for JSON-LD dateModified. */
+export const isoDay = (d: Date) => d.toISOString().slice(0, 10);
 
 /** Goals on a date grouped by match, newest first. */
 export function matchesForDate(mmdd: string): Match[] {

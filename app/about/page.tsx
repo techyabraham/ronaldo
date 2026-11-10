@@ -3,6 +3,8 @@ import { DATA_UPDATED, LATEST_GOAL_DATE, TOTAL_GOALS } from "@/lib/goals";
 import { CORRECTIONS_URL, CREATOR, DISCLAIMER, SITE_URL } from "@/lib/site";
 import { ABOUT_DESCRIPTION, ABOUT_TITLE, socialMeta, withBrand } from "@/lib/seo";
 import { FlagBar } from "@/components/FlagBar";
+import { JsonLd } from "@/components/JsonLd";
+import { aboutGraph } from "@/lib/jsonld";
 import { TabBar } from "@/components/TabBar";
 
 export const metadata: Metadata = {
@@ -107,6 +109,7 @@ export default function About() {
         <p className="text-muted">{DISCLAIMER}</p>
       </article>
       <TabBar url={`${SITE_URL}/`} />
+      <JsonLd data={aboutGraph()} />
     </>
   );
 }

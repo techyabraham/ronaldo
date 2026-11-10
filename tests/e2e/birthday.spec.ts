@@ -181,9 +181,14 @@ test.describe("GOAT Day on a 360px phone", () => {
       await page.goto(p);
       await expect(page.locator('meta[name="twitter:creator"]')).toHaveAttribute("content", "@AkinwumiX");
     }
-    const ld = JSON.parse((await page.locator('script[type="application/ld+json"]').textContent())!);
-    expect(ld["@type"]).toBe("WebSite");
-    expect(ld.creator.name).toBe("Abraham Akinwumi");
+    // Every ld+json block parses; together they hold the WebSite (published by the creator) and this page's ItemPage.
+    const blocks = await page.locator('script[type="application/ld+json"]').allTextContents();
+    const ldNodes = blocks.flatMap((b) => (JSON.parse(b) as { "@graph": Record<string, unknown>[] })["@graph"]);
+    const site = ldNodes.find((n) => n["@type"] === "WebSite")!;
+    const creator = ldNodes.find((n) => n["@id"] === (site.publisher as { "@id": string })["@id"])!;
+    expect(creator.name).toBe("Abraham Akinwumi");
+    expect(ldNodes.some((n) => n["@type"] === "ItemPage")).toBe(true);
+    expect(ldNodes.some((n) => n["@type"] === "BreadcrumbList")).toBe(true);
     await page.goto("/about");
     await expect(page.getByRole("heading", { name: "Who made this" })).toBeVisible();
   });

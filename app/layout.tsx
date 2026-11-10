@@ -4,8 +4,10 @@ import Link from "next/link";
 import { Analytics } from "@vercel/analytics/next";
 import { FlagBar } from "@/components/FlagBar";
 import { CrownIcon, SearchIcon } from "@/components/icons";
+import { JsonLd } from "@/components/JsonLd";
+import { siteGraph } from "@/lib/jsonld";
 import { HOME_DESCRIPTION, HOME_TITLE, KEYWORDS, isProductionDeploy } from "@/lib/seo";
-import { CREATOR, DISCLAIMER, SITE_NAME, SITE_TAGLINE, SITE_URL } from "@/lib/site";
+import { CREATOR, DISCLAIMER, SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const archivo = Archivo({
@@ -44,15 +46,6 @@ export const viewport: Viewport = {
   colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
-};
-
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  name: SITE_NAME,
-  url: SITE_URL,
-  description: SITE_TAGLINE,
-  creator: { "@type": "Person", name: CREATOR.name, url: CREATOR.portfolioUrl, sameAs: [CREATOR.xUrl] },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -141,11 +134,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             </Link>
           </nav>
         </footer>
-        <script
-          type="application/ld+json"
-          // JSON-LD from constants only; escape "<" so no string can close the script tag.
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
-        />
+        {/* WebSite + creator + Cristiano Ronaldo; every page's own graph references these by @id. */}
+        <JsonLd data={siteGraph()} />
         <Analytics />
       </body>
     </html>

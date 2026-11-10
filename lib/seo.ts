@@ -1,7 +1,7 @@
 import "server-only";
 import type { Metadata, MetadataRoute } from "next";
 import { competitionLabel } from "./competition";
-import { MONTH_NAMES } from "./dates";
+import { MONTH_NAMES, MONTH_SLUGS, formatMmdd, monthOf } from "./dates";
 import {
   TOTAL_GOALS,
   matchesForDate,
@@ -197,6 +197,25 @@ export function dateAnswer(mmdd: string): string {
     (near.length ? ` His nearest goals came on ${listJoin(near)}.` : "")
   );
 }
+
+// ---------- Breadcrumbs (one source for the visible trail and the BreadcrumbList JSON-LD) ----------
+
+export type Crumb = { name: string; path: string };
+
+const HOME_CRUMB: Crumb = { name: "Home", path: "/" };
+const CALENDAR_CRUMB: Crumb = { name: "Calendar", path: "/calendar" };
+
+export const monthCrumb = (month: number): Crumb => ({
+  name: MONTH_NAMES[month - 1],
+  path: `/calendar/${MONTH_SLUGS[month - 1]}`,
+});
+
+export const calendarCrumbs = (): Crumb[] => [HOME_CRUMB, CALENDAR_CRUMB];
+export const monthCrumbs = (month: number): Crumb[] => [HOME_CRUMB, CALENDAR_CRUMB, monthCrumb(month)];
+export const dateCrumbs = (mmdd: string): Crumb[] => [
+  ...monthCrumbs(monthOf(mmdd)),
+  { name: formatMmdd(mmdd), path: `/birthday/${mmdd}` },
+];
 
 // ---------- Shared Open Graph / Twitter blocks ----------
 
