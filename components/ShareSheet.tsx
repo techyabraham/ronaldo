@@ -91,60 +91,63 @@ export function ShareSheet() {
       }}
       className="share-sheet fixed inset-x-0 top-auto bottom-0 m-0 w-full max-w-full rounded-t-[22px] bg-surface p-0 text-text backdrop:bg-black/60 sm:inset-0 sm:m-auto sm:max-w-[420px] sm:rounded-[22px]"
     >
-      <div className="px-4 pt-3 pb-[max(1rem,env(safe-area-inset-bottom))]">
-        <div className="flex items-center justify-between">
-          <h2 id="share-sheet-title" className="text-lg font-extrabold">
-            {TITLE[kind]}
-          </h2>
-          <button
-            type="button"
-            onClick={close}
-            aria-label="Close"
-            className="flex h-11 w-11 items-center justify-center rounded-full text-muted"
-          >
-            <CloseIcon />
-          </button>
-        </div>
-        <p className="mt-1 line-clamp-2 text-sm text-muted">{s.message}</p>
+      {/* Nothing inside until first opened: keeps the tile grid out of every page's HTML and hydration. */}
+      {req && (
+        <div className="px-4 pt-3 pb-[max(1rem,env(safe-area-inset-bottom))]">
+          <div className="flex items-center justify-between">
+            <h2 id="share-sheet-title" className="text-lg font-extrabold">
+              {TITLE[kind]}
+            </h2>
+            <button
+              type="button"
+              onClick={close}
+              aria-label="Close"
+              className="flex h-11 w-11 items-center justify-center rounded-full text-muted"
+            >
+              <CloseIcon />
+            </button>
+          </div>
+          <p className="mt-1 line-clamp-2 text-sm text-muted">{s.message}</p>
 
-        <div className="mt-4 grid grid-cols-4 gap-x-2 gap-y-4">
-          <Tile
-            label="WhatsApp"
-            href={s.links.whatsapp}
-            onClick={() => s.log("whatsapp")}
-            tone="bg-green text-green-ink"
-            icon={<WhatsAppIcon className="h-7 w-7" />}
-          />
-          <Tile label="X" href={s.links.x} onClick={() => s.log("x")} icon={<XIcon className="h-6 w-6" />} />
-          <Tile
-            label="Facebook"
-            href={s.links.facebook}
-            onClick={() => s.log("facebook")}
-            icon={<FacebookIcon className="h-6 w-6" />}
-          />
-          <Tile
-            label="Telegram"
-            href={s.links.telegram}
-            onClick={() => s.log("telegram")}
-            icon={<TelegramIcon className="h-6 w-6" />}
-          />
-          <Tile
-            label="Threads"
-            href={s.links.threads}
-            onClick={() => s.log("threads")}
-            icon={<ThreadsIcon className="h-6 w-6" />}
-          />
-          {kind === "date" && req?.imagePath && (
-            <Tile label="Story" onClick={s.image} tone="bg-red text-white" icon={<StoryIcon className="h-6 w-6" />} />
-          )}
-          {s.canNative && <Tile label="More apps" onClick={s.native} icon={<UploadIcon className="h-6 w-6" />} />}
-          <Tile label="Copy" onClick={s.copy} icon={<LinkIcon className="h-6 w-6" />} />
-        </div>
+          <div className="mt-4 grid grid-cols-4 gap-x-2 gap-y-4">
+            <Tile
+              label="WhatsApp"
+              href={s.links.whatsapp}
+              onClick={() => s.log("whatsapp")}
+              tone="bg-green text-green-ink"
+              icon={<WhatsAppIcon className="h-7 w-7" />}
+            />
+            <Tile label="X" href={s.links.x} onClick={() => s.log("x")} icon={<XIcon className="h-6 w-6" />} />
+            <Tile
+              label="Facebook"
+              href={s.links.facebook}
+              onClick={() => s.log("facebook")}
+              icon={<FacebookIcon className="h-6 w-6" />}
+            />
+            <Tile
+              label="Telegram"
+              href={s.links.telegram}
+              onClick={() => s.log("telegram")}
+              icon={<TelegramIcon className="h-6 w-6" />}
+            />
+            <Tile
+              label="Threads"
+              href={s.links.threads}
+              onClick={() => s.log("threads")}
+              icon={<ThreadsIcon className="h-6 w-6" />}
+            />
+            {kind === "date" && req?.imagePath && (
+              <Tile label="Story" onClick={s.image} tone="bg-red text-white" icon={<StoryIcon className="h-6 w-6" />} />
+            )}
+            {s.canNative && <Tile label="More apps" onClick={s.native} icon={<UploadIcon className="h-6 w-6" />} />}
+            <Tile label="Copy" onClick={s.copy} icon={<LinkIcon className="h-6 w-6" />} />
+          </div>
 
-        <p role="status" className="min-h-5 pt-3 text-center text-sm font-bold text-green-text">
-          {s.toast}
-        </p>
-      </div>
+          <p role="status" className="min-h-5 pt-3 text-center text-sm font-bold text-green-text">
+            {s.toast}
+          </p>
+        </div>
+      )}
     </dialog>
   );
 }
