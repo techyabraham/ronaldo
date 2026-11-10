@@ -111,7 +111,7 @@ test.describe("GOAT Day on a 360px phone", () => {
     const episodes = page.locator("#episodes article");
     await expect(episodes).toHaveCount(2);
     for (const a of await episodes.all()) {
-      await expect(a.getByRole("link", { name: /^Watch .+ on YouTube \(\d+ goals?\)$/ })).toHaveAttribute(
+      await expect(a.getByRole("link", { name: /^Watch .+: \d+ goals? \(opens YouTube\)$/ })).toHaveAttribute(
         "href",
         /youtube\.com\/results/,
       );

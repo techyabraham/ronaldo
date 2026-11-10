@@ -1,7 +1,15 @@
 import { describe, expect, it } from "vitest";
 import { ALL_MMDD, formatMmdd } from "@/lib/dates";
 import { matchesForDate, pickFamous, summarise } from "@/lib/goals";
-import { buildShare, highlightPhrase, xText, xWeightedLength, X_LIMIT, type SharePayload } from "@/lib/share";
+import {
+  buildShare,
+  highlightPhrase,
+  xText,
+  xWeightedLength,
+  X_LIMIT,
+  youtubeSearchUrl,
+  type SharePayload,
+} from "@/lib/share";
 import { CREDIT_LINK, CREDIT_X } from "@/lib/site";
 
 const SITE = "https://scoredonmybirthday.com";
@@ -157,5 +165,58 @@ describe("other channels", () => {
   });
   it("Facebook only takes the URL", () => {
     expect(links.facebook).toBe(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(yes.url)}`);
+  });
+});
+
+describe("YouTube search links", () => {
+  const query = (href: string) => new URL(href).searchParams.get("search_query");
+
+  it("includes team, scoreline, opponent, competition and year (2021-06-23 vs France)", () => {
+    const france = matchesForDate("06-23").find((m) => m.matchId === "2021-06-23-france")!;
+    const href = youtubeSearchUrl(france);
+    expect(href.startsWith("https://www.youtube.com/results?search_query=")).toBe(true);
+    expect(query(href)).toBe("Cristiano Ronaldo goals Portugal 2-2 France Euro 2020 2021");
+  });
+  it("strips extra-time notes from the score", () => {
+    expect(
+      query(
+        youtubeSearchUrl({
+          team: "Real Madrid",
+          opponent: "Atletico Madrid",
+          year: 2014,
+          competition: "Champions League",
+          result: "4-1 (a.e.t.)",
+          goals: 1,
+        }),
+      ),
+    ).toBe("Cristiano Ronaldo goal Real Madrid 4-1 Atletico Madrid Champions League 2014");
+  });
+  it("falls back to 'vs' without a result, and doesn't repeat the year", () => {
+    expect(
+      query(
+        youtubeSearchUrl({
+          team: "Portugal",
+          opponent: "Spain",
+          year: 2018,
+          competition: "World Cup",
+          result: null,
+          goals: 3,
+        }),
+      ),
+    ).toBe("Cristiano Ronaldo goals Portugal vs Spain World Cup 2018");
+  });
+  it("says 'goal' for a single goal (counts from a goal list too)", () => {
+    expect(
+      query(
+        youtubeSearchUrl({
+          team: "Al Nassr",
+          opponent: "Abha",
+          year: 2026,
+          competition: "Saudi Pro League",
+          result: "2-1",
+          goals: [{}],
+        }),
+      ),
+    ).toBe("Cristiano Ronaldo goal Al Nassr 2-1 Abha Saudi Pro League 2026");
   });
 });

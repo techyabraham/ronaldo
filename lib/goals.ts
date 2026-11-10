@@ -91,6 +91,9 @@ export type Nearest = {
   team: Team;
   opponent: string;
   year: number;
+  competition: string;
+  result: string | null;
+  goals: number;
 };
 
 /** Closest dates before and after `mmdd` (wrapping around the year) on which he scored. */
@@ -111,6 +114,9 @@ export function nearestScoringDays(mmdd: string): { before: Nearest | null; afte
           team: top.team,
           opponent: top.opponent,
           year: top.year,
+          competition: top.competition,
+          result: top.result,
+          goals: top.goals.length,
         };
       }
     }

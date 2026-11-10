@@ -1,3 +1,4 @@
+import { competitionLabel } from "./competition";
 import { CREDIT_LINK, CREDIT_X } from "./site";
 
 export type ShareMatch = { opponent: string; year: number; competition: string; stage?: string; goals: number };
@@ -128,8 +129,33 @@ export function buildShare(p: SharePayload): BuiltShare {
   };
 }
 
-/** Prefilled YouTube search used when a match has no saved video. */
-export function youtubeSearchUrl(q: { opponent: string; team: string; year: number; competition?: string }) {
-  const query = `Cristiano Ronaldo goal ${q.team === "Portugal" ? "Portugal" : q.team} vs ${q.opponent} ${q.year}`;
+/**
+ * Prefilled YouTube search used when a match has no saved video, as precise as the data allows:
+ * "Cristiano Ronaldo goals Portugal 2-2 France Euro 2020 2021". Team first (as in the data), plain hyphen
+ * in the score (YouTube matches "2-2" better than an en dash), extra-time/penalty notes stripped.
+ */
+export function youtubeSearchUrl(q: {
+  opponent: string;
+  team: string;
+  year: number;
+  competition?: string;
+  result?: string | null;
+  /** Goal count, or the list of goals (as on Match). */
+  goals?: number | readonly unknown[];
+}) {
+  const goalCount = typeof q.goals === "number" ? q.goals : (q.goals?.length ?? 1);
+  const score = q.result
+    ? q.result
+        .replace(/\([^)]*\)/g, " ")
+        .replace(/[–—]/g, "-")
+        .trim()
+    : "";
+  const fixture = score ? `${q.team} ${score} ${q.opponent}` : `${q.team} vs ${q.opponent}`;
+  // Drop the label's own year when it is the match year ("World Cup 2018" + 2018), but keep "Euro 2020" in 2021.
+  const label = q.competition ? competitionLabel(q.competition, q.year) : "";
+  const comp = label.endsWith(` ${q.year}`) ? label.slice(0, -` ${q.year}`.length) : label;
+  const query = `Cristiano Ronaldo ${goalCount > 1 ? "goals" : "goal"} ${fixture} ${comp} ${q.year}`
+    .replace(/\s+/g, " ")
+    .trim();
   return `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
 }
