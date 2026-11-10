@@ -5,6 +5,7 @@ import videosJson from "@/data/videos.json";
 import expectedJson from "@/data/expected.json";
 import { TEAMS, type Goal, type MatchVideo, type Team } from "./schema";
 import { ALL_MMDD, DAYS_IN_MONTH, MONTH_NAMES, dayIndex, formatMmdd } from "./dates";
+import { pickFamous } from "./famous";
 
 const goals = goalsJson as Goal[];
 const byId = new Map(goals.map((g) => [g.id, g]));
@@ -118,33 +119,8 @@ export function nearestScoringDays(mmdd: string): { before: Nearest | null; afte
   return { before: find(-1), after: find(1) };
 }
 
-const STAGE_WEIGHT: [RegExp, number][] = [
-  [/^Final$/i, 100],
-  [/Semi/i, 60],
-  [/Quarter/i, 40],
-  [/Round of|Knockout|Play-off/i, 25],
-];
-const COMP_WEIGHT: [RegExp, number][] = [
-  [/^World Cup$/, 40],
-  [/^European Championship$/, 35],
-  [/^Champions League$/, 30],
-  [/Nations League/, 10],
-];
-
-/** Matches of a day, most famous first: finals and knockouts, big tournaments, multi-goal games, then recency. */
-export function rankFamous(ms: Match[]): Match[] {
-  const score = (m: Match) =>
-    (STAGE_WEIGHT.find(([re]) => re.test(m.stage ?? ""))?.[1] ?? 0) +
-    (COMP_WEIGHT.find(([re]) => re.test(m.competition))?.[1] ?? 0) +
-    m.goals.length * 8 +
-    m.year / 1000;
-  return [...ms].sort((a, b) => score(b) - score(a));
-}
-
-/** The headline match of a day. */
-export function pickFamous(ms: Match[]): Match {
-  return rankFamous(ms)[0];
-}
+// Ranking lives in lib/famous.ts (no server-only) so the data scripts can share it.
+export { famousScore, pickFamous, rankFamous } from "./famous";
 
 export function popularDays(limit = 6): DaySummary[] {
   return ALL_MMDD.map(summarise)

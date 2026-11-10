@@ -1,9 +1,12 @@
 /**
- * Find a YouTube video for each match (not each goal), newest matches first.
+ * Find a YouTube video for each match (not each goal). Order: the headline match of every scoring date
+ * first (dates with the most goals first), so every date gets a playable top match soonest; then the rest,
+ * newest first.
  *
- *   npm run data:videos                  # next 90 matches without a video (~90 searches = the daily quota)
- *   npm run data:videos -- --limit 20    # just 20
- *   npm run data:videos -- --dry-run     # print the queries, spend nothing
+ *   npm run data:videos                          # next 90 matches without a video (~ the daily quota)
+ *   npm run data:videos -- --limit 20            # just 20
+ *   npm run data:videos -- --featured-only       # only each date's headline match
+ *   npm run data:videos -- --dry-run             # print the queries, spend nothing
  *
  * Quota: search.list is ~100 searches/day on the default 10,000-unit allocation; videos.list costs 1 unit
  * per 50 ids. Every response is cached in data/raw/cache/youtube, and data/videos.json is saved after
@@ -11,7 +14,7 @@
  */
 import path from "node:path";
 import { DATA, hasFlag, log, readJson, writeJson } from "./lib/util";
-import { buildQuery, loadEnv, matchesFromGoals, pickBest, videoStatuses, ytGet, type SearchItem } from "./lib/youtube";
+import { buildQuery, featuredQueue, loadEnv, pickBest, videoStatuses, ytGet, type SearchItem } from "./lib/youtube";
 import { VideosSchema, type Goal, type MatchVideo, type Videos } from "../lib/schema";
 
 const VIDEOS = path.join(DATA, "videos.json");
@@ -30,7 +33,9 @@ async function main() {
   const save = () =>
     writeJson(VIDEOS, Object.fromEntries(Object.entries(videos).sort(([a], [b]) => b.localeCompare(a))));
 
-  const todo = matchesFromGoals(goals).filter((m) => {
+  const queue = featuredQueue(goals);
+  const ordered = hasFlag("--featured-only") ? queue.featured : [...queue.featured, ...queue.rest];
+  const todo = ordered.filter((m) => {
     const v = videos[m.matchId];
     // Skip anything already matched, verified or rejected by a human. Retry "missing" once a week at most.
     if (!v) return true;
@@ -39,7 +44,7 @@ async function main() {
   });
   log(
     "videos",
-    `${todo.length} matches need a video; processing ${Math.min(limit, todo.length)}${dry ? " (dry run)" : ""}`,
+    `${todo.length} ${hasFlag("--featured-only") ? "featured " : ""}matches need a video; processing ${Math.min(limit, todo.length)}${dry ? " (dry run)" : ""}`,
   );
 
   const report: { matchId: string; query: string; pick: string; confidence: number; ok: boolean }[] = [];

@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { CACHE, DATA, ROOT, readJson } from "./util";
+import { pickFamous } from "../../lib/famous";
 import type { Goal } from "../../lib/schema";
 
 export type SearchItem = {
@@ -191,4 +192,27 @@ export function matchesFromGoals(goals: Goal[]): MatchInfo[] {
       });
   }
   return [...map.values()].sort((a, b) => b.date.localeCompare(a.date));
+}
+
+/**
+ * Search order: first the headline match of every scoring date (pickFamous per MM-DD), dates with the most
+ * goals first, so every date gets a playable top match soonest; then everything else, newest first.
+ */
+export function featuredQueue(goals: Goal[]): { featured: MatchInfo[]; rest: MatchInfo[] } {
+  const matches = matchesFromGoals(goals);
+  const byDay = new Map<string, MatchInfo[]>();
+  for (const m of matches) {
+    const k = m.date.slice(5);
+    byDay.set(k, [...(byDay.get(k) ?? []), m]);
+  }
+  const days = [...byDay.entries()].map(([mmdd, ms]) => ({
+    mmdd,
+    top: pickFamous(ms),
+    goals: ms.reduce((a, m) => a + m.goals, 0),
+  }));
+  days.sort((a, b) => b.goals - a.goals || a.mmdd.localeCompare(b.mmdd));
+  const featured = days.map((d) => d.top);
+  const ids = new Set(featured.map((m) => m.matchId));
+  const rest = matches.filter((m) => !ids.has(m.matchId)); // already newest first
+  return { featured, rest };
 }

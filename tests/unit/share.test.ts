@@ -8,7 +8,13 @@ const SITE = "https://scoredonmybirthday.com";
 const hat = { opponent: "Atletico Madrid", year: 2017, competition: "Champions League", stage: "Semi-final", goals: 3 };
 const yes: SharePayload = { kind: "date", count: 12, label: "2 May", highlight: hat, url: `${SITE}/birthday/05-02` };
 const no: SharePayload = { kind: "date", count: 0, label: "25 December", url: `${SITE}/birthday/12-25` };
-const feb5: SharePayload = { kind: "date", count: 0, label: "5 February", hisBirthday: true, url: `${SITE}/birthday/02-05` };
+const feb5: SharePayload = {
+  kind: "date",
+  count: 0,
+  label: "5 February",
+  hisBirthday: true,
+  url: `${SITE}/birthday/02-05`,
+};
 const invite: SharePayload = { kind: "invite", url: `${SITE}/` };
 
 const decodeX = (href: string) => new URL(href).searchParams.get("text")!;
@@ -68,14 +74,23 @@ describe("share messages", () => {
     );
   });
   it("invite", () => {
-    expect(buildShare(invite).message).toBe("Has Ronaldo scored on your birthday? 🐐 I just checked mine. Check yours 👇");
+    expect(buildShare(invite).message).toBe(
+      "Has Ronaldo scored on your birthday? 🐐 I just checked mine. Check yours 👇",
+    );
   });
   it("goal", () => {
     const g: SharePayload = {
       kind: "goal",
       label: "15 June",
       url: `${SITE}/birthday/06-15#m-2018-06-15-spain`,
-      match: { team: "Portugal", opponent: "Spain", year: 2018, competition: "World Cup", stage: "Group stage", goals: 3 },
+      match: {
+        team: "Portugal",
+        opponent: "Spain",
+        year: 2018,
+        competition: "World Cup",
+        stage: "Group stage",
+        goals: 3,
+      },
     };
     expect(buildShare(g).message).toBe(
       "Watch Ronaldo's hat-trick vs Spain (2018). He did it on my birthday 🐐 Check yours 👇",

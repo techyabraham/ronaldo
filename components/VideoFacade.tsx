@@ -1,12 +1,13 @@
 "use client";
-import { useState, type ReactNode } from "react";
+import type { ReactNode } from "react";
+import { playerDomId, setActivePlayer, useActivePlayer } from "@/lib/activePlayer";
 import { track } from "@/lib/analytics";
 import { PlayIcon } from "./icons";
 
 /**
- * An episode row with a real video: thumbnail + red play button, and the youtube-nocookie iframe
- * only after a tap (then shown full-width above the episode details). `children` is the server-rendered
- * text column. `data-play` lets the "Watch the goals" buttons start the first episode.
+ * An episode row with a real video: thumbnail + red play button, and the youtube-nocookie iframe only after
+ * a tap (then full-width above the episode details). Only one video plays per page: starting one makes it
+ * the active player, which returns any other to its thumbnail. `data-play` lets "Watch" buttons start it.
  */
 export function VideoEpisode({
   youtubeId,
@@ -15,6 +16,9 @@ export function VideoEpisode({
   badge,
   mmdd,
   matchId,
+  opponent,
+  year,
+  eager = false,
   children,
 }: {
   youtubeId: string;
@@ -23,22 +27,45 @@ export function VideoEpisode({
   badge: string;
   mmdd: string;
   matchId: string;
+  opponent: string;
+  year: number;
+  /** First episode on the page: load its thumbnail eagerly. */
+  eager?: boolean;
   children: ReactNode;
 }) {
-  const [playing, setPlaying] = useState(false);
+  const playing = useActivePlayer() === matchId;
+
   if (playing) {
-    const params = new URLSearchParams({ autoplay: "1", rel: "0", playsinline: "1" });
+    const params = new URLSearchParams({ autoplay: "1", rel: "0", playsinline: "1", modestbranding: "1" });
     if (startSeconds) params.set("start", String(startSeconds));
+    const watchUrl = `https://www.youtube.com/watch?v=${youtubeId}${startSeconds ? `&t=${startSeconds}s` : ""}`;
     return (
-      <div className="flex flex-col gap-3">
-        <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-black">
+      <div className="flex flex-col gap-2">
+        <div id={playerDomId(matchId)} className="relative aspect-video w-full overflow-hidden rounded-xl bg-black">
           <iframe
             className="absolute inset-0 h-full w-full"
             src={`https://www.youtube-nocookie.com/embed/${youtubeId}?${params}`}
-            title={label}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            title={`Cristiano Ronaldo vs ${opponent}, ${year}`}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
             allowFullScreen
           />
+        </div>
+        <div className="flex items-center justify-between">
+          <a
+            href={watchUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-11 items-center text-[13px] font-bold text-muted"
+          >
+            Open on YouTube ↗
+          </a>
+          <button
+            type="button"
+            onClick={() => setActivePlayer(null)}
+            className="inline-flex min-h-11 items-center px-2 text-[13px] font-bold text-muted"
+          >
+            Close
+          </button>
         </div>
         {children}
       </div>
@@ -51,7 +78,7 @@ export function VideoEpisode({
         data-play={matchId}
         onClick={() => {
           track({ name: "video_played", mmdd, matchId });
-          setPlaying(true);
+          setActivePlayer(matchId);
         }}
         aria-label={label}
         className="relative h-[86px] w-[150px] flex-none overflow-hidden rounded-[10px] bg-black"
@@ -60,7 +87,8 @@ export function VideoEpisode({
         <img
           src={`https://i.ytimg.com/vi/${youtubeId}/mqdefault.jpg`}
           alt=""
-          loading="lazy"
+          loading={eager ? "eager" : "lazy"}
+          fetchPriority={eager ? "high" : "auto"}
           decoding="async"
           width={320}
           height={180}

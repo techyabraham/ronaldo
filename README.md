@@ -123,16 +123,21 @@ Portugal goals are final: he retired from international football on 5 Nov 2026.
 
 ### Videos
 
-YouTube's default quota allows ~100 searches a day, so videos are found **per match** (662 matches), newest first.
+YouTube's default quota allows ~100 searches a day, so videos are found **per match** (662 matches), **featured first**:
+the headline match of every scoring date (the ~288 "featured" matches, dates with the most goals first), then the
+rest, newest first. Featured-only puts a playable video on every date's top match in about 3 days of quota; all 662
+matches take about 8 days.
 
 ```bash
 npm run data:videos -- --dry-run          # show queries, spend nothing
 npm run data:videos -- --limit 20         # 20 searches
+npm run data:videos -- --featured-only    # only each date's headline match
 npm run data:videos                       # next 90 (one day's quota); stop/resume any time
 npm run data:check-videos                 # weekly: flag removed/private videos (~15 units)
 ```
 
-Daily plan: run `npm run data:videos` once a day for about 8 days. After each run, open
+Daily plan: run `npm run data:videos -- --featured-only` once a day for about 3 days, then `npm run data:videos`
+until all 662 are done (about 5 more days). After each run, open
 <http://localhost:3000/admin/review> in `npm run dev` and promote good matches to **verified** (✅), reject bad
 ones (❌), or paste a better video id and a start second. The review page and its API only exist in dev; they are
 `*.dev.tsx` files that production builds don't route. Matches without a usable video show a **Watch on YouTube**

@@ -88,6 +88,9 @@ export function MatchCard({
           badge={badge}
           mmdd={mmdd}
           matchId={m.matchId}
+          opponent={m.opponent}
+          year={m.year}
+          eager={index === 1}
         >
           {details}
         </VideoEpisode>
