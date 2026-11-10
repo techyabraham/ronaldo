@@ -23,7 +23,15 @@ export function SiuuCelebration() {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const timers: ReturnType<typeof setTimeout>[] = [];
-    const raf = requestAnimationFrame(() => {
+    let raf = 0;
+    let idle = 0;
+    // Start once the page has loaded and the main thread is idle, so the celebration never
+    // competes with hydration (keeps Total Blocking Time down on cheap phones).
+    const begin = () => {
+      const ric = window.requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 1));
+      idle = ric(() => (raf = requestAnimationFrame(start)), { timeout: 800 });
+    };
+    const start = () => {
       setPieces(
         Array.from({ length: 42 }, (_, i) => ({
           left: `${50 + (Math.random() - 0.5) * 70}vw`,
@@ -47,8 +55,12 @@ export function SiuuCelebration() {
         }, 1900),
         setTimeout(() => setPieces(null), 3200),
       );
-    });
+    };
+    if (document.readyState === "complete") begin();
+    else window.addEventListener("load", begin, { once: true });
     return () => {
+      window.removeEventListener("load", begin);
+      if (idle) (window.cancelIdleCallback ?? window.clearTimeout)(idle);
       cancelAnimationFrame(raf);
       timers.forEach(clearTimeout);
     };

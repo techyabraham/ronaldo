@@ -26,7 +26,7 @@ export function EpisodeTile({
   children?: ReactNode;
 }) {
   return (
-    <div className={`relative overflow-hidden rounded-xl ${TONE[tone]} ${className}`}>
+    <div aria-hidden="true" className={`relative overflow-hidden rounded-xl ${TONE[tone]} ${className}`}>
       {/* soft sheen so flat colour reads as a "thumbnail", not an empty box */}
       <div
         aria-hidden="true"

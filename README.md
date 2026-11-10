@@ -1,12 +1,42 @@
-# Did Ronaldo score on my birthday?
+# GOAT Day: did Ronaldo score on my birthday?
 
 Pick a day and month, and see every **official** Cristiano Ronaldo goal scored on that calendar day, in any year,
 with a video of each match and a shareable result page (`/birthday/MM-DD`) that has its own preview image.
 
-- Next.js 16 (App Router) + TypeScript + Tailwind 4. Every page is static: 366 birthday pages, plus home, about and 404.
-- No database, no runtime backend. The data is a versioned JSON file (`data/goals.json`, 985 goals) that is validated
-  before every build.
-- Share images (1200×630 OG + 1080×1080 "status" image) are rendered at build time with `next/og`.
+- Next.js 16 (App Router) + TypeScript + Tailwind 4. Every page is static: 366 birthday pages, plus home,
+  `/calendar`, about and 404.
+- No database, no runtime backend. The data is a versioned JSON file (`data/goals.json`) that is validated before
+  every build.
+- Share images (1200×630 link preview + 1080×1920 Story/Status image) are rendered at build time with `next/og`.
+
+## The GOAT Day brand
+
+- **Look:** a dark, streaming-app feel in Portugal red (`--red`) and green (`--green`), with Anton for display type
+  and Archivo for body text. The signature motif is the 2:3 green/red flag bar (`components/FlagBar.tsx`). Dark
+  only. Colour tokens and their contrast notes are in `app/globals.css`.
+- **Voice:** the UI calls him "the GOAT"; page titles and meta descriptions keep saying "Ronaldo", because that's
+  what people search for.
+- **No photos, crests, league logos or "CR7" mark.** Text, the crown SVG and the flag colours only.
+- **Every number in the copy is live from the data** (total goals, the number of scoring and rest days, seasons,
+  Portugal goals, per-club totals). Nothing is hard-coded, so the weekly refresh updates the whole site. The only
+  static facts are five Champions League titles, the Ali Daei record, and the 88th-minute free kick vs Spain
+  (all in `lib/moments.ts`, and unit-tested against the data where possible).
+- **Features:** the Reveal intro after picking a date (`RevealOverlay`), the one-shot **SIUUU** celebration on dates
+  with goals (`SiuuCelebration`, CSS-only, skipped under reduced motion), and **"The official excuse"** for the 78ish
+  dates he never scored on (`lib/excuses.ts`; deterministic, affectionate, and any number it quotes comes from the
+  data).
+
+### Hero image (optional, owner-supplied)
+
+The hero shows a designed flag-and-crown fallback until **you** add a licensed photo. Never hot-link or scrape
+press photos: they are editorial-only.
+
+| File | Spec | Used by |
+|---|---|---|
+| `public/hero/siuu.webp` | 4:5 portrait, ≥ 1200 px tall, < 200 KB | Home and result heroes (`components/HeroArt.tsx`) |
+| `public/hero/siuu-cutout.png` | transparent cut-out, < 400 KB | Link preview and Story images (`lib/og.tsx`) |
+
+Both are detected at build time; rebuild after adding them.
 
 ## Quick start
 
@@ -125,10 +155,14 @@ WhatsApp caches previews per URL for a long time; test with a URL you haven't sh
 
 - Each result page receives only its own date's goals at build time; `goals.json` never reaches the browser.
 - YouTube iframes load only after a tap (thumbnail facade, `youtube-nocookie.com`).
-- One font family (Archivo via `next/font`, `display: swap`).
-- First-load JS on a result page is ~141 KB gzipped: React DOM (~64 KB) + the Next.js App Router runtime (~67 KB)
-  + ~8 KB of app code. The spec's 100 KB target isn't reachable on the App Router; the framework baseline alone
-  exceeds it.
+- Two font families via `next/font` (`display: swap`): Anton (display) and Archivo (body).
+- The Reveal intro is lazy-loaded (`next/dynamic`) only when someone submits a date; the calendar and SIUUU are
+  CSS only. SIUUU's word is SVG text, so it can't become the page's Largest Contentful Paint.
+- First-load JS on a result page is ~152 KB gzipped: React DOM (~71 KB) + the Next.js App Router runtime
+  (~66 KB) + ~15 KB of app code. A 100 KB target isn't reachable on the App Router; the framework baseline alone
+  exceeds it. The 39 KB `nomodule` polyfill chunk is skipped by modern browsers.
+- Lighthouse on Windows dev machines is noisy (Chrome's first text layout is slow there, and the CPU benchmark
+  swings run to run). Trust the Linux CI run (`lhci autorun`, median of 3) or PageSpeed Insights on the deployed site.
 
 ## Legal
 

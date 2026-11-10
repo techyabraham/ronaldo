@@ -56,7 +56,7 @@ export function SharePanel({
               <p className="mt-0.5 font-display text-[19px] uppercase leading-[0.95]">
                 {yes ? (
                   <>
-                    The GOAT scored <span className="text-red">{preview.count}</span> goal
+                    The GOAT scored <span className="text-red-text">{preview.count}</span> goal
                     {preview.count === 1 ? "" : "s"} on my birthday
                   </>
                 ) : (

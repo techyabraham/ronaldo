@@ -66,7 +66,7 @@ export function MatchCard({ m, index, mmdd, note }: { m: Match; index: number; m
             href={youtubeSearchUrl(m)}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label={`Watch ${m.team} vs ${m.opponent}, ${m.year} on YouTube`}
+            aria-label={`Watch ${m.team} vs ${m.opponent}, ${m.year} on YouTube (${n} goal${n === 1 ? "" : "s"})`}
             className="flex-none"
           >
             <EpisodeTile

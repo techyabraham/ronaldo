@@ -96,6 +96,7 @@ export function NoResult({ mmdd }: { mmdd: string }) {
                 </span>
               </EpisodeTile>
               <span className="flex min-w-0 flex-col gap-0.5">
+                <span className="sr-only">{d.label}: </span>
                 <span
                   className={`text-xs font-extrabold tracking-[0.08em] ${d.dir === "AFTER" ? "text-green-text" : "text-red-text"}`}
                 >
