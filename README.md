@@ -50,6 +50,12 @@ npx tsx scripts/prepare-photos.ts "C:/path/to/photo/folder"
 It writes responsive WebP files to `public/siu/` and pre-cropped JPEGs for the share images to `assets/og/`
 (the share-image renderer can't read WebP). Commit both, then rebuild.
 
+### Favicon
+
+`app/icon.svg` (the red crown over the green/red flag bar) is the source. After editing it, run
+`npm run icons` to regenerate `app/favicon.ico` (16/32/48) and `app/apple-icon.png` (180, square; iOS rounds it).
+Next.js links all three automatically.
+
 ## Quick start
 
 ```bash

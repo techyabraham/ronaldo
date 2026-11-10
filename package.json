@@ -18,6 +18,7 @@
     "data:build": "tsx scripts/build-dataset.ts && tsx scripts/build-index.ts",
     "data:validate": "tsx scripts/validate.ts",
     "data:videos": "tsx scripts/find-videos.ts",
+    "icons": "tsx scripts/make-icons.ts",
     "data:check-videos": "tsx scripts/check-videos.ts",
     "data:all": "npm run data:fetch && npm run data:build && npm run data:validate",
     "lhci": "lhci autorun"
