@@ -63,7 +63,7 @@ export function MatchCard({ m, index, mmdd, note }: { m: Match; index: number; m
         </VideoEpisode>
       ) : (
         <div className="flex gap-3">
-          <a href={youtubeSearchUrl(m)} target="_blank" rel="noopener noreferrer" className="flex-none">
+          <a href={youtubeSearchUrl(m)} target="_blank" rel="noopener noreferrer" className="relative flex-none">
             <EpisodeTile
               tone={index % 2 ? "green" : "red"}
               badge={badge}

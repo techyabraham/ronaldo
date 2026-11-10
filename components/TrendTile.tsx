@@ -23,7 +23,7 @@ export function TrendTile({
   photo?: PhotoKey | null;
 }) {
   return (
-    <Link href={`/birthday/${mmdd}`} className="flex w-[150px] flex-col gap-1.5 text-text">
+    <Link href={`/birthday/${mmdd}`} className="relative flex w-[150px] flex-col gap-1.5 text-text">
       <EpisodeTile
         tone={tone}
         badge={count ? `${count} GOAL${count === 1 ? "" : "S"}` : undefined}

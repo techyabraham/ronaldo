@@ -172,7 +172,9 @@ test.describe("GOAT Day on a 360px phone", () => {
   test("no horizontal scroll at 360px", async ({ page }) => {
     for (const p of ["/", "/calendar", "/birthday/05-02", "/birthday/06-23", "/birthday/12-25", "/about"]) {
       await page.goto(p);
-      const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+      // Compare with the device width, not innerWidth: mobile Chrome widens the layout viewport (and innerWidth)
+      // to fit overflowing content, which would hide the very bug this test exists to catch.
+      const overflow = await page.evaluate(() => document.documentElement.scrollWidth - 360);
       expect(overflow, p).toBeLessThanOrEqual(0);
     }
   });
