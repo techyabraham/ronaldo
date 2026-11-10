@@ -1,4 +1,5 @@
 "use client";
+import type { SharePayload } from "@/lib/share";
 import { useShare } from "@/lib/useShare";
 import { FlagBar } from "./FlagBar";
 import { CrownIcon, LinkIcon, StoryIcon, UploadIcon, WhatsAppIcon } from "./icons";
@@ -14,17 +15,17 @@ export type SharePreview = { label: string; count: number };
 export function SharePanel({
   mmdd,
   url,
-  text,
+  payload,
   preview,
   imagePath,
 }: {
   mmdd: string;
   url: string;
-  text: string;
+  payload: SharePayload;
   preview: SharePreview;
   imagePath: string;
 }) {
-  const s = useShare({ mmdd, url, text, placement: "panel", imagePath });
+  const s = useShare({ mmdd, payload, placement: "panel", imagePath });
   const host = url.replace(/^https?:\/\//, "").replace(/\/.*$/, "");
   const yes = preview.count > 0;
   return (

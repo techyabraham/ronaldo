@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { INVITE_TEXT } from "@/lib/share";
 import { useShare } from "@/lib/useShare";
 import { CalendarIcon, HomeIcon, InfoIcon, ShareIcon } from "./icons";
 
@@ -11,7 +10,7 @@ const tab =
 /** Bottom tab bar for the browse pages (/, /calendar, /about). Result pages use the sticky ShareBar instead. */
 export function TabBar({ url }: { url: string }) {
   const path = usePathname();
-  const s = useShare({ mmdd: "home", url, text: INVITE_TEXT, placement: "tabbar" });
+  const s = useShare({ mmdd: "home", payload: { kind: "invite", url }, placement: "tabbar" });
   const current = (href: string) => (path === href ? ("page" as const) : undefined);
   return (
     <nav

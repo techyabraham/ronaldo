@@ -1,6 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import { writeLast } from "@/lib/storage";
+import type { SharePayload } from "@/lib/share";
 import { useShare } from "@/lib/useShare";
 import { StoryIcon, WhatsAppIcon } from "./icons";
 
@@ -8,17 +9,17 @@ import { StoryIcon, WhatsAppIcon } from "./icons";
 export function ShareBar({
   mmdd,
   url,
-  text,
+  payload,
   label = "Post my GOAT Day",
   imagePath,
 }: {
   mmdd: string;
   url: string;
-  text: string;
+  payload: SharePayload;
   label?: string;
   imagePath: string;
 }) {
-  const s = useShare({ mmdd, url, text, placement: "sticky", imagePath });
+  const s = useShare({ mmdd, payload, placement: "sticky", imagePath });
 
   // Remember this date for the "check again" link on the home page.
   useEffect(() => writeLast(mmdd), [mmdd]);
@@ -30,7 +31,7 @@ export function ShareBar({
       aria-label="Share your result"
     >
       <p className="sr-only" data-testid="share-text">
-        {text} {url}
+        {s.plain}
       </p>
       <div className="mx-auto flex max-w-md gap-2 px-4 pt-3 pb-3">
         <button

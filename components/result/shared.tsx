@@ -1,6 +1,6 @@
 import { formatMmdd } from "@/lib/dates";
 import { goalsForDate, matchesForDate, pickFamous, summarise } from "@/lib/goals";
-import { shareText, type ShareMatch } from "@/lib/share";
+import type { ShareMatch, SharePayload } from "@/lib/share";
 import { SITE_URL } from "@/lib/site";
 
 /** Everything both result layouts need, computed once at build time. */
@@ -19,14 +19,16 @@ export function resultContext(mmdd: string) {
       }
     : null;
   const hisBirthday = mmdd === "02-05";
+  const url = `${SITE_URL}/birthday/${mmdd}`;
+  const payload: SharePayload = { kind: "date", count: s.count, label, highlight, hisBirthday, url };
   return {
     s,
     matches,
     famous,
     label,
-    url: `${SITE_URL}/birthday/${mmdd}`,
+    url,
     imagePath: `/birthday/${mmdd}/story`,
-    text: shareText({ count: s.count, label, highlight, hisBirthday }),
+    payload,
     hisBirthday,
   };
 }

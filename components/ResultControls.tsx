@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import type { SharePayload } from "@/lib/share";
 import { useShare } from "@/lib/useShare";
 import { LinkIcon, PlayIcon, ShareIcon, StoryIcon } from "./icons";
 
@@ -56,17 +57,17 @@ export function WatchGoals({
 export function ResultActions({
   mmdd,
   url,
-  text,
+  payload,
   videoMatchId,
   fallbackHref,
 }: {
   mmdd: string;
   url: string;
-  text: string;
+  payload: SharePayload;
   videoMatchId?: string;
   fallbackHref: string;
 }) {
-  const s = useShare({ mmdd, url, text, placement: "actions" });
+  const s = useShare({ mmdd, payload, placement: "quick" });
   const icon = "flex h-[54px] items-center justify-center rounded-xl border border-border bg-surface text-text";
   return (
     <div>
@@ -100,17 +101,17 @@ export function ResultActions({
 export function PostButton({
   mmdd,
   url,
-  text,
+  payload,
   imagePath,
   label,
 }: {
   mmdd: string;
   url: string;
-  text: string;
+  payload: SharePayload;
   imagePath: string;
   label: string;
 }) {
-  const s = useShare({ mmdd, url, text, placement: "end", imagePath });
+  const s = useShare({ mmdd, payload, placement: "panel", imagePath });
   return (
     <>
       <button

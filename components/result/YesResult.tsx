@@ -25,7 +25,7 @@ function listJoin(xs: string[]) {
 
 /** Result page for a date with goals (artboard "Yes"). Server component. */
 export function YesResult({ mmdd }: { mmdd: string }) {
-  const { s, matches, famous, label, url, imagePath, text } = resultContext(mmdd);
+  const { s, matches, famous, label, url, imagePath, payload } = resultContext(mmdd);
   const n = s.count;
   const record = matches.map((m) => MATCH_NOTES[m.matchId]).find((x) => x?.record);
   const comps = [...new Set(matches.map((m) => competitionLabel(m.competition, m.year).replace(/ \d{4}$/, "")))];
@@ -109,7 +109,7 @@ export function YesResult({ mmdd }: { mmdd: string }) {
           </p>
         </header>
 
-        <ResultActions mmdd={mmdd} url={url} text={text} videoMatchId={firstVideo} fallbackHref={fallbackHref} />
+        <ResultActions mmdd={mmdd} url={url} payload={payload} videoMatchId={firstVideo} fallbackHref={fallbackHref} />
 
         {/* Stats */}
         <dl className="grid grid-cols-3 gap-2">
@@ -128,7 +128,7 @@ export function YesResult({ mmdd }: { mmdd: string }) {
         <SharePanel
           mmdd={mmdd}
           url={url}
-          text={text}
+          payload={payload}
           preview={{ label: label.toUpperCase(), count: n }}
           imagePath={imagePath}
         />
@@ -146,8 +146,8 @@ export function YesResult({ mmdd }: { mmdd: string }) {
                 <ShareNudge
                   mmdd={mmdd}
                   url={url}
-                  text={text}
-                  placement="nudge-mid"
+                  payload={payload}
+                  placement="panel"
                   title={`${n} goal${n === 1 ? "" : "s"} on your birthday. Your group chat needs to see this.`}
                 />
               )}
@@ -183,8 +183,8 @@ export function YesResult({ mmdd }: { mmdd: string }) {
         <ShareNudge
           mmdd={mmdd}
           url={url}
-          text={text}
-          placement="nudge-end"
+          payload={payload}
+          placement="panel"
           title={`Think a friend can beat ${n}? Challenge them.`}
         />
 
@@ -196,7 +196,7 @@ export function YesResult({ mmdd }: { mmdd: string }) {
         </Link>
       </div>
 
-      <ShareBar mmdd={mmdd} url={url} text={text} imagePath={imagePath} />
+      <ShareBar mmdd={mmdd} url={url} payload={payload} imagePath={imagePath} />
     </div>
   );
 }

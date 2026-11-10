@@ -1,18 +1,19 @@
 "use client";
-import { useCallback, useState } from "react";
-import { track, type ShareChannel } from "./analytics";
-import { shareLinks } from "./share";
+import { useCallback, useMemo, useState } from "react";
+import { track, type ShareChannel, type SharePlacement } from "./analytics";
+import { buildShare, type SharePayload } from "./share";
+import { CREDIT_LINK } from "./site";
 import { useClientValue } from "./useClientValue";
 
 const hasNativeShare = () => typeof navigator.share === "function";
 
 export type ShareConfig = {
+  /** Date key for analytics ("06-23"), or "home" for the invite. */
   mmdd: string;
-  url: string;
-  text: string;
-  /** Where on the page the button lives, for analytics ("panel", "sticky", "nudge", "home"). */
-  placement: string;
-  /** Square PNG to share to Status / Stories; omitted on the home page. */
+  payload: SharePayload;
+  /** Where on the page the button lives, for analytics. */
+  placement: SharePlacement;
+  /** Story PNG to share to Status / Stories; omitted for invites and single goals. */
   imagePath?: string;
 };
 
@@ -38,12 +39,16 @@ function download(path: string, filename: string) {
   a.remove();
 }
 
-/** All share actions in one place, so every share surface behaves the same and is tracked the same. */
+/**
+ * All share actions in one place, so every surface says the same thing (via buildShare), carries the
+ * creator credit, and is tracked the same way.
+ */
 export function useShare(cfg: ShareConfig) {
   const canNative = useClientValue(hasNativeShare, false);
   const [toast, setToast] = useState<string | null>(null);
-  const links = shareLinks(cfg.text, cfg.url);
-  const full = `${cfg.text} ${cfg.url}`;
+  const built = useMemo(() => buildShare(cfg.payload), [cfg.payload]);
+  const { links, plain, message } = built;
+  const url = cfg.payload.url;
 
   const flash = useCallback((msg: string) => {
     setToast(msg);
@@ -55,25 +60,21 @@ export function useShare(cfg: ShareConfig) {
     [cfg.mmdd, cfg.placement],
   );
 
-  /** OS share sheet with text + link (WhatsApp, Instagram DMs, SMS, anything installed). */
+  /** OS share sheet with the non-X message + credit and the link (WhatsApp, Instagram DMs, SMS, …). */
   const native = useCallback(async () => {
     log("native");
     if (!hasNativeShare()) {
-      await copyToClipboard(full);
-      flash("Link copied! Paste it in your chats");
+      await copyToClipboard(plain);
+      flash("Copied. Paste it anywhere");
       return;
     }
     try {
-      await navigator.share({ text: cfg.text, url: cfg.url });
+      await navigator.share({ text: `${message}\n\n${CREDIT_LINK}`, url });
     } catch {
       /* cancelled */
     }
-  }, [cfg.text, cfg.url, full, flash, log]);
+  }, [message, url, plain, flash, log]);
 
-  /**
-   * Share the actual result image (for WhatsApp Status, Instagram/TikTok/Snapchat Stories).
-   * Uses the Web Share API with files where supported; otherwise saves the PNG and copies the link.
-   */
   const filename = `goat-day-${cfg.mmdd}.png`;
 
   /** Try to hand the PNG to the OS share sheet. Returns "shared", "cancelled" or "unsupported". */
@@ -84,26 +85,27 @@ export function useShare(cfg: ShareConfig) {
       const file = new File([blob], filename, { type: "image/png" });
       if (!navigator.canShare({ files: [file] })) return "unsupported";
       log("image");
-      await navigator.share({ files: [file], text: full });
+      await navigator.share({ files: [file], text: plain });
       return "shared";
     } catch (e) {
       return (e as Error).name === "AbortError" ? "cancelled" : "unsupported";
     }
-  }, [cfg.imagePath, filename, full, log]);
+  }, [cfg.imagePath, filename, plain, log]);
 
+  /**
+   * Share the Story image (WhatsApp Status, Instagram/TikTok/Snapchat Stories) with the plain message as
+   * caption; where files can't be shared, save the PNG and copy the message.
+   */
   const image = useCallback(async () => {
     if (!cfg.imagePath) return;
     if ((await shareFile()) !== "unsupported") return;
     log("save-image");
     download(cfg.imagePath, filename);
-    await copyToClipboard(full);
-    flash("Image saved & link copied. Post it to your Status or Story");
-  }, [cfg.imagePath, filename, full, flash, log, shareFile]);
+    await copyToClipboard(plain);
+    flash("Image saved & message copied. Post it to your Status or Story");
+  }, [cfg.imagePath, filename, plain, flash, log, shareFile]);
 
-  /**
-   * The one big "Post my GOAT Day" action: the Story image where the phone can share files,
-   * otherwise the OS share sheet with text + link, otherwise (desktop) jump to the full share panel.
-   */
+  /** Legacy "Post my GOAT Day" action: Story image, else share sheet, else jump to the share panel. */
   const post = useCallback(async () => {
     if ((await shareFile()) !== "unsupported") return;
     if (hasNativeShare()) return native();
@@ -115,9 +117,9 @@ export function useShare(cfg: ShareConfig) {
 
   const copy = useCallback(async () => {
     log("copy");
-    await copyToClipboard(full);
-    flash("Link copied! Paste it anywhere");
-  }, [full, flash, log]);
+    await copyToClipboard(plain);
+    flash("Copied. Paste it anywhere");
+  }, [plain, flash, log]);
 
-  return { canNative, links, native, image, post, copy, log, toast };
+  return { canNative, links, plain, message, native, image, post, copy, log, toast };
 }

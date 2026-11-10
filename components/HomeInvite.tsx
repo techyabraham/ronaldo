@@ -1,12 +1,11 @@
 "use client";
-import { INVITE_TEXT } from "@/lib/share";
 import { useShare } from "@/lib/useShare";
 import { LinkIcon, UploadIcon, WhatsAppIcon } from "./icons";
 import { shareBtn } from "./shareStyles";
 
 /** Home-page invite: get the group chat playing before anyone has a result. */
 export function HomeInvite({ url }: { url: string }) {
-  const s = useShare({ mmdd: "home", url, text: INVITE_TEXT, placement: "home" });
+  const s = useShare({ mmdd: "home", payload: { kind: "invite", url }, placement: "home" });
   return (
     <section aria-labelledby="invite-h" className="rounded-[20px] bg-surface p-4">
       <h2 id="invite-h" className="text-lg font-extrabold">

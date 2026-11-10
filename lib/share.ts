@@ -1,10 +1,18 @@
+import { CREDIT_LINK, CREDIT_X } from "./site";
+
 export type ShareMatch = { opponent: string; year: number; competition: string; stage?: string; goals: number };
 
-function goalsPhrase(n: number) {
+/** "a goal", "a brace", "a hat-trick", "4 goals" */
+export function goalsPhrase(n: number) {
   if (n === 1) return "a goal";
   if (n === 2) return "a brace";
   if (n === 3) return "a hat-trick";
   return `${n} goals`;
+}
+
+/** Same without the article, for possessives: "Ronaldo's hat-trick", "Ronaldo's 4 goals". */
+function goalsNoun(n: number) {
+  return goalsPhrase(n).replace(/^a /, "");
 }
 
 /** "a hat-trick vs Atletico Madrid in the 2017 Champions League semi-final" */
@@ -14,36 +22,109 @@ export function highlightPhrase(m: ShareMatch) {
   return `${goalsPhrase(m.goals)} vs ${m.opponent}${where}`;
 }
 
-/**
- * The message people actually post. Written to brag (yes) or to provoke curiosity (no),
- * always ending with a challenge so the friend clicks through and checks their own date.
- */
-export function shareText(opts: {
-  count: number;
-  label: string;
-  highlight?: ShareMatch | null;
-  hisBirthday?: boolean;
-}) {
-  const { count, label, highlight, hisBirthday } = opts;
-  const bday = hisBirthday ? "I share a birthday with the GOAT 🎂 " : "";
-  if (count > 0) {
-    const incl = highlight ? `, including ${highlightPhrase(highlight)}` : "";
-    return `${bday}The GOAT scored ${count} goal${count === 1 ? "" : "s"} on my birthday (${label})${incl} 🐐 Is yours a GOAT Day? 👇`;
-  }
-  return `${bday}Even the GOAT takes a day off: Ronaldo has never scored on my birthday (${label}) 😅 Is yours a GOAT Day? 👇`;
+/** Shorter highlight used when an X post would go over the limit: "a hat-trick vs Atletico Madrid in 2017". */
+function shortHighlight(m: ShareMatch) {
+  return `${goalsPhrase(m.goals)} vs ${m.opponent} in ${m.year}`;
 }
 
-/** Short invite used on the home page and tab bar (no result yet). */
-export const INVITE_TEXT = "Did the GOAT score on your birthday? 🐐 I just checked mine. Is yours a GOAT Day? 👇";
+export type SharePayload =
+  | {
+      kind: "date";
+      count: number;
+      label: string;
+      highlight?: ShareMatch | null;
+      hisBirthday?: boolean;
+      url: string;
+    }
+  | { kind: "goal"; match: ShareMatch & { team: string }; label: string; url: string } // url ends #m-{matchId}
+  | { kind: "invite"; url: string };
 
-export function shareLinks(text: string, url: string) {
-  const t = encodeURIComponent(text);
-  const u = encodeURIComponent(url);
+export type BuiltShare = {
+  /** Sentence(s) only: no URL, no credit. */
+  message: string;
+  /** `${message}\n${url}\n\n${CREDIT_LINK}`: copy, native share, WhatsApp, Threads, Story caption. */
+  plain: string;
+  links: { whatsapp: string; x: string; facebook: string; telegram: string; threads: string };
+};
+
+type HighlightMode = "full" | "short" | "none";
+
+function messageFor(p: SharePayload, mode: HighlightMode = "full"): string {
+  if (p.kind === "invite") return "Has Ronaldo scored on your birthday? 🐐 I just checked mine. Check yours 👇";
+  if (p.kind === "goal") {
+    const m = p.match;
+    return `Watch Ronaldo's ${goalsNoun(m.goals)} vs ${m.opponent} (${m.year}). He did it on my birthday 🐐 Check yours 👇`;
+  }
+  const bday = p.hisBirthday ? "I share a birthday with Cristiano Ronaldo 🎂 " : "";
+  if (p.count > 0) {
+    const h = p.highlight;
+    const incl = h && mode !== "none" ? `, including ${mode === "full" ? highlightPhrase(h) : shortHighlight(h)}` : "";
+    return `${bday}Ronaldo scored ${p.count} goal${p.count === 1 ? "" : "s"} on my birthday (${p.label})${incl} 🐐 Has he scored on yours? 👇`;
+  }
+  return `${bday}Ronaldo has never scored on my birthday (${p.label}) 😅 Even the GOAT takes a day off. Has he scored on yours? 👇`;
+}
+
+/**
+ * Length as X counts it (twitter-text v3 weighting): every URL is 23; code points in the listed
+ * Latin/punctuation ranges are 1; everything else (CJK, emoji, …) is 2. The limit is 280.
+ */
+export function xWeightedLength(s: string): number {
+  let n = 0;
+  const text = s.replace(/https?:\/\/\S+/g, () => {
+    n += 23;
+    return "";
+  });
+  for (const ch of text) {
+    const cp = ch.codePointAt(0)!;
+    const light =
+      (cp >= 0x0000 && cp <= 0x10ff) ||
+      (cp >= 0x2000 && cp <= 0x200d) ||
+      (cp >= 0x2010 && cp <= 0x201f) ||
+      (cp >= 0x2032 && cp <= 0x2037);
+    n += light ? 1 : 2;
+  }
+  return n;
+}
+
+export const X_LIMIT = 280;
+
+/**
+ * The text of an X post: message, #Ronaldo, the site URL (so X builds the card), then the credit as the
+ * last line. If it's too long: drop #Ronaldo, then shorten the highlight, then drop it. Never drop the credit.
+ */
+export function xText(p: SharePayload, limit = X_LIMIT): string {
+  const attempts: [HighlightMode, boolean][] = [
+    ["full", true],
+    ["full", false],
+    ["short", false],
+    ["none", false],
+  ];
+  let text = "";
+  for (const [mode, tag] of attempts) {
+    text = `${messageFor(p, mode)}${tag ? " #Ronaldo" : ""}\n${p.url}\n\n${CREDIT_X}`;
+    if (xWeightedLength(text) <= limit) return text;
+  }
+  return text;
+}
+
+/** One builder for every share surface, so all channels say the same thing and carry the credit. */
+export function buildShare(p: SharePayload): BuiltShare {
+  const message = messageFor(p);
+  const plain = `${message}\n${p.url}\n\n${CREDIT_LINK}`;
+  const u = encodeURIComponent(p.url);
   return {
-    whatsapp: `https://wa.me/?text=${encodeURIComponent(`${text} ${url}`)}`,
-    x: `https://x.com/intent/post?text=${t}&url=${u}`,
-    facebook: `https://www.facebook.com/sharer/sharer.php?u=${u}`,
-    telegram: `https://t.me/share/url?url=${u}&text=${t}`,
+    message,
+    plain,
+    links: {
+      // Site URL first: WhatsApp and Telegram preview the first link, and that must be our OG card.
+      whatsapp: `https://wa.me/?text=${encodeURIComponent(plain)}`,
+      // URL inside the text, no url/via params, so the credit is the post's last line.
+      x: `https://x.com/intent/post?text=${encodeURIComponent(xText(p))}`,
+      // Facebook ignores prefilled text; the credit travels on the OG image instead.
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${u}`,
+      telegram: `https://t.me/share/url?url=${u}&text=${encodeURIComponent(`${message}\n\n${CREDIT_LINK}`)}`,
+      threads: `https://www.threads.net/intent/post?text=${encodeURIComponent(plain)}`,
+    },
   };
 }
 

@@ -16,7 +16,7 @@ import { SpecialBanner, resultContext } from "./shared";
 
 /** Result page for a date he has never scored on (artboard "No"). Server component. */
 export function NoResult({ mmdd }: { mmdd: string }) {
-  const { label, url, imagePath, text } = resultContext(mmdd);
+  const { label, url, imagePath, payload } = resultContext(mmdd);
   const near = nearestScoringDays(mmdd);
   const excuse = excuseFor(mmdd, { count: 0, before: near.before, after: near.after })!;
   const rest = restDayCount();
@@ -82,7 +82,7 @@ export function NoResult({ mmdd }: { mmdd: string }) {
         <SharePanel
           mmdd={mmdd}
           url={url}
-          text={text}
+          payload={payload}
           preview={{ label: label.toUpperCase(), count: 0 }}
           imagePath={imagePath}
         />
@@ -129,13 +129,13 @@ export function NoResult({ mmdd }: { mmdd: string }) {
         <ShareNudge
           mmdd={mmdd}
           url={url}
-          text={text}
-          placement="nudge-end"
+          payload={payload}
+          placement="panel"
           title="Find out who in your group got a GOAT Day."
         />
 
         <div>
-          <PostButton mmdd={mmdd} url={url} text={text} imagePath={imagePath} label="Post my rare day" />
+          <PostButton mmdd={mmdd} url={url} payload={payload} imagePath={imagePath} label="Post my rare day" />
           <Link
             href="/"
             className="mt-3 flex min-h-14 items-center justify-center rounded-xl border-2 border-border font-display text-xl uppercase tracking-[0.03em]"
@@ -145,7 +145,7 @@ export function NoResult({ mmdd }: { mmdd: string }) {
         </div>
       </div>
 
-      <ShareBar mmdd={mmdd} url={url} text={text} imagePath={imagePath} label="Post my rare day" />
+      <ShareBar mmdd={mmdd} url={url} payload={payload} imagePath={imagePath} label="Post my rare day" />
     </div>
   );
 }

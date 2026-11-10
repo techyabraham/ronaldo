@@ -1,4 +1,6 @@
 "use client";
+import type { SharePlacement } from "@/lib/analytics";
+import type { SharePayload } from "@/lib/share";
 import { useShare } from "@/lib/useShare";
 import { LinkIcon, UploadIcon, WhatsAppIcon } from "./icons";
 import { shareBtn } from "./shareStyles";
@@ -7,17 +9,17 @@ import { shareBtn } from "./shareStyles";
 export function ShareNudge({
   mmdd,
   url,
-  text,
+  payload,
   title,
   placement,
 }: {
   mmdd: string;
   url: string;
-  text: string;
+  payload: SharePayload;
   title: string;
-  placement: string;
+  placement: SharePlacement;
 }) {
-  const s = useShare({ mmdd, url, text, placement });
+  const s = useShare({ mmdd, payload, placement });
   return (
     <aside className="rounded-[18px] border border-dashed border-red bg-surface p-4" aria-label="Share">
       <p className="font-extrabold leading-snug">{title}</p>
