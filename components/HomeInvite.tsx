@@ -1,11 +1,15 @@
 "use client";
+import { useMemo } from "react";
+import type { SharePayload } from "@/lib/share";
+import { openShareSheet } from "@/lib/shareSheet";
 import { useShare } from "@/lib/useShare";
-import { LinkIcon, UploadIcon, WhatsAppIcon } from "./icons";
+import { ShareIcon, WhatsAppIcon } from "./icons";
 import { shareBtn } from "./shareStyles";
 
 /** Home-page invite: get the group chat playing before anyone has a result. */
 export function HomeInvite({ url }: { url: string }) {
-  const s = useShare({ mmdd: "home", payload: { kind: "invite", url }, placement: "home" });
+  const payload = useMemo<SharePayload>(() => ({ kind: "invite", url }), [url]);
+  const s = useShare({ mmdd: "home", payload, placement: "home" });
   return (
     <section aria-labelledby="invite-h" className="rounded-[20px] bg-surface p-4">
       <h2 id="invite-h" className="text-lg font-extrabold">
@@ -24,17 +28,12 @@ export function HomeInvite({ url }: { url: string }) {
         </a>
         <button
           type="button"
-          onClick={s.canNative ? s.native : s.copy}
+          onClick={() => openShareSheet({ mmdd: "home", payload, placement: "home" })}
           className={`${shareBtn.neutral} min-h-14 whitespace-nowrap px-3`}
         >
-          {s.canNative ? <UploadIcon /> : <LinkIcon />} {s.canNative ? "Share" : "Copy link"}
+          <ShareIcon className="h-5 w-5" /> Share
         </button>
       </div>
-      {s.toast && (
-        <p role="status" className="pt-2 text-center text-sm font-bold text-green-text">
-          {s.toast}
-        </p>
-      )}
     </section>
   );
 }

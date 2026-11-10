@@ -2,15 +2,28 @@
 import type { SharePayload } from "@/lib/share";
 import { useShare } from "@/lib/useShare";
 import { FlagBar } from "./FlagBar";
-import { CrownIcon, LinkIcon, StoryIcon, UploadIcon, WhatsAppIcon } from "./icons";
+import {
+  CrownIcon,
+  FacebookIcon,
+  LinkIcon,
+  StoryIcon,
+  TelegramIcon,
+  ThreadsIcon,
+  UploadIcon,
+  WhatsAppIcon,
+  XIcon,
+} from "./icons";
 import { shareBtn } from "./shareStyles";
 
 export type SharePreview = { label: string; count: number };
 
+const brandCls =
+  "flex min-h-16 flex-col items-center justify-center gap-1 rounded-xl border border-border bg-surface-2 px-1 text-xs font-extrabold text-text";
+
 /**
- * The main share card, directly under the result header (sharing first is a product decision, enforced
- * by e2e). Shows a small HTML version of the link preview, then share actions ordered by how this
- * audience shares: WhatsApp, then Status / Story.
+ * The full share card, placed after the goals (watching comes first; quick-share buttons already sit under
+ * the answer). Shows a small HTML version of the link preview, then every share option: WhatsApp,
+ * Status / Story, X, Facebook, Telegram, Threads, the OS sheet and copy.
  */
 export function SharePanel({
   mmdd,
@@ -89,14 +102,9 @@ export function SharePanel({
         <button type="button" onClick={s.image} className={`${shareBtn.primary} min-h-14 text-[17px]`}>
           <StoryIcon className="h-6 w-6" /> Post to Status / Story
         </button>
-        <div className="grid grid-cols-3 gap-2">
-          <a
-            href={s.links.x}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => s.log("x")}
-            className={shareBtn.x}
-          >
+        <div className="grid grid-cols-4 gap-2">
+          <a href={s.links.x} target="_blank" rel="noopener noreferrer" onClick={() => s.log("x")} className={brandCls}>
+            <XIcon />
             <span aria-hidden="true">X</span>
             <span className="sr-only">Share on X</span>
           </a>
@@ -105,8 +113,9 @@ export function SharePanel({
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => s.log("facebook")}
-            className={`${shareBtn.facebook} px-2`}
+            className={brandCls}
           >
+            <FacebookIcon />
             Facebook
           </a>
           <a
@@ -114,9 +123,20 @@ export function SharePanel({
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => s.log("telegram")}
-            className={`${shareBtn.telegram} px-2`}
+            className={brandCls}
           >
+            <TelegramIcon />
             Telegram
+          </a>
+          <a
+            href={s.links.threads}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => s.log("threads")}
+            className={brandCls}
+          >
+            <ThreadsIcon />
+            Threads
           </a>
         </div>
         <div className="grid grid-cols-2 gap-2">
@@ -126,7 +146,7 @@ export function SharePanel({
             </button>
           )}
           <button type="button" onClick={s.copy} className={`${shareBtn.neutral} ${s.canNative ? "" : "col-span-2"}`}>
-            <LinkIcon /> Copy link
+            <LinkIcon /> Copy message
           </button>
         </div>
       </div>

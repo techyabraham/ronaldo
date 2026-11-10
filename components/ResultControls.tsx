@@ -2,7 +2,8 @@
 import { useEffect, useState } from "react";
 import type { SharePayload } from "@/lib/share";
 import { useShare } from "@/lib/useShare";
-import { LinkIcon, PlayIcon, ShareIcon, StoryIcon } from "./icons";
+import { openShareSheet } from "@/lib/shareSheet";
+import { FacebookIcon, PlayIcon, ShareIcon, StoryIcon, WhatsAppIcon, XIcon } from "./icons";
 
 /**
  * "Watch the goals": scrolls to the episodes and starts the first one with a saved video;
@@ -20,7 +21,7 @@ export function WatchGoals({
   const cls =
     variant === "hero"
       ? "flex h-[76px] w-[76px] items-center justify-center rounded-full bg-red text-white shadow-[0_10px_30px_rgba(0,0,0,0.45)]"
-      : "inline-flex h-[54px] items-center justify-center gap-2 rounded-xl bg-white font-extrabold text-bg";
+      : "inline-flex h-[54px] w-full items-center justify-center gap-2 rounded-xl bg-white font-extrabold text-bg";
   const inner =
     variant === "hero" ? (
       <>
@@ -53,37 +54,56 @@ export function WatchGoals({
   );
 }
 
-/** Watch + Copy link + Share, under the result title. */
-export function ResultActions({
-  mmdd,
-  url,
-  payload,
-  videoMatchId,
-  fallbackHref,
-}: {
-  mmdd: string;
-  url: string;
-  payload: SharePayload;
-  videoMatchId?: string;
-  fallbackHref: string;
-}) {
-  const s = useShare({ mmdd, payload, placement: "quick" });
-  const icon = "flex h-[54px] items-center justify-center rounded-xl border border-border bg-surface text-text";
+const round = "flex h-12 w-12 items-center justify-center rounded-full border border-border bg-surface-2 text-text";
+
+/**
+ * One-tap sharing on the first screen: WhatsApp, X, Facebook, Story, and More (opens the share sheet).
+ * Placement "quick". Used on both result layouts.
+ */
+export function QuickShare({ mmdd, payload, imagePath }: { mmdd: string; payload: SharePayload; imagePath: string }) {
+  const s = useShare({ mmdd, payload, placement: "quick", imagePath });
   return (
     <div>
-      <div className="grid grid-cols-[minmax(0,1fr)_56px_56px] gap-2">
-        <WatchGoals videoMatchId={videoMatchId} fallbackHref={fallbackHref} variant="primary" />
-        <button type="button" onClick={s.copy} className={icon} aria-label="Copy link">
-          <LinkIcon />
+      <p className="text-[13px] font-bold text-muted">Share your result</p>
+      <div className="mt-2 flex items-center justify-between gap-2">
+        <a
+          href={s.links.whatsapp}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Share on WhatsApp"
+          onClick={() => s.log("whatsapp")}
+          className={`${round} border-green bg-green text-green-ink`}
+        >
+          <WhatsAppIcon className="h-6 w-6" />
+        </a>
+        <a
+          href={s.links.x}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Share on X"
+          onClick={() => s.log("x")}
+          className={round}
+        >
+          <XIcon />
+        </a>
+        <a
+          href={s.links.facebook}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Share on Facebook"
+          onClick={() => s.log("facebook")}
+          className={round}
+        >
+          <FacebookIcon />
+        </a>
+        <button type="button" onClick={s.image} aria-label="Post to Status or Story" className={round}>
+          <StoryIcon />
         </button>
         <button
           type="button"
-          className={icon}
-          aria-label="Share"
-          onClick={() => {
-            if (s.canNative) return s.native();
-            document.getElementById("share")?.scrollIntoView({ behavior: "smooth", block: "start" });
-          }}
+          aria-label="More ways to share"
+          className={round}
+          onClick={() => openShareSheet({ mmdd, payload, placement: "quick", imagePath })}
         >
           <ShareIcon className="h-5 w-5" />
         </button>
@@ -97,41 +117,8 @@ export function ResultActions({
   );
 }
 
-/** Big red "Post my rare day" on no-goal pages: same action as the sticky bar. */
-export function PostButton({
-  mmdd,
-  url,
-  payload,
-  imagePath,
-  label,
-}: {
-  mmdd: string;
-  url: string;
-  payload: SharePayload;
-  imagePath: string;
-  label: string;
-}) {
-  const s = useShare({ mmdd, payload, placement: "panel", imagePath });
-  return (
-    <>
-      <button
-        type="button"
-        onClick={s.post}
-        className="inline-flex h-14 w-full items-center justify-center gap-2.5 rounded-xl bg-red font-display text-[22px] uppercase tracking-[0.03em] text-white"
-      >
-        <StoryIcon className="h-6 w-6" /> {label}
-      </button>
-      {s.toast && (
-        <p role="status" className="pt-2 text-center text-sm font-bold text-green-text">
-          {s.toast}
-        </p>
-      )}
-    </>
-  );
-}
-
 const TABS = [
-  { id: "episodes", label: "Episodes" },
+  { id: "episodes", label: "Goals" },
   { id: "calendar", label: "Calendar" },
   { id: "verdict", label: "Verdict" },
 ];

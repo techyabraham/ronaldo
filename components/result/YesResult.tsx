@@ -4,10 +4,10 @@ import { GoalCalendar } from "@/components/GoalCalendar";
 import { HeroArt } from "@/components/HeroArt";
 import { BackIcon, CrownIcon } from "@/components/icons";
 import { MatchCard } from "@/components/MatchCard";
-import { ResultActions, SectionTabs, WatchGoals } from "@/components/ResultControls";
+import { QuickShare, SectionTabs, WatchGoals } from "@/components/ResultControls";
 import { ShareBar } from "@/components/ShareBar";
-import { ShareNudge } from "@/components/ShareNudge";
 import { SharePanel } from "@/components/SharePanel";
+import { ShareSheet } from "@/components/ShareSheet";
 import { SiuuCelebration } from "@/components/SiuuCelebration";
 import { TeamPhoto } from "@/components/TeamPhoto";
 import { TOTAL_GOALS, portugalGoals, rankFamous, scoringDayCount } from "@/lib/goals";
@@ -43,7 +43,7 @@ export function YesResult({ mmdd }: { mmdd: string }) {
       <SiuuCelebration />
 
       {/* Hero */}
-      <div className="relative h-[340px] overflow-hidden">
+      <div className="relative h-[300px] overflow-hidden sm:h-[340px]">
         <HeroArt variant="result" photo={heroPhoto} priority />
         {heroMatch && (
           <span className="absolute top-3.5 right-3 rounded-md bg-bg/80 px-2 py-1 text-[11px] font-extrabold tracking-[0.08em] text-text backdrop-blur-sm">
@@ -64,6 +64,9 @@ export function YesResult({ mmdd }: { mmdd: string }) {
       </div>
 
       <div className="flex flex-col gap-5 px-4 pt-[18px]">
+        {/* One-tap sharing sits right under the hero so it is on the first screen of a phone. */}
+        <QuickShare mmdd={mmdd} payload={payload} imagePath={imagePath} />
+
         <SpecialBanner mmdd={mmdd} />
 
         {/* Title block */}
@@ -109,7 +112,7 @@ export function YesResult({ mmdd }: { mmdd: string }) {
           </p>
         </header>
 
-        <ResultActions mmdd={mmdd} url={url} payload={payload} videoMatchId={firstVideo} fallbackHref={fallbackHref} />
+        <WatchGoals videoMatchId={firstVideo} fallbackHref={fallbackHref} variant="primary" />
 
         {/* Stats */}
         <dl className="grid grid-cols-3 gap-2">
@@ -125,14 +128,6 @@ export function YesResult({ mmdd }: { mmdd: string }) {
           ))}
         </dl>
 
-        <SharePanel
-          mmdd={mmdd}
-          url={url}
-          payload={payload}
-          preview={{ label: label.toUpperCase(), count: n }}
-          imagePath={imagePath}
-        />
-
         <SectionTabs />
 
         <section id="episodes" aria-labelledby="episodes-h" className="flex scroll-mt-14 flex-col gap-5">
@@ -140,20 +135,25 @@ export function YesResult({ mmdd }: { mmdd: string }) {
             Episodes: every goal on {label}
           </h2>
           {matches.map((m, i) => (
-            <div key={m.matchId} className="flex flex-col gap-5">
-              <MatchCard m={m} index={i + 1} mmdd={mmdd} note={MATCH_NOTES[m.matchId]} />
-              {i === 0 && matches.length > 1 && (
-                <ShareNudge
-                  mmdd={mmdd}
-                  url={url}
-                  payload={payload}
-                  placement="panel"
-                  title={`${n} goal${n === 1 ? "" : "s"} on your birthday. Your group chat needs to see this.`}
-                />
-              )}
-            </div>
+            <MatchCard
+              key={m.matchId}
+              m={m}
+              index={i + 1}
+              mmdd={mmdd}
+              note={MATCH_NOTES[m.matchId]}
+              pageUrl={url}
+              label={label}
+            />
           ))}
         </section>
+
+        <SharePanel
+          mmdd={mmdd}
+          url={url}
+          payload={payload}
+          preview={{ label: label.toUpperCase(), count: n }}
+          imagePath={imagePath}
+        />
 
         <section id="calendar" aria-labelledby="calendar-h" className="scroll-mt-14 rounded-[18px] bg-surface p-4">
           <h2 id="calendar-h" className="mb-3 text-base font-extrabold">
@@ -180,14 +180,6 @@ export function YesResult({ mmdd }: { mmdd: string }) {
           </div>
         </section>
 
-        <ShareNudge
-          mmdd={mmdd}
-          url={url}
-          payload={payload}
-          placement="panel"
-          title={`Think a friend can beat ${n}? Challenge them.`}
-        />
-
         <Link
           href="/"
           className="flex min-h-14 items-center justify-center rounded-xl border-2 border-border font-display text-xl uppercase tracking-[0.03em]"
@@ -196,7 +188,13 @@ export function YesResult({ mmdd }: { mmdd: string }) {
         </Link>
       </div>
 
-      <ShareBar mmdd={mmdd} url={url} payload={payload} imagePath={imagePath} />
+      <ShareBar
+        mmdd={mmdd}
+        payload={payload}
+        imagePath={imagePath}
+        watch={{ videoMatchId: firstVideo, href: fallbackHref }}
+      />
+      <ShareSheet />
     </div>
   );
 }

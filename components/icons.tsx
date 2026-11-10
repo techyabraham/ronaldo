@@ -140,3 +140,53 @@ export function WhatsAppIcon({ className = "h-5 w-5" }: P) {
     </svg>
   );
 }
+
+/** The X (Twitter) mark. */
+export function XIcon({ className = "h-5 w-5" }: P) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="currentColor" aria-hidden="true">
+      <path d="M17.8 3h3.1l-6.8 7.7L22 21h-6.2l-4.9-6.3L5.3 21H2.2l7.3-8.3L2 3h6.4l4.4 5.8zm-1.1 16.2h1.7L7.4 4.7H5.6z" />
+    </svg>
+  );
+}
+
+export function FacebookIcon({ className = "h-5 w-5" }: P) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="currentColor" aria-hidden="true">
+      <path d="M14 8.5V6.8c0-.8.5-1 .9-1H17V2.2L14 2.2c-3.3 0-4 2.4-4 4v2.3H8V12h2v10h4V12h2.7l.4-3.5z" />
+    </svg>
+  );
+}
+
+export function TelegramIcon({ className = "h-5 w-5" }: P) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="currentColor" aria-hidden="true">
+      <path d="M21.4 3.6 2.9 10.7c-1.3.5-1.2 1.3-.2 1.6l4.7 1.5 1.8 5.6c.2.6.4.9.9.9.4 0 .6-.2.9-.5l2.3-2.2 4.8 3.5c.9.5 1.5.2 1.7-.8l3.1-14.7c.3-1.3-.5-1.9-1.5-1.5zM9.6 14.2l8.6-7.7-6.9 8.6-.3 3.3z" />
+    </svg>
+  );
+}
+
+/** Threads "@" mark. */
+export function ThreadsIcon({ className = "h-5 w-5" }: P) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2.2}
+      strokeLinecap="round"
+      aria-hidden="true"
+    >
+      <path d="M17 7.5c-1-2.4-3-3.5-5.2-3.5C7.7 4 5 7.2 5 12s2.7 8 6.8 8c3.2 0 6-2 6-5.2 0-2.8-2.2-4.3-5.2-4.3-2.3 0-3.8 1.2-3.8 2.9 0 1.6 1.3 2.6 3 2.6 2.5 0 3.6-2 3.6-5.2" />
+    </svg>
+  );
+}
+
+export function CloseIcon({ className = "h-5 w-5" }: P) {
+  return (
+    <svg {...stroke} className={className}>
+      <path d="M6 6l12 12M18 6L6 18" />
+    </svg>
+  );
+}

@@ -2,11 +2,12 @@ import Link from "next/link";
 import { EpisodeTile } from "@/components/EpisodeTile";
 import { FlagBar } from "@/components/FlagBar";
 import { GoalCalendar } from "@/components/GoalCalendar";
-import { BackIcon } from "@/components/icons";
-import { PostButton } from "@/components/ResultControls";
+import { BackIcon, PlayIcon } from "@/components/icons";
+import { QuickShare } from "@/components/ResultControls";
 import { ShareBar } from "@/components/ShareBar";
-import { ShareNudge } from "@/components/ShareNudge";
 import { SharePanel } from "@/components/SharePanel";
+import { ShareSheet } from "@/components/ShareSheet";
+import { youtubeSearchUrl } from "@/lib/share";
 import { TeamPhoto } from "@/components/TeamPhoto";
 import { shortLabel } from "@/lib/dates";
 import { thumbPhotoFor } from "@/lib/photos";
@@ -44,7 +45,7 @@ export function NoResult({ mmdd }: { mmdd: string }) {
         <header className="overflow-hidden rounded-[20px] bg-surface">
           <FlagBar height={6} className="rounded-none" />
           {/* Greyscale "off duty" photo that fades into the card */}
-          <div className="relative h-[230px]" aria-hidden="true">
+          <div className="relative h-[150px] sm:h-[230px]" aria-hidden="true">
             <TeamPhoto photo="rest" sizes="(max-width: 448px) 100vw, 448px" grayscale decorative />
             <div className="absolute inset-0 bg-gradient-to-b from-surface/10 via-surface/30 to-surface" />
             <span className="absolute top-3 right-3 rounded-md bg-bg/80 px-2 py-1 text-[11px] font-extrabold tracking-[0.08em] text-muted">
@@ -70,6 +71,9 @@ export function NoResult({ mmdd }: { mmdd: string }) {
           </div>
         </header>
 
+        {/* One-tap sharing right after the answer, so it is on the first screen of a phone. */}
+        <QuickShare mmdd={mmdd} payload={payload} imagePath={imagePath} />
+
         {/* The official excuse */}
         <section aria-labelledby="excuse-h" className="rounded-[20px] border border-border p-[18px]">
           <p className="eyebrow">The official excuse</p>
@@ -77,6 +81,49 @@ export function NoResult({ mmdd }: { mmdd: string }) {
             {excuse.title}
           </h2>
           <p className="mt-2 text-[15px] leading-snug text-text">{excuse.line}</p>
+        </section>
+
+        <section aria-labelledby="next-h" className="flex flex-col gap-3">
+          <h2 id="next-h" className="text-lg font-extrabold">
+            So close: Ronaldo&apos;s nearest goals
+          </h2>
+          {upNext.map((d) => (
+            <div key={d.mmdd} className="flex items-center gap-2">
+              <Link href={`/birthday/${d.mmdd}`} className="flex min-w-0 flex-1 items-center gap-3 text-text">
+                <EpisodeTile
+                  tone={d.tone}
+                  photo={thumbPhotoFor(d.team)}
+                  photoSizes="130px"
+                  className="h-[74px] w-[130px] flex-none"
+                >
+                  <span className="absolute bottom-2 left-2.5 font-display text-[26px] leading-none">
+                    {shortLabel(d.mmdd)}
+                  </span>
+                </EpisodeTile>
+                <span className="flex min-w-0 flex-col gap-0.5">
+                  <span className="sr-only">{d.label}: </span>
+                  <span
+                    className={`text-xs font-extrabold tracking-[0.08em] ${d.dir === "AFTER" ? "text-green-text" : "text-red-text"}`}
+                  >
+                    {d.offset} DAY{d.offset === 1 ? "" : "S"} {d.dir}
+                  </span>
+                  <span className="text-[15px] font-extrabold leading-tight">{d.headline}</span>
+                  <span className="text-xs text-muted">
+                    {d.count} goal{d.count === 1 ? "" : "s"}
+                  </span>
+                </span>
+              </Link>
+              <a
+                href={youtubeSearchUrl(d)}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Watch Ronaldo vs ${d.opponent}, ${d.year} on YouTube`}
+                className="flex h-11 w-11 flex-none items-center justify-center rounded-full bg-red text-white"
+              >
+                <PlayIcon className="ml-0.5 h-4 w-4" />
+              </a>
+            </div>
+          ))}
         </section>
 
         <SharePanel
@@ -94,58 +141,27 @@ export function NoResult({ mmdd }: { mmdd: string }) {
           <GoalCalendar highlight={mmdd} legend />
         </section>
 
-        <section aria-labelledby="next-h" className="flex flex-col gap-3">
-          <h2 id="next-h" className="text-lg font-extrabold">
-            Up next on the GOAT calendar
-          </h2>
-          {upNext.map((d) => (
-            <Link key={d.mmdd} href={`/birthday/${d.mmdd}`} className="flex items-center gap-3 text-text">
-              <EpisodeTile
-                tone={d.tone}
-                photo={thumbPhotoFor(d.team)}
-                photoSizes="130px"
-                className="h-[74px] w-[130px] flex-none"
-              >
-                <span className="absolute bottom-2 left-2.5 font-display text-[26px] leading-none">
-                  {shortLabel(d.mmdd)}
-                </span>
-              </EpisodeTile>
-              <span className="flex min-w-0 flex-col gap-0.5">
-                <span className="sr-only">{d.label}: </span>
-                <span
-                  className={`text-xs font-extrabold tracking-[0.08em] ${d.dir === "AFTER" ? "text-green-text" : "text-red-text"}`}
-                >
-                  {d.offset} DAY{d.offset === 1 ? "" : "S"} {d.dir}
-                </span>
-                <span className="text-[15px] font-extrabold leading-tight">{d.headline}</span>
-                <span className="text-xs text-muted">
-                  {d.count} goal{d.count === 1 ? "" : "s"}
-                </span>
-              </span>
-            </Link>
-          ))}
-        </section>
-
-        <ShareNudge
-          mmdd={mmdd}
-          url={url}
-          payload={payload}
-          placement="panel"
-          title="Find out who in your group got a GOAT Day."
-        />
-
         <div>
-          <PostButton mmdd={mmdd} url={url} payload={payload} imagePath={imagePath} label="Post my rare day" />
           <Link
             href="/"
-            className="mt-3 flex min-h-14 items-center justify-center rounded-xl border-2 border-border font-display text-xl uppercase tracking-[0.03em]"
+            className="flex min-h-14 items-center justify-center rounded-xl border-2 border-border font-display text-xl uppercase tracking-[0.03em]"
           >
             Check a friend&apos;s birthday
           </Link>
         </div>
       </div>
 
-      <ShareBar mmdd={mmdd} url={url} payload={payload} imagePath={imagePath} label="Post my rare day" />
+      <ShareBar
+        mmdd={mmdd}
+        payload={payload}
+        imagePath={imagePath}
+        watch={{
+          href: near.after
+            ? youtubeSearchUrl(near.after)
+            : "https://www.youtube.com/results?search_query=Cristiano+Ronaldo+goals",
+        }}
+      />
+      <ShareSheet />
     </div>
   );
 }

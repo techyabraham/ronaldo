@@ -105,21 +105,11 @@ export function useShare(cfg: ShareConfig) {
     flash("Image saved & message copied. Post it to your Status or Story");
   }, [cfg.imagePath, filename, plain, flash, log, shareFile]);
 
-  /** Legacy "Post my GOAT Day" action: Story image, else share sheet, else jump to the share panel. */
-  const post = useCallback(async () => {
-    if ((await shareFile()) !== "unsupported") return;
-    if (hasNativeShare()) return native();
-    log("native");
-    const panel = document.getElementById("share");
-    panel?.scrollIntoView({ behavior: "smooth", block: "start" });
-    panel?.querySelector<HTMLElement>("a,button")?.focus({ preventScroll: true });
-  }, [shareFile, native, log]);
-
   const copy = useCallback(async () => {
     log("copy");
     await copyToClipboard(plain);
     flash("Copied. Paste it anywhere");
   }, [plain, flash, log]);
 
-  return { canNative, links, plain, message, native, image, post, copy, log, toast };
+  return { canNative, links, plain, message, native, image, copy, log, toast };
 }

@@ -2,9 +2,10 @@ import type { Match } from "@/lib/goals";
 import { competitionLabel } from "@/lib/labels";
 import type { MatchNote } from "@/lib/moments";
 import { thumbPhotoFor } from "@/lib/photos";
-import { youtubeSearchUrl } from "@/lib/share";
+import { youtubeSearchUrl, type SharePayload } from "@/lib/share";
 import { EpisodeTile } from "./EpisodeTile";
 import { PlayIcon } from "./icons";
+import { ShareGoalButton } from "./ShareGoalButton";
 import { VideoEpisode } from "./VideoFacade";
 
 const TYPE_LABEL: Record<string, string> = {
@@ -27,12 +28,41 @@ function chipText(g: Match["goals"][number]) {
 }
 
 /** One match on a date, styled as a streaming "episode". Server component. */
-export function MatchCard({ m, index, mmdd, note }: { m: Match; index: number; mmdd: string; note?: MatchNote }) {
+export function MatchCard({
+  m,
+  index,
+  mmdd,
+  note,
+  pageUrl,
+  label,
+}: {
+  m: Match;
+  index: number;
+  mmdd: string;
+  note?: MatchNote;
+  /** The date page URL; the goal share links to this match card within it. */
+  pageUrl: string;
+  /** "23 June" */
+  label: string;
+}) {
   const n = m.goals.length;
   const badge = `${n} GOAL${n === 1 ? "" : "S"}`;
   const scoreline = m.result ? `${m.team} ${dash(m.result)} ${m.opponent}` : `${m.team} vs ${m.opponent}`;
   const comp = [competitionLabel(m.competition, m.year), m.stage].filter(Boolean).join(" · ");
   const disputed = m.goals.find((g) => g.notes)?.notes;
+  const goalPayload: SharePayload = {
+    kind: "goal",
+    label,
+    url: `${pageUrl}#m-${m.matchId}`,
+    match: {
+      team: m.team,
+      opponent: m.opponent,
+      year: m.year,
+      competition: m.competition,
+      stage: m.stage,
+      goals: n,
+    },
+  };
 
   const details = (
     <div className="flex min-w-0 flex-col gap-0.5">
@@ -46,7 +76,7 @@ export function MatchCard({ m, index, mmdd, note }: { m: Match; index: number; m
   );
 
   return (
-    <article className="flex flex-col gap-2.5" aria-labelledby={`ep-${m.matchId}`}>
+    <article id={`m-${m.matchId}`} className="flex scroll-mt-14 flex-col gap-2.5" aria-labelledby={`ep-${m.matchId}`}>
       <span id={`ep-${m.matchId}`} className="sr-only">
         {scoreline}, {m.year}
       </span>
@@ -75,9 +105,12 @@ export function MatchCard({ m, index, mmdd, note }: { m: Match; index: number; m
               <span className="absolute inset-0 m-auto flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-white ring-1 ring-white/30">
                 <PlayIcon className="h-4 w-4" />
               </span>
+              <span className="absolute bottom-1.5 left-1.5 rounded bg-bg/80 px-1.5 py-0.5 text-[11px] font-extrabold text-white">
+                YouTube ↗
+              </span>
             </EpisodeTile>
             <span className="sr-only">
-              Watch {m.team} vs {m.opponent}, {m.year} on YouTube ({n} goal{n === 1 ? "" : "s"})
+              Watch {m.team} vs {m.opponent}, {m.year}: {n} goal{n === 1 ? "" : "s"} (opens YouTube)
             </span>
           </a>
           {details}
@@ -93,6 +126,7 @@ export function MatchCard({ m, index, mmdd, note }: { m: Match; index: number; m
         ))}
       </ul>
       {note && <p className="text-[13px] leading-snug text-muted">{note.headline}</p>}
+      <ShareGoalButton mmdd={mmdd} payload={goalPayload} />
       {disputed && <p className="text-xs text-faint">{disputed}</p>}
       <div aria-hidden="true" className="h-[3px] rounded-full bg-hairline">
         <div className="h-[3px] w-full rounded-full bg-red" />

@@ -80,7 +80,17 @@ export function summarise(mmdd: string): DaySummary {
   };
 }
 
-export type Nearest = { mmdd: string; label: string; offset: number; count: number; headline: string; team: Team };
+export type Nearest = {
+  mmdd: string;
+  label: string;
+  offset: number;
+  count: number;
+  headline: string;
+  /** The date's most famous match, for "Watch" buttons. */
+  team: Team;
+  opponent: string;
+  year: number;
+};
 
 /** Closest dates before and after `mmdd` (wrapping around the year) on which he scored. */
 export function nearestScoringDays(mmdd: string): { before: Nearest | null; after: Nearest | null } {
@@ -98,6 +108,8 @@ export function nearestScoringDays(mmdd: string): { before: Nearest | null; afte
           count: goalsForDate(key).length,
           headline: `vs ${top.opponent} in ${top.year}`,
           team: top.team,
+          opponent: top.opponent,
+          year: top.year,
         };
       }
     }
