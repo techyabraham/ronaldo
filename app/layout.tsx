@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Analytics } from "@vercel/analytics/next";
 import { FlagBar } from "@/components/FlagBar";
 import { CrownIcon, SearchIcon } from "@/components/icons";
-import { DISCLAIMER, KEYWORDS, SITE_NAME, SITE_TAGLINE, SITE_URL } from "@/lib/site";
+import { CREATOR, DISCLAIMER, KEYWORDS, SITE_NAME, SITE_TAGLINE, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const archivo = Archivo({
@@ -25,11 +25,13 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: { default: `${SITE_TAGLINE} | ${SITE_NAME}`, template: `%s | ${SITE_NAME}` },
   description:
-    "Did the GOAT score on your birthday? Pick your day and see every official Cristiano Ronaldo goal scored on it, with videos.",
+    "Has Ronaldo scored on your birthday? Pick your day and see every official Cristiano Ronaldo goal scored on it, with videos.",
   keywords: KEYWORDS,
   applicationName: SITE_NAME,
+  authors: [{ name: CREATOR.name, url: CREATOR.portfolioUrl }],
+  creator: CREATOR.name,
   openGraph: { siteName: SITE_NAME, type: "website", locale: "en" },
-  twitter: { card: "summary_large_image" },
+  twitter: { card: "summary_large_image", creator: `@${CREATOR.handle}` },
 };
 
 export const viewport: Viewport = {
@@ -37,6 +39,15 @@ export const viewport: Viewport = {
   colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: SITE_NAME,
+  url: SITE_URL,
+  description: SITE_TAGLINE,
+  creator: { "@type": "Person", name: CREATOR.name, url: CREATOR.portfolioUrl, sameAs: [CREATOR.xUrl] },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -69,7 +80,25 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
         </main>
         <footer className="mx-auto w-full max-w-md px-4 pt-10 pb-36 text-xs leading-relaxed text-faint">
-          <p>{DISCLAIMER}</p>
+          <p className="flex flex-wrap items-center gap-x-1 text-sm text-muted">
+            Built by
+            <a
+              className="inline-flex min-h-11 items-center font-bold text-text underline"
+              href={CREATOR.portfolioUrl}
+              rel="author noopener"
+            >
+              {CREATOR.name}
+            </a>
+            <span aria-hidden="true">·</span>
+            <a
+              className="inline-flex min-h-11 items-center font-bold text-text underline"
+              href={CREATOR.xUrl}
+              rel="me noopener"
+            >
+              @{CREATOR.handle}
+            </a>
+          </p>
+          <p className="mt-2">{DISCLAIMER}</p>
           <p className="mt-2">
             International goal data from{" "}
             <a
@@ -102,8 +131,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <Link className="inline-flex min-h-11 items-center underline" href="/">
               Check a date
             </Link>
+            <Link className="inline-flex min-h-11 items-center underline" href="/calendar">
+              Calendar
+            </Link>
           </nav>
         </footer>
+        <script
+          type="application/ld+json"
+          // JSON-LD from constants only; escape "<" so no string can close the script tag.
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+        />
         <Analytics />
       </body>
     </html>

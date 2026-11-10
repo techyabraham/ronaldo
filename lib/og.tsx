@@ -9,7 +9,7 @@ import { TOTAL_GOALS, matchesForDate, nearestScoringDays, rankFamous, summarise 
 import { competitionLabel, teamCode } from "./labels";
 import { MATCH_NOTES } from "./moments";
 import { heroPhotoFor, type PhotoKey } from "./photos";
-import { SITE_URL } from "./site";
+import { CREDIT_X, SITE_URL } from "./site";
 
 /* Satori rules: flexbox only, explicit display:flex on every multi-child element, no repeating gradients. */
 
@@ -231,10 +231,10 @@ function Badge({ yes, size }: { yes: boolean; size: number }) {
 function titleFor(count: number) {
   return count > 0
     ? {
-        text: `The GOAT scored ${count} goal${count === 1 ? "" : "s"} on my birthday`,
+        text: `Ronaldo scored ${count} goal${count === 1 ? "" : "s"} on my birthday`,
         red: [String(count), count === 1 ? "goal" : "goals"],
       }
-    : { text: "Even the GOAT rests on my birthday", red: [] as string[] };
+    : { text: "Ronaldo never scored on my birthday", red: [] as string[] };
 }
 
 /** 1200×630 link preview (artboard "Share"). */
@@ -263,9 +263,12 @@ export async function renderLinkPreview(mmdd: string) {
           <span style={{ fontSize: 22, fontWeight: 800, letterSpacing: 3, color: C.muted }}>MY BIRTHDAY · {label}</span>
           <Words text={t.text} red={t.red} size={78} />
         </div>
-        <div style={{ display: "flex", fontSize: 26, fontWeight: 700 }}>
-          <span>{host()}</span>
-          <span style={{ color: C.muted, marginLeft: 10 }}>· Is yours a GOAT Day?</span>
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          <div style={{ display: "flex", fontSize: 26, fontWeight: 700, whiteSpace: "nowrap" }}>
+            <span>{host()}</span>
+            <span style={{ color: C.muted, marginLeft: 10 }}>· Has he scored on yours?</span>
+          </div>
+          <span style={{ fontSize: 22, fontWeight: 700, color: C.muted }}>{CREDIT_X}</span>
         </div>
       </div>
       <Panel width={440} height={630} crown={230} photo={sharePhotoFor(mmdd)} variant="og" fadeTo="left" />
@@ -340,7 +343,7 @@ export async function renderStory(mmdd: string) {
           flex: 1,
           flexDirection: "column",
           justifyContent: "space-between",
-          padding: "56px 70px 70px",
+          padding: "56px 70px 34px",
         }}
       >
         <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
@@ -398,9 +401,12 @@ export async function renderStory(mmdd: string) {
               textTransform: "uppercase",
             }}
           >
-            Is yours a GOAT Day?
+            Has he scored on yours?
           </span>
         </div>
+        <span style={{ display: "flex", marginTop: 20, fontSize: 28, fontWeight: 700, color: C.muted }}>
+          {CREDIT_X}
+        </span>
       </div>
     </div>,
     { width: 1080, height: 1920, fonts: await fonts() },
@@ -423,9 +429,12 @@ export async function renderHomePreview() {
         }}
       >
         <Wordmark size={40} />
-        <Words text="Did the GOAT score on your birthday?" red={["GOAT"]} size={84} />
-        <div style={{ display: "flex", fontSize: 26, fontWeight: 700, color: C.muted }}>
-          {TOTAL_GOALS} official goals · 366 days · {host()}
+        <Words text="Has Ronaldo scored on your birthday?" red={["Ronaldo"]} size={84} />
+        <div style={{ display: "flex", flexDirection: "column", gap: 8, fontWeight: 700, color: C.muted }}>
+          <span style={{ fontSize: 26, whiteSpace: "nowrap" }}>
+            {TOTAL_GOALS} official goals · {host()}
+          </span>
+          <span style={{ fontSize: 22 }}>{CREDIT_X}</span>
         </div>
       </div>
       <Panel width={440} height={630} crown={230} photo="portugal-back" variant="og" fadeTo="left" />

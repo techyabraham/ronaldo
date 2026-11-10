@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { DATA_UPDATED, LATEST_GOAL_DATE, TOTAL_GOALS } from "@/lib/goals";
-import { CORRECTIONS_URL, DISCLAIMER, SITE_URL } from "@/lib/site";
+import { CORRECTIONS_URL, CREATOR, DISCLAIMER, SITE_URL } from "@/lib/site";
 import { FlagBar } from "@/components/FlagBar";
 import { TabBar } from "@/components/TabBar";
 
@@ -88,6 +88,19 @@ export default function About() {
         <p>
           <a href={CORRECTIONS_URL}>Report a correction</a> with the date, the match and a source, and we&apos;ll fix
           it.
+        </p>
+
+        <h2>Who made this</h2>
+        <p>
+          Built by{" "}
+          <a href={CREATOR.portfolioUrl} rel="author noopener">
+            {CREATOR.name}
+          </a>
+          . Say hi on X:{" "}
+          <a href={CREATOR.xUrl} rel="me noopener">
+            @{CREATOR.handle}
+          </a>
+          .
         </p>
 
         <h2>Disclaimer</h2>

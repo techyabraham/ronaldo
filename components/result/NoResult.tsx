@@ -63,10 +63,11 @@ export function NoResult({ mmdd }: { mmdd: string }) {
               day.
             </p>
             <h1 data-testid="headline" className="text-xl font-extrabold leading-snug">
-              Even the GOAT takes a day off. He chose yours.
+              Ronaldo has never scored on your birthday
             </h1>
             <p className="text-[15px] leading-snug text-muted">
-              He has scored on {scoringDayCount()} of 366 dates. Yours is one of only {rest} he has never touched.
+              Even the GOAT takes a day off, and he chose yours. He has scored on {scoringDayCount()} of 366 dates.
+              Yours is one of only {rest} he has never touched.
             </p>
           </div>
         </header>
@@ -136,7 +137,7 @@ export function NoResult({ mmdd }: { mmdd: string }) {
 
         <section aria-labelledby="calendar-h" className="rounded-[18px] bg-surface p-4">
           <h2 id="calendar-h" className="mb-3 text-base font-extrabold">
-            Your rest day on the GOAT calendar
+            Your birthday on Ronaldo&apos;s calendar
           </h2>
           <GoalCalendar highlight={mmdd} legend />
         </section>

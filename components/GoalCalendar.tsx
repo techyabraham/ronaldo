@@ -33,7 +33,7 @@ export function GoalCalendar({ highlight, legend = false }: { highlight?: string
         <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted" aria-label="Legend">
           <li className="inline-flex items-center gap-1.5">
             <span className="h-[9px] w-[9px] rounded-[2px] bg-green" aria-hidden="true" />
-            GOAT scored
+            Ronaldo scored
           </li>
           <li className="inline-flex items-center gap-1.5">
             <span className="h-[9px] w-[9px] rounded-[2px] bg-cell-empty" aria-hidden="true" />

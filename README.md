@@ -14,8 +14,10 @@ with a video of each match and a shareable result page (`/birthday/MM-DD`) that 
 - **Look:** a dark, streaming-app feel in Portugal red (`--red`) and green (`--green`), with Anton for display type
   and Archivo for body text. The signature motif is the 2:3 green/red flag bar (`components/FlagBar.tsx`). Dark
   only. Colour tokens and their contrast notes are in `app/globals.css`.
-- **Voice:** the UI calls him "the GOAT"; page titles and meta descriptions keep saying "Ronaldo", because that's
-  what people search for.
+- **Voice:** Ronaldo first. Headlines, share text and page titles say "Ronaldo" (that's what people search for and
+  what makes sense in a group chat); "the GOAT" is an accent, as in "Even the GOAT takes a day off."
+- **Credit:** every share carries the creator: X posts end with "Created by @AkinwumiX", other channels end with
+  "Made by Abraham Akinwumi: https://x.com/AkinwumiX" after the site link (`CREDIT_X` / `CREDIT_LINK` in `lib/site.ts`).
 - **No photos, crests, league logos or "CR7" mark.** Text, the crown SVG and the flag colours only.
 - **Every number in the copy is live from the data** (total goals, the number of scoring and rest days, seasons,
   Portugal goals, per-club totals). Nothing is hard-coded, so the weekly refresh updates the whole site. The only
@@ -148,7 +150,7 @@ search button, never a broken embed.
 1. Push this repo to GitHub.
 2. In Vercel, choose **Add New → Project**, import the repo, and keep the defaults (framework: Next.js, build: `npm run build`).
 3. **Settings → Environment Variables**: add `NEXT_PUBLIC_SITE_URL` = your domain (e.g. `https://scoredonmybirthday.com`).
-4. **Analytics → Enable** (Vercel Web Analytics; no cookies, no banner). Events tracked: `date_searched`, `share_tapped` (with `channel` = whatsapp/image/x/facebook/telegram/copy/native and `placement` = panel/sticky/nudge-mid/nudge-end/home), `video_played`.
+4. **Analytics → Enable** (Vercel Web Analytics; no cookies, no banner). Events tracked: `date_searched`, `share_tapped` (with `channel` = whatsapp/image/x/facebook/telegram/threads/copy/native and `placement` = quick/sticky/episode/panel/sheet/home/tabbar), `share_sheet_opened`, `video_played`.
 
 5. **Domains**: add your domain, then redeploy so the share images pick up the URL.
 6. In GitHub, add the secrets `YOUTUBE_API_KEY` (and optionally `REFRESH_TOKEN`), and under **Settings → Actions →

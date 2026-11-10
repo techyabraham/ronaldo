@@ -45,14 +45,14 @@ export default function Home() {
         <HeroArt variant="home" photo="portugal-back" priority />
         <div className="absolute top-3.5 left-3.5 flex gap-1.5">
           <span className="rounded-md bg-red px-2 py-1 text-[11px] font-extrabold tracking-[0.08em] text-white">
-            GOAT ORIGINAL
+            CRISTIANO RONALDO
           </span>
           <span className="rounded-md bg-bg px-2 py-1 text-[11px] font-extrabold tracking-[0.08em] text-green-text">
             {TOTAL_GOALS} GOALS
           </span>
         </div>
         <div className="relative flex flex-col gap-2.5 bg-bg p-[18px]">
-          <h1 className="font-display text-[46px] uppercase leading-[0.96]">Did the GOAT score on your birthday?</h1>
+          <h1 className="font-display text-[46px] uppercase leading-[0.96]">Has Ronaldo scored on your birthday?</h1>
           <p className="text-[15px] leading-snug text-muted">
             Cristiano Ronaldo. {TOTAL_GOALS} official goals. {seasons} seasons. One question about your day.
           </p>
@@ -137,7 +137,7 @@ export default function Home() {
       <section aria-labelledby="days-h" className="mx-4 mt-6">
         <div className="flex items-baseline justify-between">
           <h2 id="days-h" className="text-lg font-extrabold">
-            His {scoringDayCount()} days
+            Ronaldo&apos;s {scoringDayCount()} scoring days
           </h2>
           <span className="text-xs text-muted">Dates he has scored on</span>
         </div>

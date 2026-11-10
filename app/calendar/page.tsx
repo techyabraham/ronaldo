@@ -9,7 +9,7 @@ import { SITE_URL } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Ronaldo goal calendar: every date he has scored",
   description:
-    "Every calendar date Cristiano Ronaldo has scored an official goal on, at a glance. Tap any day to see the GOAT's goals.",
+    "Every calendar date Cristiano Ronaldo has scored an official goal on, at a glance. Tap any day to see Ronaldo's goals.",
   alternates: { canonical: "/calendar" },
 };
 
@@ -19,13 +19,13 @@ export default function CalendarPage() {
     <>
       <div className="mx-auto max-w-md px-4 pt-4">
         <p className="eyebrow">All 366 dates</p>
-        <h1 className="mt-1 font-display text-5xl uppercase leading-[0.94]">The GOAT calendar</h1>
+        <h1 className="mt-1 font-display text-5xl uppercase leading-[0.94]">Ronaldo&apos;s goal calendar</h1>
         <p className="mt-3 text-[15px] text-muted">{scoringDayCount()} of 366 dates have a Ronaldo goal. Find yours.</p>
         <FlagBar className="mt-4 w-24" />
         <ul className="mt-4 flex gap-4 text-xs text-muted" aria-label="Legend">
           <li className="inline-flex items-center gap-1.5">
             <span className="h-3 w-3 rounded-[3px] bg-green" aria-hidden="true" />
-            GOAT scored
+            Ronaldo scored
           </li>
           <li className="inline-flex items-center gap-1.5">
             <span className="h-3 w-3 rounded-[3px] bg-cell-empty" aria-hidden="true" />

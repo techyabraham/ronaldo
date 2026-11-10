@@ -95,7 +95,7 @@ export function YesResult({ mmdd }: { mmdd: string }) {
             <p className="eyebrow">YOUR BIRTHDAY · {label.toUpperCase()}</p>
           </div>
           <h1 data-testid="headline" className="font-display text-[52px] uppercase leading-[0.94]">
-            The GOAT scored{" "}
+            Yes! Ronaldo scored{" "}
             <span className="text-red">
               {n} goal{n === 1 ? "" : "s"}
             </span>{" "}
@@ -157,7 +157,7 @@ export function YesResult({ mmdd }: { mmdd: string }) {
 
         <section id="calendar" aria-labelledby="calendar-h" className="scroll-mt-14 rounded-[18px] bg-surface p-4">
           <h2 id="calendar-h" className="mb-3 text-base font-extrabold">
-            Your day on the GOAT calendar
+            Your birthday on Ronaldo&apos;s calendar
           </h2>
           <GoalCalendar highlight={mmdd} legend />
         </section>
@@ -174,8 +174,9 @@ export function YesResult({ mmdd }: { mmdd: string }) {
               Greatest of all time.
             </h2>
             <p className="text-sm leading-snug text-muted">
-              {TOTAL_GOALS} official goals — the most in men&apos;s football history. {portugalGoals()} for Portugal,
-              the most international goals ever. Five Champions League titles. Case closed.
+              Cristiano Ronaldo: {TOTAL_GOALS} official goals, the most in men&apos;s football history.{" "}
+              {portugalGoals()} for Portugal, the most international goals ever. Five Champions League titles. Case
+              closed.
             </p>
           </div>
         </section>

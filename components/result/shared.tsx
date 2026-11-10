@@ -39,7 +39,7 @@ export function SpecialBanner({ mmdd }: { mmdd: string }) {
     const never = goalsForDate("02-05").length === 0;
     return (
       <p className="rounded-[18px] bg-surface px-4 py-3 text-[15px] font-bold leading-snug">
-        You share a birthday with the GOAT (5 February 1985).
+        You share a birthday with Cristiano Ronaldo (5 February 1985).
         {never && (
           <span className="block font-normal text-muted">He&apos;s never scored on his own birthday either.</span>
         )}

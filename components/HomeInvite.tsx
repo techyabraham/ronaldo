@@ -15,7 +15,7 @@ export function HomeInvite({ url }: { url: string }) {
       <h2 id="invite-h" className="text-lg font-extrabold">
         Run it in the group chat
       </h2>
-      <p className="mt-1 text-sm text-muted">Everyone checks their birthday. Most GOAT goals wins.</p>
+      <p className="mt-1 text-sm text-muted">Everyone checks their birthday. Most Ronaldo goals wins.</p>
       <div className="mt-3 grid grid-cols-2 gap-2">
         <a
           href={s.links.whatsapp}

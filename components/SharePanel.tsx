@@ -1,5 +1,6 @@
 "use client";
 import type { SharePayload } from "@/lib/share";
+import { CREDIT_X } from "@/lib/site";
 import { useShare } from "@/lib/useShare";
 import { FlagBar } from "./FlagBar";
 import {
@@ -49,7 +50,7 @@ export function SharePanel({
       <p className="mt-1 text-sm text-muted">
         {yes
           ? `Post it before they check theirs. Bet they can't beat ${preview.count}.`
-          : "Dare them to check theirs. Is their birthday a GOAT Day?"}
+          : "Dare them to check theirs. Has Ronaldo scored on their birthday?"}
       </p>
 
       {/* Small HTML replica of the 1200×630 link card friends will see (no image download). */}
@@ -70,15 +71,18 @@ export function SharePanel({
               <p className="mt-0.5 font-display text-[19px] uppercase leading-[0.95]">
                 {yes ? (
                   <>
-                    The GOAT scored <span className="text-red-text">{preview.count}</span> goal
+                    Ronaldo scored <span className="text-red-text">{preview.count}</span> goal
                     {preview.count === 1 ? "" : "s"} on my birthday
                   </>
                 ) : (
-                  "Even the GOAT rests on my birthday"
+                  "Ronaldo never scored on my birthday"
                 )}
               </p>
             </div>
-            <p className="truncate text-[8px] text-muted">{host} · Is yours a GOAT Day?</p>
+            <p className="flex justify-between gap-2 text-[8px] text-muted">
+              <span className="truncate">{host} · Has he scored on yours?</span>
+              <span className="flex-none text-faint">{CREDIT_X}</span>
+            </p>
           </div>
           <div className="relative flex flex-1">
             <div className="flex-[2] bg-flag-green" />

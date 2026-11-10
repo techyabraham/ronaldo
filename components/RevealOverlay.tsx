@@ -56,7 +56,7 @@ export default function RevealOverlay({ mmdd, data, onDone }: { mmdd: string; da
       <div aria-hidden="true" className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center gap-8 px-5">
         <p className="flex items-center justify-center gap-2 text-xs font-extrabold tracking-[0.18em] text-muted">
           <span className="reveal-dot h-2 w-2 rounded-full bg-red" />
-          SEARCHING THE GOAT ARCHIVE
+          SEARCHING RONALDO&apos;S {data.total} GOALS
         </p>
 
         <div className="flex items-center justify-center gap-2.5">

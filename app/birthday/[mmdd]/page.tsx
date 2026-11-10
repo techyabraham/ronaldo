@@ -4,6 +4,7 @@ import { NoResult } from "@/components/result/NoResult";
 import { YesResult } from "@/components/result/YesResult";
 import { ALL_MMDD, isValidMmdd } from "@/lib/dates";
 import { summarise } from "@/lib/goals";
+import { CREATOR } from "@/lib/site";
 
 export const dynamicParams = false;
 
@@ -30,7 +31,7 @@ export async function generateMetadata({ params }: PageProps<"/birthday/[mmdd]">
     description,
     alternates: { canonical: `/birthday/${mmdd}` },
     openGraph: { title, description, url: `/birthday/${mmdd}`, type: "website" },
-    twitter: { card: "summary_large_image", title, description },
+    twitter: { card: "summary_large_image", title, description, creator: `@${CREATOR.handle}` },
   };
 }
 
