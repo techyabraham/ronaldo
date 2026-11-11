@@ -13,7 +13,7 @@ import {
   type Match,
 } from "./goals";
 import { MATCH_NOTES } from "./moments";
-import { CREATOR, SITE_NAME } from "./site";
+import { CREATOR, SITE_NAME, SITE_URL } from "./site";
 
 /** Google shows ~60 characters of a title and ~155 of a description. Tests enforce both. */
 export const TITLE_MAX = 60;
@@ -35,6 +35,21 @@ export const KEYWORDS = [
 export function isProductionDeploy(env: Record<string, string | undefined> = process.env) {
   return env.VERCEL_ENV === "production";
 }
+
+/** The one canonical origin. The apex domain and http:// must redirect here (Vercel → Domains). */
+export const PRODUCTION_ORIGIN = "https://www.hasronaldoscoredonyourbirthday.xyz";
+
+/** Throws when a production build would ship the wrong canonicals, sitemap and share URLs. */
+export function assertProductionOrigin(siteUrl: string, env: Record<string, string | undefined> = process.env) {
+  if (isProductionDeploy(env) && siteUrl !== PRODUCTION_ORIGIN) {
+    throw new Error(
+      `NEXT_PUBLIC_SITE_URL must be ${PRODUCTION_ORIGIN} in production (got ${siteUrl}). ` +
+        "Set it in Vercel → Settings → Environment Variables (Production) and redeploy.",
+    );
+  }
+}
+// Build-time guard. lib/seo.ts is server-only and imported by the root layout, so this runs on every production build.
+assertProductionOrigin(SITE_URL);
 
 /**
  * Production: crawl everything except the dev-only tools. OG and Story image routes stay crawlable (Google and social

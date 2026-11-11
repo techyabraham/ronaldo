@@ -185,8 +185,9 @@ WhatsApp caches previews per URL for a long time; test with a URL you haven't sh
 
 There is exactly one origin: **`https://www.hasronaldoscoredonyourbirthday.xyz`**. The apex and `http://` redirect to it
 (Vercel → Domains), every canonical, `og:url`, sitemap URL and JSON-LD `@id` uses it, and URLs never end in a slash
-(Next 308-redirects `/birthday/06-23/` to `/birthday/06-23`). `lib/site.ts` fails a production build that has any
-other `NEXT_PUBLIC_SITE_URL`. Only the Vercel production deployment is indexable; previews are `noindex` with a
+(Next 308-redirects `/birthday/06-23/` to `/birthday/06-23`). `assertProductionOrigin` in `lib/seo.ts` fails a
+production build that has any other `NEXT_PUBLIC_SITE_URL` (it lives there, not in `lib/site.ts`, because client
+components import `lib/site.ts`). Only the Vercel production deployment is indexable; previews are `noindex` with a
 `Disallow: /` robots.txt (`isProductionDeploy` in `lib/seo.ts`).
 
 Check the live site after any domain change (prints a pass/fail table, exits 1 on a failure):

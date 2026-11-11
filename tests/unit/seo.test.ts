@@ -12,6 +12,7 @@ import {
   HOME_TITLE,
   KEYWORDS,
   TITLE_MAX,
+  assertProductionOrigin,
   dateDescription,
   dateOgAlt,
   dateTitle,
@@ -118,6 +119,15 @@ describe("site-wide", () => {
     expect(isProductionDeploy({ VERCEL_ENV: "production" })).toBe(true);
     expect(isProductionDeploy({ VERCEL_ENV: "preview" })).toBe(false);
     expect(isProductionDeploy({})).toBe(false);
+  });
+
+  it("production builds fail unless the site URL is the www origin; other builds never do", () => {
+    const prod = { VERCEL_ENV: "production" };
+    expect(() => assertProductionOrigin("https://www.hasronaldoscoredonyourbirthday.xyz", prod)).not.toThrow();
+    expect(() => assertProductionOrigin("https://hasronaldoscoredonyourbirthday.xyz", prod)).toThrow(/must be/);
+    expect(() => assertProductionOrigin("https://ronaldo-abc.vercel.app", prod)).toThrow(/must be/);
+    expect(() => assertProductionOrigin("http://localhost:3000", { VERCEL_ENV: "preview" })).not.toThrow();
+    expect(() => assertProductionOrigin("http://localhost:3000", {})).not.toThrow();
   });
 
   it("robots: production allows crawling and lists the sitemap; previews block everything", () => {
