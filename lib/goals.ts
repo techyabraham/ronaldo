@@ -6,6 +6,7 @@ import expectedJson from "@/data/expected.json";
 import { TEAMS, type Goal, type MatchVideo, type Team } from "./schema";
 import { ALL_MMDD, DAYS_IN_MONTH, MONTH_NAMES, dayIndex, formatMmdd } from "./dates";
 import { pickFamous } from "./famous";
+import { competitionLabel } from "./competition";
 
 const goals = goalsJson as Goal[];
 const byId = new Map(goals.map((g) => [g.id, g]));
@@ -219,6 +220,69 @@ export function perTeamTotals(): { team: Team; goals: number }[] {
 /** Most goals on any single calendar date (for Trending progress bars). */
 export function maxDayCount() {
   return Math.max(...ALL_MMDD.map((k) => (byDate[k] ?? []).length));
+}
+
+/**
+ * Rank of a date among all 366 by goal count (1 = most). Ties share a rank ("standard competition" ranking:
+ * 1 + the number of dates with strictly more goals).
+ */
+export function dayRank(mmdd: string): { rank: number; tied: boolean } {
+  const c = (byDate[mmdd] ?? []).length;
+  const counts = ALL_MMDD.map((k) => (byDate[k] ?? []).length);
+  return { rank: 1 + counts.filter((x) => x > c).length, tied: counts.filter((x) => x === c).length > 1 };
+}
+
+/** Scoring dates of a month (1–12), most goals first (then calendar order). */
+export function monthScoringDays(month: number): DaySummary[] {
+  const prefix = `${String(month).padStart(2, "0")}-`;
+  return ALL_MMDD.filter((k) => k.startsWith(prefix))
+    .map(summarise)
+    .filter((d) => d.count > 0)
+    .sort((a, b) => b.count - a.count || a.mmdd.localeCompare(b.mmdd));
+}
+
+export type FactGoal = { year: number; team: Team; opponent: string; n: number };
+export type CareerFacts = {
+  first: FactGoal;
+  latest: FactGoal;
+  /** Goals per team on this date, most first. */
+  teams: { team: Team; goals: number }[];
+  /** Display labels ("Euro 2020", "Champions League"), in first-seen order. */
+  competitions: string[];
+  /** Known goal types with counts, most first; `unknown` = goals with no recorded type. */
+  types: { type: NonNullable<Goal["type"]>; count: number }[];
+  unknownTypes: number;
+  /** Career goal numbers, ascending. */
+  numbers: number[];
+  rank: { rank: number; tied: boolean };
+};
+
+/** Everything the "{date} in Ronaldo's career" block shows; null on a date he never scored on. */
+export function careerFacts(mmdd: string): CareerFacts | null {
+  const gs = [...goalsForDate(mmdd)].sort((a, b) => a.n - b.n);
+  if (!gs.length) return null;
+  const fact = (g: Goal): FactGoal => ({
+    year: parseInt(g.date.slice(0, 4), 10),
+    team: g.team,
+    opponent: g.opponent,
+    n: g.n,
+  });
+  const count = <K extends string>(xs: K[]) => {
+    const m = new Map<K, number>();
+    for (const x of xs) m.set(x, (m.get(x) ?? 0) + 1);
+    return [...m.entries()].sort((a, b) => b[1] - a[1]);
+  };
+  const typed = gs.map((g) => g.type).filter((t): t is NonNullable<Goal["type"]> => !!t);
+  return {
+    first: fact(gs[0]),
+    latest: fact(gs.at(-1)!),
+    teams: count(gs.map((g) => g.team)).map(([team, goals]) => ({ team, goals })),
+    competitions: [...new Set(gs.map((g) => competitionLabel(g.competition, parseInt(g.date.slice(0, 4), 10))))],
+    types: count(typed).map(([type, c]) => ({ type, count: c })),
+    unknownTypes: gs.length - typed.length,
+    numbers: gs.map((g) => g.n),
+    rank: dayRank(mmdd),
+  };
 }
 
 export type CalendarCell = { mmdd: string; day: number; state: "hit" | "miss" | "void"; count: number };

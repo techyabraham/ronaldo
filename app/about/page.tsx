@@ -34,7 +34,9 @@ export default function About() {
           year.
         </p>
 
-        <h2>What counts</h2>
+        <h2 id="what-counts" className="scroll-mt-4">
+          What counts
+        </h2>
         <ul className="list-disc pl-5">
           <li>
             <strong>Official senior goals only</strong>: {TOTAL_GOALS} in total (club and Portugal), the same definition

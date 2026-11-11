@@ -16,18 +16,17 @@ import type { Team } from "@/lib/schema";
 import { competitionLabel } from "@/lib/labels";
 import { MATCH_NOTES } from "@/lib/moments";
 import { youtubeSearchUrl } from "@/lib/share";
+import { dateAnswer, dateCrumbs } from "@/lib/seo";
+import { Breadcrumb } from "@/components/Breadcrumb";
+import { TrustLine } from "@/components/TrustLine";
+import { CareerFacts } from "./CareerFacts";
+import { NearbyDates } from "./NearbyDates";
 import { SpecialBanner, resultContext } from "./shared";
-
-function listJoin(xs: string[]) {
-  if (xs.length <= 1) return xs.join("");
-  return `${xs.slice(0, -1).join(", ")} and ${xs.at(-1)}`;
-}
 
 /** Result page for a date with goals (artboard "Yes"). Server component. */
 export function YesResult({ mmdd }: { mmdd: string }) {
   const { s, matches, famous, label, url, imagePath, payload } = resultContext(mmdd);
   const n = s.count;
-  const record = matches.map((m) => MATCH_NOTES[m.matchId]).find((x) => x?.record);
   const comps = [...new Set(matches.map((m) => competitionLabel(m.competition, m.year).replace(/ \d{4}$/, "")))];
   const firstVideo = matches.find((m) => m.video)?.matchId;
   const fallbackHref = youtubeSearchUrl(famous!);
@@ -41,6 +40,8 @@ export function YesResult({ mmdd }: { mmdd: string }) {
   return (
     <div className="mx-auto max-w-md">
       <SiuuCelebration />
+
+      <Breadcrumb crumbs={dateCrumbs(mmdd)} className="px-4" />
 
       {/* Hero */}
       <div className="relative h-[300px] overflow-hidden sm:h-[340px]">
@@ -101,9 +102,9 @@ export function YesResult({ mmdd }: { mmdd: string }) {
             </span>{" "}
             on your birthday
           </h1>
-          <p className="text-[15px] leading-snug text-muted">
-            {s.years.length > 1 ? `Across ${s.years.length} different years` : `In ${s.years[0]}`}, for{" "}
-            {listJoin(s.teams)}.{record && ` ${record.headline}`}
+          {/* Answer-first paragraph: a complete, quotable sentence with the numbers in it. */}
+          <p data-testid="answer" className="text-[15px] leading-snug text-muted">
+            {dateAnswer(mmdd)}
           </p>
           <p className="flex flex-wrap gap-x-3.5 gap-y-1 text-[13px] font-bold text-muted">
             <span>{s.years.join(" · ")}</span>
@@ -131,8 +132,8 @@ export function YesResult({ mmdd }: { mmdd: string }) {
         <SectionTabs />
 
         <section id="episodes" aria-labelledby="episodes-h" className="flex scroll-mt-14 flex-col gap-5">
-          <h2 id="episodes-h" className="sr-only">
-            Episodes: every goal on {label}
+          <h2 id="episodes-h" className="text-lg font-extrabold">
+            Every Ronaldo goal on {label}
           </h2>
           {matches.map((m, i) => (
             <MatchCard
@@ -146,6 +147,8 @@ export function YesResult({ mmdd }: { mmdd: string }) {
             />
           ))}
         </section>
+
+        <CareerFacts mmdd={mmdd} />
 
         <SharePanel
           mmdd={mmdd}
@@ -181,12 +184,16 @@ export function YesResult({ mmdd }: { mmdd: string }) {
           </div>
         </section>
 
+        <NearbyDates mmdd={mmdd} />
+
         <Link
           href="/"
           className="flex min-h-14 items-center justify-center rounded-xl border-2 border-border font-display text-xl uppercase tracking-[0.03em]"
         >
           Check a friend&apos;s birthday
         </Link>
+
+        <TrustLine />
       </div>
 
       <ShareBar

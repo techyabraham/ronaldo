@@ -70,7 +70,11 @@ export function MatchCard({
         E{index} · {m.year}
         {note?.record && <span className="text-red-text"> · RECORD</span>}
       </p>
-      <h3 className="text-base font-extrabold leading-tight">{scoreline}</h3>
+      {/* The year is already visible on the line above; it's repeated for screen readers and crawlers. */}
+      <h3 className="text-base font-extrabold leading-tight">
+        {scoreline}
+        <span className="sr-only">, {m.year}</span>
+      </h3>
       <p className="text-xs text-muted">{comp}</p>
     </div>
   );
