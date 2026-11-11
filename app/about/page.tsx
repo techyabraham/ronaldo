@@ -6,6 +6,8 @@ import { FlagBar } from "@/components/FlagBar";
 import { JsonLd } from "@/components/JsonLd";
 import { aboutGraph } from "@/lib/jsonld";
 import { TabBar } from "@/components/TabBar";
+import { PartnerBanner } from "@/components/partner/PartnerBanner";
+import { PARTNER } from "@/lib/partner";
 
 export const metadata: Metadata = {
   title: ABOUT_TITLE,
@@ -36,6 +38,13 @@ export default function About() {
           Pick a birthday and we show every official goal Cristiano Ronaldo has scored on that calendar day, in any
           year.
         </p>
+
+        {/* PartnerLink sets its colour and decoration inline, so the article's [&_a] link styles don't apply. */}
+        {PARTNER.enabled && (
+          <div className="mt-6">
+            <PartnerBanner placement="about" />
+          </div>
+        )}
 
         <h2 id="what-counts" className="scroll-mt-4">
           What counts

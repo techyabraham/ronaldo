@@ -1,5 +1,9 @@
+import { Fragment } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { PartnerBanner } from "@/components/partner/PartnerBanner";
+import { PartnerStrip } from "@/components/partner/PartnerStrip";
+import { PARTNER } from "@/lib/partner";
 import { FlagBar } from "@/components/FlagBar";
 import { JsonLd } from "@/components/JsonLd";
 import { calendarGraph } from "@/lib/jsonld";
@@ -44,22 +48,28 @@ export default function CalendarPage() {
         </ul>
 
         <div className="mt-6 flex flex-col gap-7">
+          {PARTNER.enabled && <PartnerBanner placement="calendar" slot={1} />}
           {rows.map((r) => (
-            <MonthGrid
-              key={r.month}
-              row={r}
-              heading={
-                <Link
-                  href={`/calendar/${MONTH_SLUGS[r.month - 1]}`}
-                  className="inline-flex min-h-11 items-center gap-2 underline-offset-4 hover:underline"
-                >
-                  {r.label}
-                  <span aria-hidden="true" className="text-lg text-muted">
-                    →
-                  </span>
-                </Link>
-              }
-            />
+            <Fragment key={r.month}>
+              <MonthGrid
+                row={r}
+                heading={
+                  <Link
+                    href={`/calendar/${MONTH_SLUGS[r.month - 1]}`}
+                    className="inline-flex min-h-11 items-center gap-2 underline-offset-4 hover:underline"
+                  >
+                    {r.label}
+                    <span aria-hidden="true" className="text-lg text-muted">
+                      →
+                    </span>
+                  </Link>
+                }
+              />
+              {/* A compact strip after every second month (Feb, Apr, Jun, Aug, Oct): slots 2–6. */}
+              {PARTNER.enabled && r.month % 2 === 0 && r.month < 12 && (
+                <PartnerStrip placement="calendar" slot={r.month / 2 + 1} />
+              )}
+            </Fragment>
           ))}
         </div>
       </div>

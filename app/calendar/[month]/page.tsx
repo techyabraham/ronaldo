@@ -5,6 +5,8 @@ import { Breadcrumb } from "@/components/Breadcrumb";
 import { FlagBar } from "@/components/FlagBar";
 import { JsonLd } from "@/components/JsonLd";
 import { MonthGrid } from "@/components/MonthGrid";
+import { PartnerStrip } from "@/components/partner/PartnerStrip";
+import { PARTNER } from "@/lib/partner";
 import { TabBar } from "@/components/TabBar";
 import { TrustLine } from "@/components/TrustLine";
 import { MONTH_NAMES, MONTH_SLUGS, formatMmdd, monthFromSlug } from "@/lib/dates";
@@ -71,6 +73,8 @@ export default async function MonthPage({ params }: PageProps<"/calendar/[month]
           </p>
           <FlagBar className="mt-4 w-24" />
         </div>
+
+        {PARTNER.enabled && <PartnerStrip placement="month" slot={month} />}
 
         <MonthGrid row={row} heading={`Every ${name} date`} />
 

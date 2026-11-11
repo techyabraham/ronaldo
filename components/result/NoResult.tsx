@@ -17,6 +17,8 @@ import { shortLabel } from "@/lib/dates";
 import { thumbPhotoFor } from "@/lib/photos";
 import { excuseFor } from "@/lib/excuses";
 import { nearestScoringDays, restDayCount, scoringDayCount } from "@/lib/goals";
+import { PartnerCard } from "@/components/partner/PartnerCard";
+import { PARTNER } from "@/lib/partner";
 import { SpecialBanner, resultContext } from "./shared";
 
 /** Result page for a date he has never scored on (artboard "No"). Server component. */
@@ -78,7 +80,9 @@ export function NoResult({ mmdd }: { mmdd: string }) {
           </div>
         </header>
 
-        {/* One-tap sharing right after the answer, so it is on the first screen of a phone. */}
+        {PARTNER.enabled && <PartnerCard placement="result-no" />}
+
+        {/* One-tap sharing right after the answer (the sticky bar keeps Share on the first screen). */}
         <QuickShare mmdd={mmdd} payload={payload} imagePath={imagePath} />
 
         {/* The official excuse */}
