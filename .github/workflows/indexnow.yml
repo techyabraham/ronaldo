@@ -1,0 +1,32 @@
+name: IndexNow ping
+
+# After goal data lands on master (the weekly refresh PR merged), tell IndexNow which pages changed.
+# Only master pushes: previews and PR branches are never pinged. The script also only ever targets the www origin.
+on:
+  push:
+    branches: [master]
+    paths: [data/goals.json]
+  workflow_dispatch:
+
+concurrency:
+  group: indexnow
+  cancel-in-progress: false
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # the script diffs data/goals.json against the previous master commit
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      # --wait: hold the ping until Vercel serves the new data, so crawlers don't fetch stale pages.
+      - name: Ping IndexNow with the changed URLs
+        run: npx tsx scripts/indexnow.ts --base "${{ github.event.before || 'HEAD~1' }}" --wait

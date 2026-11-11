@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { formatMmdd } from "@/lib/dates";
+import { PARTNER } from "@/lib/partner";
+import { PartnerStrip } from "./partner/PartnerStrip";
 
 export type RevealData = { total: number; seasons: number; teams: { team: string; goals: number }[] };
 
@@ -31,7 +33,16 @@ export default function RevealOverlay({ mmdd, data, onDone }: { mmdd: string; da
       }
     };
     raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+    // Backstop: rAF pauses in a hidden tab (e.g. the sponsor link opened in front); timers keep running.
+    const backstop = setTimeout(() => {
+      if (done.current) return;
+      done.current = true;
+      finish.current();
+    }, DURATION + 100);
+    return () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(backstop);
+    };
   }, []);
 
   const skip = () => {
@@ -108,6 +119,12 @@ export default function RevealOverlay({ mmdd, data, onDone }: { mmdd: string; da
           Calling the greatest of all time to the stand…
         </p>
       </div>
+      {/* Sponsor strip: outside the aria-hidden block so it stays reachable; opens a new tab, never delays this one. */}
+      {PARTNER.enabled && (
+        <div className="mx-auto mb-3 w-full max-w-md px-5">
+          <PartnerStrip placement="loading" />
+        </div>
+      )}
       <button
         type="button"
         onClick={skip}

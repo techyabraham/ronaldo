@@ -108,9 +108,20 @@ test.describe("GOAT Day on a 360px phone", () => {
 
   test("watch and share are balanced on the first screen", async ({ page }) => {
     await page.goto("/birthday/05-02");
+    // First viewport on load: the h1, the hero's Watch button, and the sticky bar's Watch + Share.
+    await expect(page.getByTestId("headline")).toBeAttached();
     await expect(page.getByRole("link", { name: "Watch the goals" }).first()).toBeInViewport();
-    // The quick-share row (the sticky bar has no X button, so this is the in-page row).
-    await expect(page.getByRole("link", { name: "Share on X" }).first()).toBeInViewport();
+    const stickyBar = page.getByRole("region", { name: "Watch and share" });
+    await expect(stickyBar.getByText("Watch", { exact: true })).toBeInViewport();
+    await expect(stickyBar.getByRole("button", { name: /^share$/i })).toBeInViewport();
+
+    // The sponsor card sits between the hero and the quick-share row, which is one scroll away.
+    const cardTop = (await page.locator('[data-partner="result-yes"]').boundingBox())!.y;
+    const quickTop = (await page.locator("#quick-share").boundingBox())!.y;
+    expect(cardTop).toBeLessThan(quickTop);
+    await page.locator("#quick-share").scrollIntoViewIfNeeded();
+    await expect(page.locator("#quick-share")).toBeVisible();
+    await page.evaluate(() => window.scrollTo(0, 0));
 
     // The goals come before the long share panel.
     const firstEpisodeTop = (await page.locator("#episodes article").first().boundingBox())!.y;
@@ -181,9 +192,14 @@ test.describe("GOAT Day on a 360px phone", () => {
       await page.goto(p);
       await expect(page.locator('meta[name="twitter:creator"]')).toHaveAttribute("content", "@AkinwumiX");
     }
-    const ld = JSON.parse((await page.locator('script[type="application/ld+json"]').textContent())!);
-    expect(ld["@type"]).toBe("WebSite");
-    expect(ld.creator.name).toBe("Abraham Akinwumi");
+    // Every ld+json block parses; together they hold the WebSite (published by the creator) and this page's ItemPage.
+    const blocks = await page.locator('script[type="application/ld+json"]').allTextContents();
+    const ldNodes = blocks.flatMap((b) => (JSON.parse(b) as { "@graph": Record<string, unknown>[] })["@graph"]);
+    const site = ldNodes.find((n) => n["@type"] === "WebSite")!;
+    const creator = ldNodes.find((n) => n["@id"] === (site.publisher as { "@id": string })["@id"])!;
+    expect(creator.name).toBe("Abraham Akinwumi");
+    expect(ldNodes.some((n) => n["@type"] === "ItemPage")).toBe(true);
+    expect(ldNodes.some((n) => n["@type"] === "BreadcrumbList")).toBe(true);
     await page.goto("/about");
     await expect(page.getByRole("heading", { name: "Who made this" })).toBeVisible();
   });
@@ -252,9 +268,16 @@ test.describe("GOAT Day on a 360px phone", () => {
 
   test("result pages keep SEO titles and OG images; Story image and square redirect", async ({ page, request }) => {
     await page.goto("/birthday/05-02");
-    await expect(page).toHaveTitle("Did Ronaldo score on 2 May? Yes — 12 goals");
+    await expect(page).toHaveTitle("Did Ronaldo score on 2 May? Yes, 12 goals (2010–2022)");
     const og = await page.locator('meta[property="og:image"]').first().getAttribute("content");
-    expect(og).toMatch(/\/birthday\/05-02\/opengraph-image/);
+    expect(og).toMatch(/\/birthday\/05-02\/opengraph-image\/card/);
+    await expect(page.locator('meta[property="og:image:alt"]').first()).toHaveAttribute(
+      "content",
+      "Ronaldo scored 12 goals on 2 May",
+    );
+    const oldOg = await request.get("/birthday/05-02/opengraph-image", { maxRedirects: 0 });
+    expect(oldOg.status()).toBe(308);
+    expect(oldOg.headers()["location"]).toMatch(/\/birthday\/05-02\/opengraph-image\/card$/);
     const story = await request.get("/birthday/06-23/story");
     expect(story.status()).toBe(200);
     expect(story.headers()["content-type"]).toBe("image/png");
@@ -267,6 +290,8 @@ test.describe("GOAT Day on a 360px phone", () => {
     for (const p of [
       "/",
       "/calendar",
+      "/calendar/june",
+      "/calendar/july",
       "/birthday/05-02",
       "/birthday/06-23",
       "/birthday/12-25",

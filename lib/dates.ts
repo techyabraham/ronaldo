@@ -29,6 +29,33 @@ export function mmdd(month: number, day: number) {
   return `${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
 }
 
+/** URL slugs for the month hubs: /calendar/january … /calendar/december. */
+export const MONTH_SLUGS = MONTH_NAMES.map((m) => m.toLowerCase());
+
+/** "june" -> 6; null for anything else. */
+export function monthFromSlug(slug: string): number | null {
+  const i = MONTH_SLUGS.indexOf(slug);
+  return i < 0 ? null : i + 1;
+}
+
+/** "06-23" -> 6 */
+export const monthOf = (key: string) => parseInt(key.slice(0, 2), 10);
+
+/** The calendar day before/after, wrapping 31 Dec ↔ 1 Jan and including 29 Feb. */
+export function adjacentMmdd(key: string, dir: 1 | -1): string {
+  const i = ALL_MMDD.indexOf(key);
+  return ALL_MMDD[(i + dir + ALL_MMDD.length) % ALL_MMDD.length];
+}
+
+/** "2021-06-23" -> "23 June 2021" */
+export function formatLongDate(iso: string): string {
+  const [y, m, d] = iso
+    .slice(0, 10)
+    .split("-")
+    .map((x) => parseInt(x, 10));
+  return `${d} ${MONTH_NAMES[m - 1]} ${y}`;
+}
+
 /** "02-05" -> "5 February" */
 export function formatMmdd(key: string): string {
   const [m, d] = key.split("-").map((x) => parseInt(x, 10));

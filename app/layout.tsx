@@ -1,10 +1,13 @@
 import type { Metadata, Viewport } from "next";
-import { Anton, Archivo } from "next/font/google";
+import { Anton, Archivo, Space_Grotesk } from "next/font/google";
 import Link from "next/link";
 import { Analytics } from "@vercel/analytics/next";
 import { FlagBar } from "@/components/FlagBar";
 import { CrownIcon, SearchIcon } from "@/components/icons";
-import { CREATOR, DISCLAIMER, KEYWORDS, SITE_NAME, SITE_TAGLINE, SITE_URL } from "@/lib/site";
+import { JsonLd } from "@/components/JsonLd";
+import { siteGraph } from "@/lib/jsonld";
+import { HOME_DESCRIPTION, HOME_TITLE, KEYWORDS, isProductionDeploy } from "@/lib/seo";
+import { CREATOR, DISCLAIMER, SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const archivo = Archivo({
@@ -21,16 +24,29 @@ const anton = Anton({
   weight: "400",
 });
 
+// SkillsAir sponsor banners only (components/partner). Not preloaded: it downloads only where a banner renders.
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
+  subsets: ["latin"],
+  display: "swap",
+  weight: "700",
+  preload: false,
+});
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: { default: `${SITE_TAGLINE} | ${SITE_NAME}`, template: `%s | ${SITE_NAME}` },
-  description:
-    "Has Ronaldo scored on your birthday? Pick your day and see every official Cristiano Ronaldo goal scored on it, with videos.",
+  title: { default: HOME_TITLE, template: `%s | ${SITE_NAME}` },
+  description: HOME_DESCRIPTION,
   keywords: KEYWORDS,
   applicationName: SITE_NAME,
   authors: [{ name: CREATOR.name, url: CREATOR.portfolioUrl }],
   creator: CREATOR.name,
-  openGraph: { siteName: SITE_NAME, type: "website", locale: "en" },
+  category: "sports",
+  formatDetection: { telephone: false },
+  // Previews, CI and local builds must never be indexed; only the Vercel production deployment is.
+  robots: isProductionDeploy() ? { index: true, follow: true } : { index: false, follow: false },
+  // No canonical here on purpose: every route sets its own (a layout canonical would leak "/" to all pages).
+  openGraph: { siteName: SITE_NAME, type: "website", locale: "en_GB" },
   twitter: { card: "summary_large_image", creator: `@${CREATOR.handle}` },
 };
 
@@ -41,18 +57,9 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  name: SITE_NAME,
-  url: SITE_URL,
-  description: SITE_TAGLINE,
-  creator: { "@type": "Person", name: CREATOR.name, url: CREATOR.portfolioUrl, sameAs: [CREATOR.xUrl] },
-};
-
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${archivo.variable} ${anton.variable} antialiased`}>
+    <html lang="en" className={`${archivo.variable} ${anton.variable} ${spaceGrotesk.variable} antialiased`}>
       <body className="flex min-h-dvh flex-col bg-bg text-text">
         <a
           href="#main"
@@ -136,11 +143,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             </Link>
           </nav>
         </footer>
-        <script
-          type="application/ld+json"
-          // JSON-LD from constants only; escape "<" so no string can close the script tag.
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
-        />
+        {/* WebSite + creator + Cristiano Ronaldo; every page's own graph references these by @id. */}
+        <JsonLd data={siteGraph()} />
         <Analytics />
       </body>
     </html>

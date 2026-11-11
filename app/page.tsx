@@ -1,8 +1,10 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { BirthdayPicker } from "@/components/BirthdayPicker";
 import { FlagBar } from "@/components/FlagBar";
 import { GoalCalendar } from "@/components/GoalCalendar";
 import { HeroArt } from "@/components/HeroArt";
+import { HomeFacts } from "@/components/HomeFacts";
 import { HomeInvite } from "@/components/HomeInvite";
 import { TabBar } from "@/components/TabBar";
 import { TodayChip } from "@/components/TodayChip";
@@ -22,7 +24,16 @@ import {
 import { GOAT_MOMENTS } from "@/lib/moments";
 import { thumbPhotoFor } from "@/lib/photos";
 import { TeamPhoto } from "@/components/TeamPhoto";
+import { PartnerBanner } from "@/components/partner/PartnerBanner";
+import { PARTNER } from "@/lib/partner";
+import { HOME_DESCRIPTION, HOME_TITLE, socialMeta } from "@/lib/seo";
 import { SITE_URL } from "@/lib/site";
+
+export const metadata: Metadata = {
+  title: { absolute: HOME_TITLE },
+  description: HOME_DESCRIPTION,
+  ...socialMeta({ title: HOME_TITLE, description: HOME_DESCRIPTION, path: "/" }),
+};
 
 export default function Home() {
   const counts = countsByDay();
@@ -59,6 +70,12 @@ export default function Home() {
           <FlagBar />
         </div>
       </section>
+
+      {PARTNER.enabled && (
+        <div className="mx-4 mt-3.5">
+          <PartnerBanner placement="home" />
+        </div>
+      )}
 
       {/* Picker */}
       <section
@@ -145,6 +162,8 @@ export default function Home() {
           <GoalCalendar />
         </div>
       </section>
+
+      <HomeFacts />
 
       <div className="mx-4 mt-6">
         <HomeInvite url={`${SITE_URL}/`} />

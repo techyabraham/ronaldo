@@ -1,0 +1,22 @@
+# GOAT Day: Has Ronaldo scored on your birthday?
+
+> GOAT Day (https://www.hasronaldoscoredonyourbirthday.xyz) answers one question for any calendar date: has Cristiano Ronaldo ever scored an official goal on it? Every page is static HTML built from an open, date-by-date list of all of Cristiano Ronaldo's official senior goals for club and country.
+
+## Pages
+
+- [Home](https://www.hasronaldoscoredonyourbirthday.xyz/): pick a birthday; live totals and common questions.
+- Date pages, /birthday/MM-DD (366 of them, 29 February included), e.g. [23 June](https://www.hasronaldoscoredonyourbirthday.xyz/birthday/06-23): a yes/no answer in the first paragraph, every match and goal on that date (team, opponent, competition, minute, goal type, career goal number), the date's rank among all 366, and links to the neighbouring dates.
+- Month hubs, /calendar/{month} (january … december), e.g. [June](https://www.hasronaldoscoredonyourbirthday.xyz/calendar/june): goals per month, the best dates, and the dates with no goal.
+- [Goal calendar](https://www.hasronaldoscoredonyourbirthday.xyz/calendar): all 366 dates at a glance.
+- [About & data sources](https://www.hasronaldoscoredonyourbirthday.xyz/about): what counts as a goal, sources, licence, corrections.
+
+## Data
+
+- What counts: official senior goals only (club and Portugal). Youth-team goals, club friendlies and penalty-shootout kicks are excluded; extra-time goals count. Dates are the local date where the match was played.
+- Download: [goals.json](https://www.hasronaldoscoredonyourbirthday.xyz/data/goals.json), one record per goal, under the Open Database License (ODbL 1.0).
+- Sources: Wikipedia's "List of international goals scored by Cristiano Ronaldo" and Al-Nassr season articles (CC BY-SA 4.0), and the "Lionel Messi vs Cristiano Ronaldo | Club Goals" dataset by Azmine Toushik Wasi on Kaggle (ODbL). Checked weekly.
+
+## About
+
+- Unofficial fan site, not affiliated with Cristiano Ronaldo, his clubs or any league. Videos are embedded from YouTube and belong to their owners.
+- Made by Abraham Akinwumi (https://abraham.com.ng, https://x.com/AkinwumiX).

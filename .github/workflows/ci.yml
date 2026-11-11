@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [master]
   pull_request:
   workflow_dispatch:
 
@@ -15,7 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
-      NEXT_PUBLIC_SITE_URL: https://example.test
+      # Build exactly like production (indexable, www canonicals) so e2e and Lighthouse SEO check the real output.
+      # The preview/noindex branch is covered by unit tests (tests/unit/seo.test.ts).
+      NEXT_PUBLIC_SITE_URL: https://www.hasronaldoscoredonyourbirthday.xyz
+      VERCEL_ENV: production
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

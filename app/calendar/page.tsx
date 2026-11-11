@@ -1,24 +1,38 @@
+import { Fragment } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { PartnerBanner } from "@/components/partner/PartnerBanner";
+import { PartnerStrip } from "@/components/partner/PartnerStrip";
+import { PARTNER } from "@/lib/partner";
 import { FlagBar } from "@/components/FlagBar";
+import { JsonLd } from "@/components/JsonLd";
+import { calendarGraph } from "@/lib/jsonld";
 import { TabBar } from "@/components/TabBar";
-import { MONTH_NAMES } from "@/lib/dates";
+import { Breadcrumb } from "@/components/Breadcrumb";
+import { MonthGrid } from "@/components/MonthGrid";
+import { MONTH_SLUGS } from "@/lib/dates";
 import { calendarRows, scoringDayCount } from "@/lib/goals";
+import { CALENDAR_DESCRIPTION, CALENDAR_TITLE, calendarCrumbs, socialMeta, withBrand } from "@/lib/seo";
 import { SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Ronaldo goal calendar: every date he has scored",
-  description:
-    "Every calendar date Cristiano Ronaldo has scored an official goal on, at a glance. Tap any day to see Ronaldo's goals.",
-  alternates: { canonical: "/calendar" },
+  title: CALENDAR_TITLE,
+  description: CALENDAR_DESCRIPTION,
+  ...socialMeta({
+    title: withBrand(CALENDAR_TITLE),
+    description: CALENDAR_DESCRIPTION,
+    path: "/calendar",
+    homeImage: true,
+  }),
 };
 
 export default function CalendarPage() {
   const rows = calendarRows();
   return (
     <>
-      <div className="mx-auto max-w-md px-4 pt-4">
-        <p className="eyebrow">All 366 dates</p>
+      <div className="mx-auto max-w-md px-4 pt-1">
+        <Breadcrumb crumbs={calendarCrumbs()} />
+        <p className="eyebrow mt-1">All 366 dates</p>
         <h1 className="mt-1 font-display text-5xl uppercase leading-[0.94]">Ronaldo&apos;s goal calendar</h1>
         <p className="mt-3 text-[15px] text-muted">{scoringDayCount()} of 366 dates have a Ronaldo goal. Find yours.</p>
         <FlagBar className="mt-4 w-24" />
@@ -34,37 +48,33 @@ export default function CalendarPage() {
         </ul>
 
         <div className="mt-6 flex flex-col gap-7">
+          {PARTNER.enabled && <PartnerBanner placement="calendar" slot={1} />}
           {rows.map((r) => (
-            <section key={r.month} aria-labelledby={`m-${r.month}`}>
-              <h2 id={`m-${r.month}`} className="font-display text-2xl uppercase tracking-[0.02em]">
-                {r.label}
-              </h2>
-              <ul className="mt-2 grid grid-cols-7 gap-[3px]">
-                {r.cells
-                  .filter((c) => c.state !== "void")
-                  .map((c) => {
-                    const name = `${c.day} ${MONTH_NAMES[r.month - 1]}, ${c.count ? `${c.count} goal${c.count === 1 ? "" : "s"}` : "no goals"}`;
-                    return (
-                      <li key={c.mmdd}>
-                        <Link
-                          href={`/birthday/${c.mmdd}`}
-                          aria-label={name}
-                          className={`flex aspect-square min-h-11 flex-col items-center justify-center rounded-md leading-none ${
-                            c.state === "hit" ? "bg-green text-green-ink" : "bg-cell-empty text-faint"
-                          }`}
-                        >
-                          <span className="font-display text-lg">{c.day}</span>
-                          {c.count > 0 && <span className="mt-0.5 text-[10px] font-extrabold">{c.count}</span>}
-                        </Link>
-                      </li>
-                    );
-                  })}
-              </ul>
-            </section>
+            <Fragment key={r.month}>
+              <MonthGrid
+                row={r}
+                heading={
+                  <Link
+                    href={`/calendar/${MONTH_SLUGS[r.month - 1]}`}
+                    className="inline-flex min-h-11 items-center gap-2 underline-offset-4 hover:underline"
+                  >
+                    {r.label}
+                    <span aria-hidden="true" className="text-lg text-muted">
+                      →
+                    </span>
+                  </Link>
+                }
+              />
+              {/* A compact strip after every second month (Feb, Apr, Jun, Aug, Oct): slots 2–6. */}
+              {PARTNER.enabled && r.month % 2 === 0 && r.month < 12 && (
+                <PartnerStrip placement="calendar" slot={r.month / 2 + 1} />
+              )}
+            </Fragment>
           ))}
         </div>
       </div>
       <TabBar url={`${SITE_URL}/`} />
+      <JsonLd data={calendarGraph()} />
     </>
   );
 }

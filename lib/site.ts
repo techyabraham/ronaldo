@@ -13,6 +13,8 @@ export const CREDIT_X = `Created by @${CREATOR.handle}`;
 /** Signature on every other share: the site link comes first, this goes after it. */
 export const CREDIT_LINK = `Made by ${CREATOR.name}: ${CREATOR.xUrl}`;
 
+// Client components import this file: keep it to plain constants. The production-origin guard lives in lib/seo.ts
+// (server-only) so its error message never ships to browsers.
 export const SITE_URL = (
   process.env.NEXT_PUBLIC_SITE_URL ??
   (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : null) ??
@@ -23,13 +25,3 @@ export const CORRECTIONS_URL = "https://github.com/techyabraham/ronaldo/issues/n
 
 export const DISCLAIMER =
   "Unofficial fan site. Not affiliated with Cristiano Ronaldo, his clubs, or any league. Videos are embedded from YouTube and belong to their owners.";
-
-export const KEYWORDS = [
-  "Cristiano Ronaldo",
-  "Ronaldo birthday goal",
-  "did Ronaldo score on my birthday",
-  "Has Ronaldo scored on my birthday",
-  "Christiano Ronaldo",
-  "Ronaldo goals by date",
-  "Ronaldo 985 goals",
-];

@@ -48,6 +48,8 @@ export const MatchVideoSchema = z.object({
   status: z.enum(["verified", "auto", "missing", "rejected"]),
   confidence: z.number().optional(),
   checkedAt: z.string().optional(),
+  /** YouTube `snippet.publishedAt` (ISO 8601 with time zone), used as VideoObject.uploadDate. */
+  publishedAt: z.string().optional(),
   goalOverrides: z
     .record(z.string(), z.object({ youtubeId: z.string(), startSeconds: z.number().int().optional() }))
     .optional(),

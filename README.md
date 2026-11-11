@@ -70,6 +70,7 @@ Other commands:
 | `npm run build` | validates the dataset, then builds every page and image (~3 min) |
 | `npm test` | unit + data tests (Vitest) |
 | `npm run test:e2e` | Playwright on a 360×740 phone viewport (runs `next start`, so build first) |
+| `npm run test:e2e:partner-off` | builds with `NEXT_PUBLIC_PARTNER=off` into `.next-partner-off` and checks no sponsor banner renders (see [Sponsor](#sponsor-skillsair)) |
 | `npm run lint` / `npm run typecheck` / `npm run format` | the usual |
 | `npm run lhci` | Lighthouse CI against a local production build |
 
@@ -79,13 +80,17 @@ Copy `.env.example` to `.env.local`.
 
 | Name | Where | Purpose |
 |---|---|---|
-| `NEXT_PUBLIC_SITE_URL` | Vercel (Production) + `.env.local` | Absolute URL for canonical links, the sitemap and the URL printed on share images. **Set this before the first production build** or the images will show the Vercel URL. |
+| `NEXT_PUBLIC_SITE_URL` | Vercel (Production) + `.env.local` | Absolute URL for canonical links, the sitemap and the URL printed on share images. In production it **must** be `https://www.hasronaldoscoredonyourbirthday.xyz` (no trailing slash): a production build fails otherwise. |
+| `VERCEL_ENV` | Set by Vercel | Only `production` is indexable. Previews and local builds get `noindex` and a `Disallow: /` robots.txt. CI sets it to `production` so e2e and Lighthouse test the real output. |
+| `INDEXNOW_KEY` | GitHub secret | Must equal the name of `public/{key}.txt`. Used by `scripts/indexnow.ts` (see [SEO](#seo)). |
 | `YOUTUBE_API_KEY` | `.env.local` + GitHub secret | Used **only** by `scripts/find-videos.ts` and `scripts/check-videos.ts`. Never shipped to the browser. |
+| `NEXT_PUBLIC_PARTNER` | Vercel (optional) | Set to `off` to remove every sponsor banner (see [Sponsor](#sponsor-skillsair)). Read at build time, so redeploy after changing it. |
 | `REFRESH_TOKEN` | GitHub secret (optional) | Fine-grained PAT (contents + pull-requests: write). Lets the weekly data PR trigger CI. |
 
 ## Data
 
-Sources and licences: see [`data/SOURCES.md`](data/SOURCES.md).
+Sources and licences: see [`data/SOURCES.md`](data/SOURCES.md). The built goal list is also published at
+`/data/goals.json` (ODbL), linked from `/about#data`.
 
 ```
 data/
@@ -151,16 +156,65 @@ ones (❌), or paste a better video id and a start second. The review page and i
 `*.dev.tsx` files that production builds don't route. Matches without a usable video show a **Watch on YouTube**
 search button, never a broken embed.
 
+## Sponsor: SkillsAir
+
+The site carries one sponsor, [SkillsAir](https://skillsair.com/), in three banner designs, all labelled
+**SPONSORED**: `PartnerBanner` (home), `PartnerStrip` (compact) and `PartnerCard` (results), in
+`components/partner/`. They are server-rendered; the only client JS is the click event in `PartnerLink`. They are
+fluid from 320 to 448px, never animated, never fixed or sticky, and never mention or show Ronaldo.
+
+### Where they appear
+
+| Page | Banner | Position | `utm_campaign` / `utm_content` |
+|---|---|---|---|
+| Home `/` | `PartnerBanner` | between the hero and the date picker | `home` |
+| Reveal (after picking a date) | `PartnerStrip` | above "Skip intro". Not shown with reduced motion, which skips the Reveal | `loading` |
+| Result, goal day | `PartnerCard` | after the hero, before the quick-share row | `result-yes` |
+| Result, rest day | `PartnerCard` | after the rest-day card, before the quick-share row | `result-no` |
+| `/calendar` | `PartnerBanner`, then `PartnerStrip` ×5 | banner before January, strips after Feb, Apr, Jun, Aug, Oct | `calendar` / `1`–`6` |
+| Month hubs `/calendar/<month>` | `PartnerStrip` | after the answer paragraph, before the month grid | `month` / month number |
+| `/about` | `PartnerBanner` | before "What counts" | `about` |
+| 404 | `PartnerStrip` | below "Check a birthday" | `not-found` |
+
+There are none on share images (OG/Story), the share sheet, the sticky Watch/Share bar, the tab bar, the footer or
+the admin page.
+
+### Changing copy or links
+
+Edit **`lib/partner.ts` only**. Copy, colours, the base URL and the referral code live there, and every banner reads
+from it. **The referral code (`skr=WH22F793`) must stay on every link**: it's how SkillsAir credits referrals.
+`partnerHref()` always puts it first, and `tests/unit/partner.test.ts` pins the exact URLs.
+
+Links follow one scheme, so SkillsAir's analytics can split clicks by placement and slot:
+
+```
+https://skillsair.com/?skr=WH22F793&utm_source=ronaldo&utm_medium=banner&utm_campaign=<placement>[&utm_content=<slot>]
+```
+
+Every link opens in a new tab with `rel="sponsored noopener"`. It also carries `data-nosnippet`, so Google never
+quotes ad text in search results. Clicks are also logged to Vercel Analytics as `partner_click` with the placement.
+
+### Turning it off
+
+Set `NEXT_PUBLIC_PARTNER=off` in Vercel (**Settings → Environment Variables**) and **redeploy**. The value is read
+at build time, so changing it alone does nothing until the next build. With it off, no banner renders and the
+banner font (Space Grotesk, never preloaded) is never downloaded. `npm run test:e2e:partner-off` checks this.
+
+> **Hosting:** Vercel's Hobby (free) plan is for non-commercial use. Showing a commercial sponsor requires a
+> **Vercel Pro** plan under Vercel's fair-use rules.
+
 ## Deploying to Vercel (free tier)
 
 1. Push this repo to GitHub.
 2. In Vercel, choose **Add New → Project**, import the repo, and keep the defaults (framework: Next.js, build: `npm run build`).
-3. **Settings → Environment Variables**: add `NEXT_PUBLIC_SITE_URL` = your domain (e.g. `https://scoredonmybirthday.com`).
-4. **Analytics → Enable** (Vercel Web Analytics; no cookies, no banner). Events tracked: `date_searched`, `share_tapped` (with `channel` = whatsapp/image/x/facebook/telegram/threads/copy/native and `placement` = quick/sticky/episode/panel/sheet/home/tabbar), `share_sheet_opened`, `video_played`.
+3. **Settings → Environment Variables**: add `NEXT_PUBLIC_SITE_URL` = `https://www.hasronaldoscoredonyourbirthday.xyz`
+   for **Production** only (previews then use their own URL and stay `noindex`).
+4. **Analytics → Enable** (Vercel Web Analytics; no cookies, no banner). Events tracked: `date_searched`, `share_tapped` (with `channel` = whatsapp/image/x/facebook/telegram/threads/copy/native and `placement` = quick/sticky/episode/panel/sheet/home/tabbar), `share_sheet_opened`, `video_played`, `partner_click` (with `placement`; see [Sponsor](#sponsor-skillsair)).
 
-5. **Domains**: add your domain, then redeploy so the share images pick up the URL.
-6. In GitHub, add the secrets `YOUTUBE_API_KEY` (and optionally `REFRESH_TOKEN`), and under **Settings → Actions →
-   General**, allow GitHub Actions to create pull requests.
+5. **Domains**: add `www.hasronaldoscoredonyourbirthday.xyz` as the primary domain and the apex
+   `hasronaldoscoredonyourbirthday.xyz` as a **308 redirect** to it, then redeploy so the share images pick up the URL.
+6. In GitHub, add the secrets `YOUTUBE_API_KEY`, `INDEXNOW_KEY` (and optionally `REFRESH_TOKEN`), and under
+   **Settings → Actions → General**, allow GitHub Actions to create pull requests.
 
 Build output is ~1,100 static files (≈32 MB of PNGs) and builds in about 3 minutes, well within the free tier.
 
@@ -173,6 +227,101 @@ After deploying, paste a result URL (e.g. `https://yourdomain/birthday/05-02`) i
 - <https://cards-dev.x.com/validator> may be unavailable; posting the link in a draft on X shows the card
 
 WhatsApp caches previews per URL for a long time; test with a URL you haven't shared before.
+
+## SEO
+
+### The origin rule
+
+There is exactly one origin: **`https://www.hasronaldoscoredonyourbirthday.xyz`**. The apex and `http://` redirect to it
+(Vercel → Domains), every canonical, `og:url`, sitemap URL and JSON-LD `@id` uses it, and URLs never end in a slash
+(Next 308-redirects `/birthday/06-23/` to `/birthday/06-23`). `assertProductionOrigin` in `lib/seo.ts` fails a
+production build that has any other `NEXT_PUBLIC_SITE_URL` (it lives there, not in `lib/site.ts`, because client
+components import `lib/site.ts`). Only the Vercel production deployment is indexable; previews are `noindex` with a
+`Disallow: /` robots.txt (`isProductionDeploy` in `lib/seo.ts`).
+
+Check the live site after any domain change (prints a pass/fail table, exits 1 on a failure):
+
+```bash
+npx tsx scripts/check-live-seo.ts
+```
+
+### What each page carries
+
+All of it is built from the data at build time and server-rendered; none of it adds client JS.
+
+| Route | Title / description | Visible content | JSON-LD (`lib/jsonld.ts`) |
+|---|---|---|---|
+| every page | | | `WebSite` (with alternate names), creator `Person`, Cristiano Ronaldo `Person` (layout) |
+| `/` | fixed | "Ronaldo by the numbers", "Questions people ask" (plain `<details>`) | site graph only |
+| `/birthday/MM-DD` (366) | answer-first, `lib/seo.ts`; ≤ 60 / 120–155 chars, unit-tested | breadcrumb, answer paragraph, career facts, nearby dates, month links, trust line | `ItemPage`, `BreadcrumbList`, `ItemList` of matches, `VideoObject` per saved video |
+| `/calendar/{month}` (12) | per month | breadcrumb, answer, month grid, top dates, rest days, prev/next month | `CollectionPage`, `BreadcrumbList`, `ItemList` of scoring dates |
+| `/calendar` | fixed | breadcrumb, 12 month grids linking to the hubs | `CollectionPage`, `BreadcrumbList`, `ItemList` of month hubs |
+| `/about` | fixed | `#what-counts`, `#data` (JSON download) | `AboutPage`, `Dataset` (ODbL, with a `DataDownload`) |
+
+Breadcrumb names come from one list (`dateCrumbs`/`monthCrumbs` in `lib/seo.ts`), so the visible trail and the
+`BreadcrumbList` always match. Only mark up what people can see.
+
+**Never add `FAQPage` or `HowTo` markup for rich results.** Google removed FAQ rich results in May 2026 and HowTo in
+2023, and the sitelinks search box (`SearchAction`) in 2024. The home FAQ is plain HTML on purpose. Don't use
+`SportsEvent` for past matches either (it's for upcoming events and needs venue data we don't have).
+
+### Discovery
+
+| URL | What |
+|---|---|
+| `/sitemap.xml` | 381 URLs: home, calendar, 12 month hubs, 366 dates, about. `lastModified` is each page's newest relevant goal (`lastModifiedFor` in `lib/goals.ts`), not the build date. |
+| `/video-sitemap.xml` | One `<url>` per date page with saved videos. Empty until `npm run data:videos` saves some; `robots.txt` lists it once it has entries. |
+| `/robots.txt` | Production: allow all except `/admin/` and `/api/`, plus `Host` and the sitemaps. No crawler (search or AI) is blocked. |
+| `/llms.txt` | Plain-text description of the site, URL structure, data and licence. |
+| `/data/goals.json` | The open goal list (ODbL). Not in the sitemap. |
+
+**IndexNow** (Bing, Yandex, Seznam, Naver; Bing also feeds Copilot and ChatGPT search): when a data change lands on
+`master`, `.github/workflows/indexnow.yml` runs `scripts/indexnow.ts`. It diffs `data/goals.json` against the previous
+commit, waits until the live `/data/goals.json` serves the new data, then pings the changed date pages, their month
+hubs, home, calendar and about. The key lives in `public/{key}.txt` and the `INDEXNOW_KEY` secret (they must match).
+Without the secret it only prints the payload. Try it locally without sending anything:
+
+```bash
+npx tsx scripts/indexnow.ts --base HEAD~1 --dry-run
+```
+
+### Search Console and Bing Webmaster Tools
+
+- **Google Search Console**: add a **Domain** property for `hasronaldoscoredonyourbirthday.xyz` (DNS TXT record at your
+  registrar), then **Sitemaps → Add** `https://www.hasronaldoscoredonyourbirthday.xyz/sitemap.xml` (and
+  `video-sitemap.xml` once videos exist).
+- **Bing Webmaster Tools**: **Import from Google Search Console** (it copies the verified site and sitemaps). IndexNow
+  pings appear under **IndexNow** once the first data change has been pushed.
+
+### Rich Results Test
+
+After a deploy, open <https://search.google.com/test/rich-results>, choose **URL**, and test:
+
+1. `https://www.hasronaldoscoredonyourbirthday.xyz/birthday/06-23`: expect **Breadcrumbs** valid (and **Videos** once a
+   video is saved for one of its matches).
+2. `https://www.hasronaldoscoredonyourbirthday.xyz/birthday/02-16`: expect **Breadcrumbs** valid.
+3. `https://www.hasronaldoscoredonyourbirthday.xyz/calendar/june`: expect **Breadcrumbs** valid.
+4. `https://www.hasronaldoscoredonyourbirthday.xyz/about`: no rich-result type is expected (Dataset feeds Dataset
+   Search instead); check **View tested page → Structured data** parses with no errors, or use
+   <https://validator.schema.org/>.
+
+Warnings about optional fields are fine; errors are not.
+
+### After deploy: checklist
+
+1. **Vercel → Domains**: apex `hasronaldoscoredonyourbirthday.xyz` 308 → `www`. Run `npx tsx scripts/check-live-seo.ts`
+   and make sure every row passes.
+2. **Google Search Console**: add the Domain property (DNS TXT). Submit
+   `https://www.hasronaldoscoredonyourbirthday.xyz/sitemap.xml` (and `video-sitemap.xml` once videos exist). URL
+   Inspection → **Request indexing** for `/`, `/calendar`, the 12 month hubs and the 20 most popular dates.
+3. **Bing Webmaster Tools**: import from Search Console, add the `INDEXNOW_KEY` GitHub secret, and confirm IndexNow pings
+   show up after the next data merge.
+4. **Rich Results Test**: `/birthday/06-23`, `/calendar/june` and `/about` as above; Breadcrumbs valid, Videos once the
+   video fill has run.
+5. **Earn links**: post the site on X from @AkinwumiX with a date people care about (5 Feb, his birthday) and pin it;
+   share the open dataset (`/about#data`) in football-data and dev communities. Every share already links back.
+6. **After 2–4 weeks**, in Search Console → **Pages**, check "Crawled – currently not indexed" for date pages. If many
+   no-goal dates sit there, enrich their excuse and nearest-goal text before anything else.
 
 ## Performance notes
 

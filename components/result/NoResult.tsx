@@ -2,7 +2,11 @@ import Link from "next/link";
 import { EpisodeTile } from "@/components/EpisodeTile";
 import { FlagBar } from "@/components/FlagBar";
 import { GoalCalendar } from "@/components/GoalCalendar";
-import { BackIcon, PlayIcon } from "@/components/icons";
+import { PlayIcon } from "@/components/icons";
+import { Breadcrumb } from "@/components/Breadcrumb";
+import { TrustLine } from "@/components/TrustLine";
+import { dateAnswer, dateCrumbs } from "@/lib/seo";
+import { NearbyDates } from "./NearbyDates";
 import { QuickShare } from "@/components/ResultControls";
 import { ShareBar } from "@/components/ShareBar";
 import { SharePanel } from "@/components/SharePanel";
@@ -13,6 +17,8 @@ import { shortLabel } from "@/lib/dates";
 import { thumbPhotoFor } from "@/lib/photos";
 import { excuseFor } from "@/lib/excuses";
 import { nearestScoringDays, restDayCount, scoringDayCount } from "@/lib/goals";
+import { PartnerCard } from "@/components/partner/PartnerCard";
+import { PARTNER } from "@/lib/partner";
 import { SpecialBanner, resultContext } from "./shared";
 
 /** Result page for a date he has never scored on (artboard "No"). Server component. */
@@ -30,11 +36,10 @@ export function NoResult({ mmdd }: { mmdd: string }) {
   return (
     <div className="mx-auto max-w-md">
       <div className="flex flex-col gap-5 px-4 pt-1">
-        <div className="flex items-center justify-between">
-          <Link href="/" className="inline-flex min-h-11 items-center gap-1.5 text-sm font-bold text-text">
-            <BackIcon /> Another date
-          </Link>
-          <span className="eyebrow">
+        {/* The breadcrumb's Home link is the back affordance (it replaced the "Another date" row). */}
+        <div className="flex items-center justify-between gap-3">
+          <Breadcrumb crumbs={dateCrumbs(mmdd)} />
+          <span className="eyebrow flex-none" aria-hidden="true">
             {dd} · {mm}
           </span>
         </div>
@@ -65,14 +70,19 @@ export function NoResult({ mmdd }: { mmdd: string }) {
             <h1 data-testid="headline" className="text-xl font-extrabold leading-snug">
               Ronaldo has never scored on your birthday
             </h1>
+            {/* Answer-first paragraph: a complete, quotable sentence with the numbers in it. */}
+            <p data-testid="answer" className="text-[15px] leading-snug text-text">
+              {dateAnswer(mmdd)}
+            </p>
             <p className="text-[15px] leading-snug text-muted">
               Even the GOAT takes a day off, and he chose yours. He has scored on {scoringDayCount()} of 366 dates.
-              Yours is one of only {rest} he has never touched.
             </p>
           </div>
         </header>
 
-        {/* One-tap sharing right after the answer, so it is on the first screen of a phone. */}
+        {PARTNER.enabled && <PartnerCard placement="result-no" />}
+
+        {/* One-tap sharing right after the answer (the sticky bar keeps Share on the first screen). */}
         <QuickShare mmdd={mmdd} payload={payload} imagePath={imagePath} />
 
         {/* The official excuse */}
@@ -142,6 +152,8 @@ export function NoResult({ mmdd }: { mmdd: string }) {
           <GoalCalendar highlight={mmdd} legend />
         </section>
 
+        <NearbyDates mmdd={mmdd} />
+
         <div>
           <Link
             href="/"
@@ -150,6 +162,8 @@ export function NoResult({ mmdd }: { mmdd: string }) {
             Check a friend&apos;s birthday
           </Link>
         </div>
+
+        <TrustLine />
       </div>
 
       <ShareBar

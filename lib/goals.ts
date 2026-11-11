@@ -6,6 +6,7 @@ import expectedJson from "@/data/expected.json";
 import { TEAMS, type Goal, type MatchVideo, type Team } from "./schema";
 import { ALL_MMDD, DAYS_IN_MONTH, MONTH_NAMES, dayIndex, formatMmdd } from "./dates";
 import { pickFamous } from "./famous";
+import { competitionLabel } from "./competition";
 
 const goals = goalsJson as Goal[];
 const byId = new Map(goals.map((g) => [g.id, g]));
@@ -16,7 +17,17 @@ export const TOTAL_GOALS = goals.length;
 export const DATA_UPDATED = (expectedJson as { checkedAt: string }).checkedAt;
 export const LATEST_GOAL_DATE = (expectedJson as { latestGoalDate: string }).latestGoalDate;
 
-export type VideoInfo = { youtubeId: string; startSeconds?: number; title?: string; channel?: string; status: string };
+/** Date of his first official goal (the start of the dataset). */
+export const FIRST_GOAL_DATE = goals.reduce((min, g) => (g.date < min ? g.date : min), goals[0].date);
+
+export type VideoInfo = {
+  youtubeId: string;
+  startSeconds?: number;
+  title?: string;
+  channel?: string;
+  status: string;
+  publishedAt?: string;
+};
 
 export type Match = {
   matchId: string;
@@ -39,8 +50,45 @@ export function goalsForDate(mmdd: string): Goal[] {
 function videoFor(matchId: string): VideoInfo | null {
   const v = videos[matchId];
   if (!v || !v.youtubeId || (v.status !== "verified" && v.status !== "auto")) return null;
-  return { youtubeId: v.youtubeId, startSeconds: v.startSeconds, title: v.title, channel: v.channel, status: v.status };
+  return {
+    youtubeId: v.youtubeId,
+    startSeconds: v.startSeconds,
+    title: v.title,
+    channel: v.channel,
+    status: v.status,
+    publishedAt: v.publishedAt,
+  };
 }
+
+/** Latest goal date (YYYY-MM-DD) among the given MM-DDs, or null if none of them has a goal. */
+function latestGoalOn(keys: string[]): string | null {
+  let best: string | null = null;
+  for (const k of keys) for (const g of goalsForDate(k)) if (!best || g.date > best) best = g.date;
+  return best;
+}
+
+const asDate = (iso: string) => new Date(`${iso}T00:00:00Z`);
+
+/**
+ * When a date page's content last changed: its newest goal. A no-goal page changes when its nearest-goal content
+ * does, so it takes the newer of its two nearest scoring days' latest goals.
+ */
+export function lastModifiedFor(mmdd: string): Date {
+  const own = latestGoalOn([mmdd]);
+  if (own) return asDate(own);
+  const { before, after } = nearestScoringDays(mmdd);
+  const near = latestGoalOn([before?.mmdd, after?.mmdd].filter((k): k is string => !!k));
+  return asDate(near ?? LATEST_GOAL_DATE);
+}
+
+/** Month hub (1–12): its newest goal. */
+export function lastModifiedForMonth(month: number): Date {
+  const prefix = `${String(month).padStart(2, "0")}-`;
+  return asDate(latestGoalOn(ALL_MMDD.filter((k) => k.startsWith(prefix))) ?? LATEST_GOAL_DATE);
+}
+
+/** "2026-10-29" from a Date (UTC), for JSON-LD dateModified. */
+export const isoDay = (d: Date) => d.toISOString().slice(0, 10);
 
 /** Goals on a date grouped by match, newest first. */
 export function matchesForDate(mmdd: string): Match[] {
@@ -172,6 +220,96 @@ export function perTeamTotals(): { team: Team; goals: number }[] {
 /** Most goals on any single calendar date (for Trending progress bars). */
 export function maxDayCount() {
   return Math.max(...ALL_MMDD.map((k) => (byDate[k] ?? []).length));
+}
+
+/**
+ * Rank of a date among all 366 by goal count (1 = most). Ties share a rank ("standard competition" ranking:
+ * 1 + the number of dates with strictly more goals).
+ */
+export function dayRank(mmdd: string): { rank: number; tied: boolean } {
+  const c = (byDate[mmdd] ?? []).length;
+  const counts = ALL_MMDD.map((k) => (byDate[k] ?? []).length);
+  return { rank: 1 + counts.filter((x) => x > c).length, tied: counts.filter((x) => x === c).length > 1 };
+}
+
+/** Scoring dates of a month (1–12), most goals first (then calendar order). */
+export function monthScoringDays(month: number): DaySummary[] {
+  const prefix = `${String(month).padStart(2, "0")}-`;
+  return ALL_MMDD.filter((k) => k.startsWith(prefix))
+    .map(summarise)
+    .filter((d) => d.count > 0)
+    .sort((a, b) => b.count - a.count || a.mmdd.localeCompare(b.mmdd));
+}
+
+export type MonthStats = {
+  month: number;
+  days: number;
+  goals: number;
+  /** Scoring dates in calendar order. */
+  scoring: DaySummary[];
+  /** MM-DD keys of the dates with no goal, in calendar order. */
+  rest: string[];
+  /** The month's top date (most goals, earliest on a tie); null if he never scored that month. */
+  best: DaySummary | null;
+};
+
+/** Aggregates for a month hub (1–12). */
+export function monthStats(month: number): MonthStats {
+  const prefix = `${String(month).padStart(2, "0")}-`;
+  const all = ALL_MMDD.filter((k) => k.startsWith(prefix)).map(summarise);
+  const scoring = all.filter((d) => d.count > 0);
+  return {
+    month,
+    days: all.length,
+    goals: scoring.reduce((s, d) => s + d.count, 0),
+    scoring,
+    rest: all.filter((d) => d.count === 0).map((d) => d.mmdd),
+    best: monthScoringDays(month)[0] ?? null,
+  };
+}
+
+export type FactGoal = { year: number; team: Team; opponent: string; n: number };
+export type CareerFacts = {
+  first: FactGoal;
+  latest: FactGoal;
+  /** Goals per team on this date, most first. */
+  teams: { team: Team; goals: number }[];
+  /** Display labels ("Euro 2020", "Champions League"), in first-seen order. */
+  competitions: string[];
+  /** Known goal types with counts, most first; `unknown` = goals with no recorded type. */
+  types: { type: NonNullable<Goal["type"]>; count: number }[];
+  unknownTypes: number;
+  /** Career goal numbers, ascending. */
+  numbers: number[];
+  rank: { rank: number; tied: boolean };
+};
+
+/** Everything the "{date} in Ronaldo's career" block shows; null on a date he never scored on. */
+export function careerFacts(mmdd: string): CareerFacts | null {
+  const gs = [...goalsForDate(mmdd)].sort((a, b) => a.n - b.n);
+  if (!gs.length) return null;
+  const fact = (g: Goal): FactGoal => ({
+    year: parseInt(g.date.slice(0, 4), 10),
+    team: g.team,
+    opponent: g.opponent,
+    n: g.n,
+  });
+  const count = <K extends string>(xs: K[]) => {
+    const m = new Map<K, number>();
+    for (const x of xs) m.set(x, (m.get(x) ?? 0) + 1);
+    return [...m.entries()].sort((a, b) => b[1] - a[1]);
+  };
+  const typed = gs.map((g) => g.type).filter((t): t is NonNullable<Goal["type"]> => !!t);
+  return {
+    first: fact(gs[0]),
+    latest: fact(gs.at(-1)!),
+    teams: count(gs.map((g) => g.team)).map(([team, goals]) => ({ team, goals })),
+    competitions: [...new Set(gs.map((g) => competitionLabel(g.competition, parseInt(g.date.slice(0, 4), 10))))],
+    types: count(typed).map(([type, c]) => ({ type, count: c })),
+    unknownTypes: gs.length - typed.length,
+    numbers: gs.map((g) => g.n),
+    rank: dayRank(mmdd),
+  };
 }
 
 export type CalendarCell = { mmdd: string; day: number; state: "hit" | "miss" | "void"; count: number };
