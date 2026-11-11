@@ -24,6 +24,8 @@ import {
 import { GOAT_MOMENTS } from "@/lib/moments";
 import { thumbPhotoFor } from "@/lib/photos";
 import { TeamPhoto } from "@/components/TeamPhoto";
+import { PartnerBanner } from "@/components/partner/PartnerBanner";
+import { PARTNER } from "@/lib/partner";
 import { HOME_DESCRIPTION, HOME_TITLE, socialMeta } from "@/lib/seo";
 import { SITE_URL } from "@/lib/site";
 
@@ -68,6 +70,12 @@ export default function Home() {
           <FlagBar />
         </div>
       </section>
+
+      {PARTNER.enabled && (
+        <div className="mx-4 mt-3.5">
+          <PartnerBanner placement="home" />
+        </div>
+      )}
 
       {/* Picker */}
       <section

@@ -55,3 +55,6 @@ next-env.d.ts
 
 # design canvas (reference only, never shipped)
 /design-reference/
+
+# sponsor off-switch e2e build (playwright.partner-off.config.ts)
+/.next-partner-off/

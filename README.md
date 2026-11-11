@@ -70,6 +70,7 @@ Other commands:
 | `npm run build` | validates the dataset, then builds every page and image (~3 min) |
 | `npm test` | unit + data tests (Vitest) |
 | `npm run test:e2e` | Playwright on a 360×740 phone viewport (runs `next start`, so build first) |
+| `npm run test:e2e:partner-off` | builds with `NEXT_PUBLIC_PARTNER=off` into `.next-partner-off` and checks no sponsor banner renders (see [Sponsor](#sponsor-skillsair)) |
 | `npm run lint` / `npm run typecheck` / `npm run format` | the usual |
 | `npm run lhci` | Lighthouse CI against a local production build |
 
@@ -83,6 +84,7 @@ Copy `.env.example` to `.env.local`.
 | `VERCEL_ENV` | Set by Vercel | Only `production` is indexable. Previews and local builds get `noindex` and a `Disallow: /` robots.txt. CI sets it to `production` so e2e and Lighthouse test the real output. |
 | `INDEXNOW_KEY` | GitHub secret | Must equal the name of `public/{key}.txt`. Used by `scripts/indexnow.ts` (see [SEO](#seo)). |
 | `YOUTUBE_API_KEY` | `.env.local` + GitHub secret | Used **only** by `scripts/find-videos.ts` and `scripts/check-videos.ts`. Never shipped to the browser. |
+| `NEXT_PUBLIC_PARTNER` | Vercel (optional) | Set to `off` to remove every sponsor banner (see [Sponsor](#sponsor-skillsair)). Read at build time, so redeploy after changing it. |
 | `REFRESH_TOKEN` | GitHub secret (optional) | Fine-grained PAT (contents + pull-requests: write). Lets the weekly data PR trigger CI. |
 
 ## Data
@@ -154,13 +156,60 @@ ones (❌), or paste a better video id and a start second. The review page and i
 `*.dev.tsx` files that production builds don't route. Matches without a usable video show a **Watch on YouTube**
 search button, never a broken embed.
 
+## Sponsor: SkillsAir
+
+The site carries one sponsor, [SkillsAir](https://skillsair.com/), in three banner designs, all labelled
+**SPONSORED**: `PartnerBanner` (home), `PartnerStrip` (compact) and `PartnerCard` (results), in
+`components/partner/`. They are server-rendered; the only client JS is the click event in `PartnerLink`. They are
+fluid from 320 to 448px, never animated, never fixed or sticky, and never mention or show Ronaldo.
+
+### Where they appear
+
+| Page | Banner | Position | `utm_campaign` / `utm_content` |
+|---|---|---|---|
+| Home `/` | `PartnerBanner` | between the hero and the date picker | `home` |
+| Reveal (after picking a date) | `PartnerStrip` | above "Skip intro". Not shown with reduced motion, which skips the Reveal | `loading` |
+| Result, goal day | `PartnerCard` | after the hero, before the quick-share row | `result-yes` |
+| Result, rest day | `PartnerCard` | after the rest-day card, before the quick-share row | `result-no` |
+| `/calendar` | `PartnerBanner`, then `PartnerStrip` ×5 | banner before January, strips after Feb, Apr, Jun, Aug, Oct | `calendar` / `1`–`6` |
+| Month hubs `/calendar/<month>` | `PartnerStrip` | after the answer paragraph, before the month grid | `month` / month number |
+| `/about` | `PartnerBanner` | before "What counts" | `about` |
+| 404 | `PartnerStrip` | below "Check a birthday" | `not-found` |
+
+There are none on share images (OG/Story), the share sheet, the sticky Watch/Share bar, the tab bar, the footer or
+the admin page.
+
+### Changing copy or links
+
+Edit **`lib/partner.ts` only**. Copy, colours, the base URL and the referral code live there, and every banner reads
+from it. **The referral code (`skr=WH22F793`) must stay on every link**: it's how SkillsAir credits referrals.
+`partnerHref()` always puts it first, and `tests/unit/partner.test.ts` pins the exact URLs.
+
+Links follow one scheme, so SkillsAir's analytics can split clicks by placement and slot:
+
+```
+https://skillsair.com/?skr=WH22F793&utm_source=ronaldo&utm_medium=banner&utm_campaign=<placement>[&utm_content=<slot>]
+```
+
+Every link opens in a new tab with `rel="sponsored noopener"`. It also carries `data-nosnippet`, so Google never
+quotes ad text in search results. Clicks are also logged to Vercel Analytics as `partner_click` with the placement.
+
+### Turning it off
+
+Set `NEXT_PUBLIC_PARTNER=off` in Vercel (**Settings → Environment Variables**) and **redeploy**. The value is read
+at build time, so changing it alone does nothing until the next build. With it off, no banner renders and the
+banner font (Space Grotesk, never preloaded) is never downloaded. `npm run test:e2e:partner-off` checks this.
+
+> **Hosting:** Vercel's Hobby (free) plan is for non-commercial use. Showing a commercial sponsor requires a
+> **Vercel Pro** plan under Vercel's fair-use rules.
+
 ## Deploying to Vercel (free tier)
 
 1. Push this repo to GitHub.
 2. In Vercel, choose **Add New → Project**, import the repo, and keep the defaults (framework: Next.js, build: `npm run build`).
 3. **Settings → Environment Variables**: add `NEXT_PUBLIC_SITE_URL` = `https://www.hasronaldoscoredonyourbirthday.xyz`
    for **Production** only (previews then use their own URL and stay `noindex`).
-4. **Analytics → Enable** (Vercel Web Analytics; no cookies, no banner). Events tracked: `date_searched`, `share_tapped` (with `channel` = whatsapp/image/x/facebook/telegram/threads/copy/native and `placement` = quick/sticky/episode/panel/sheet/home/tabbar), `share_sheet_opened`, `video_played`.
+4. **Analytics → Enable** (Vercel Web Analytics; no cookies, no banner). Events tracked: `date_searched`, `share_tapped` (with `channel` = whatsapp/image/x/facebook/telegram/threads/copy/native and `placement` = quick/sticky/episode/panel/sheet/home/tabbar), `share_sheet_opened`, `video_played`, `partner_click` (with `placement`; see [Sponsor](#sponsor-skillsair)).
 
 5. **Domains**: add `www.hasronaldoscoredonyourbirthday.xyz` as the primary domain and the apex
    `hasronaldoscoredonyourbirthday.xyz` as a **308 redirect** to it, then redeploy so the share images pick up the URL.

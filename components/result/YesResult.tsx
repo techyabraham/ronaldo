@@ -19,6 +19,8 @@ import { youtubeSearchUrl } from "@/lib/share";
 import { dateAnswer, dateCrumbs } from "@/lib/seo";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { TrustLine } from "@/components/TrustLine";
+import { PartnerCard } from "@/components/partner/PartnerCard";
+import { PARTNER } from "@/lib/partner";
 import { CareerFacts } from "./CareerFacts";
 import { NearbyDates } from "./NearbyDates";
 import { SpecialBanner, resultContext } from "./shared";
@@ -65,7 +67,9 @@ export function YesResult({ mmdd }: { mmdd: string }) {
       </div>
 
       <div className="flex flex-col gap-5 px-4 pt-[18px]">
-        {/* One-tap sharing sits right under the hero so it is on the first screen of a phone. */}
+        {PARTNER.enabled && <PartnerCard placement="result-yes" />}
+
+        {/* One-tap sharing sits right under the hero (the sticky bar keeps Share on the first screen). */}
         <QuickShare mmdd={mmdd} payload={payload} imagePath={imagePath} />
 
         <SpecialBanner mmdd={mmdd} />

@@ -4,6 +4,8 @@ const isDev = process.env.NODE_ENV === "development";
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // Lets the sponsor off-switch e2e build (playwright.partner-off.config.ts) live beside the normal .next.
+  distDir: process.env.NEXT_DIST_DIR || ".next",
   // *.dev.tsx / *.dev.ts routes (the video review tool) only exist under `next dev`, never in production builds.
   pageExtensions: isDev ? ["dev.tsx", "dev.ts", "tsx", "ts"] : ["tsx", "ts"],
   turbopack: {

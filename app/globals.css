@@ -50,6 +50,7 @@
   --color-flag-red: var(--flag-red);
   --font-sans: var(--font-archivo), system-ui, sans-serif;
   --font-display: var(--font-anton), "Arial Narrow", Impact, sans-serif;
+  --font-partner: var(--font-space-grotesk), system-ui, sans-serif; /* SkillsAir banners only */
 }
 
 html {
