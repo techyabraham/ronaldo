@@ -3,7 +3,12 @@
     "collect": {
       "startServerCommand": "npx next start -p 3200",
       "startServerReadyPattern": "Ready",
-      "url": ["http://localhost:3200/", "http://localhost:3200/birthday/05-02", "http://localhost:3200/birthday/02-29"],
+      "url": [
+        "http://localhost:3200/",
+        "http://localhost:3200/birthday/05-02",
+        "http://localhost:3200/birthday/02-29",
+        "http://localhost:3200/calendar/june"
+      ],
       "numberOfRuns": 3,
       "settings": {
         "formFactor": "mobile",
