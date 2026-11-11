@@ -2,7 +2,9 @@ import { describe, expect, it } from "vitest";
 import { ALL_MMDD, adjacentMmdd, monthFromSlug } from "@/lib/dates";
 import {
   LATEST_GOAL_DATE,
+  TOTAL_GOALS,
   careerFacts,
+  monthStats,
   dayRank,
   goalsForDate,
   lastModifiedFor,
@@ -57,6 +59,29 @@ describe("dayRank and careerFacts", () => {
     const june = monthScoringDays(6);
     expect(june.every((d) => d.mmdd.startsWith("06-") && d.count > 0)).toBe(true);
     for (let i = 1; i < june.length; i++) expect(june[i - 1].count).toBeGreaterThanOrEqual(june[i].count);
+  });
+});
+
+describe("month aggregates", () => {
+  it("add up to the whole dataset and agree with the per-date data", () => {
+    let goals = 0;
+    let days = 0;
+    let scoring = 0;
+    for (let m = 1; m <= 12; m++) {
+      const s = monthStats(m);
+      goals += s.goals;
+      days += s.days;
+      scoring += s.scoring.length;
+      expect(s.scoring.length + s.rest.length).toBe(s.days);
+      if (s.best) {
+        expect(s.best.count).toBe(Math.max(...s.scoring.map((d) => d.count)));
+        expect(s.best.mmdd.startsWith(`${String(m).padStart(2, "0")}-`)).toBe(true);
+      }
+    }
+    expect(goals).toBe(TOTAL_GOALS);
+    expect(days).toBe(366);
+    expect(scoring).toBe(ALL_MMDD.filter((k) => goalsForDate(k).length > 0).length);
+    expect(monthStats(2).days).toBe(29);
   });
 });
 

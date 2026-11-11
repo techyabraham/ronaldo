@@ -17,7 +17,13 @@ const tab =
 export function TabBar({ url }: { url: string }) {
   const path = usePathname();
   const payload = useMemo<SharePayload>(() => ({ kind: "invite", url }), [url]);
-  const current = (href: string) => (path === href ? ("page" as const) : undefined);
+  // The month hubs (/calendar/june) sit under Calendar: that tab is the current section there, not the current page.
+  const current = (href: string) =>
+    path === href
+      ? ("page" as const)
+      : href === "/calendar" && path.startsWith("/calendar/")
+        ? ("true" as const)
+        : undefined;
   return (
     <>
       <nav

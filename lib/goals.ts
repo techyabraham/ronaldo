@@ -241,6 +241,33 @@ export function monthScoringDays(month: number): DaySummary[] {
     .sort((a, b) => b.count - a.count || a.mmdd.localeCompare(b.mmdd));
 }
 
+export type MonthStats = {
+  month: number;
+  days: number;
+  goals: number;
+  /** Scoring dates in calendar order. */
+  scoring: DaySummary[];
+  /** MM-DD keys of the dates with no goal, in calendar order. */
+  rest: string[];
+  /** The month's top date (most goals, earliest on a tie); null if he never scored that month. */
+  best: DaySummary | null;
+};
+
+/** Aggregates for a month hub (1–12). */
+export function monthStats(month: number): MonthStats {
+  const prefix = `${String(month).padStart(2, "0")}-`;
+  const all = ALL_MMDD.filter((k) => k.startsWith(prefix)).map(summarise);
+  const scoring = all.filter((d) => d.count > 0);
+  return {
+    month,
+    days: all.length,
+    goals: scoring.reduce((s, d) => s + d.count, 0),
+    scoring,
+    rest: all.filter((d) => d.count === 0).map((d) => d.mmdd),
+    best: monthScoringDays(month)[0] ?? null,
+  };
+}
+
 export type FactGoal = { year: number; team: Team; opponent: string; n: number };
 export type CareerFacts = {
   first: FactGoal;

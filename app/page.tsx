@@ -4,6 +4,7 @@ import { BirthdayPicker } from "@/components/BirthdayPicker";
 import { FlagBar } from "@/components/FlagBar";
 import { GoalCalendar } from "@/components/GoalCalendar";
 import { HeroArt } from "@/components/HeroArt";
+import { HomeFacts } from "@/components/HomeFacts";
 import { HomeInvite } from "@/components/HomeInvite";
 import { TabBar } from "@/components/TabBar";
 import { TodayChip } from "@/components/TodayChip";
@@ -153,6 +154,8 @@ export default function Home() {
           <GoalCalendar />
         </div>
       </section>
+
+      <HomeFacts />
 
       <div className="mx-4 mt-6">
         <HomeInvite url={`${SITE_URL}/`} />

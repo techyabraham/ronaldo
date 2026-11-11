@@ -279,6 +279,8 @@ test.describe("GOAT Day on a 360px phone", () => {
     for (const p of [
       "/",
       "/calendar",
+      "/calendar/june",
+      "/calendar/july",
       "/birthday/05-02",
       "/birthday/06-23",
       "/birthday/12-25",

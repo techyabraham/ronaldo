@@ -8,6 +8,7 @@ import {
   calendarGraph,
   dateGraph,
   graph,
+  monthGraph,
   siteGraph,
   videoObject,
   type Graph,
@@ -40,6 +41,8 @@ const builders: [string, () => Graph][] = [
   ["date yes 06-23", () => dateGraph("06-23")],
   ["date no 02-16", () => dateGraph("02-16")],
   ["calendar", calendarGraph],
+  ["month june", () => monthGraph(6)],
+  ["month july", () => monthGraph(7)],
   ["about", () => aboutGraph()],
   ["about + download", () => aboutGraph({ downloadUrl: "https://example.test/data/goals.json" })],
 ];
@@ -98,6 +101,21 @@ describe("JSON-LD builders", () => {
     const list = one(calendarGraph(), "ItemList");
     expect(list.numberOfItems).toBe(12);
     expect((list.itemListElement as { url: string }[])[5].url).toMatch(/\/calendar\/june$/);
+  });
+
+  it("month hubs: CollectionPage, Home / Calendar / Month breadcrumb, ItemList of that month's scoring dates", () => {
+    for (let m = 1; m <= 12; m++) {
+      const g = monthGraph(m);
+      one(g, "CollectionPage");
+      const b = one(g, "BreadcrumbList");
+      assertBreadcrumb(b);
+      expect((b.itemListElement as unknown[]).length).toBe(3);
+      const list = one(g, "ItemList");
+      const urls = (list.itemListElement as { url: string }[]).map((i) => i.url);
+      const prefix = String(m).padStart(2, "0");
+      for (const u of urls) expect(u).toMatch(new RegExp(`/birthday/${prefix}-\\d{2}$`));
+      expect(list.numberOfItems).toBe(urls.length);
+    }
   });
 
   it("about: Dataset with licence, sources, coverage; distribution only when the file is published", () => {

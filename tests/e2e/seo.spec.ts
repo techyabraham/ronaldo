@@ -51,8 +51,72 @@ test.describe("result pages: answer-first content and internal links", () => {
   });
 });
 
+test.describe("month hubs, calendar links, home facts, about data", () => {
+  test("/calendar/june: h1, answer, 30 day links, top dates, prev/next month, breadcrumb, tab bar", async ({
+    page,
+  }) => {
+    await page.goto("/calendar/june");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Ronaldo goals in June");
+    await expect(page.getByTestId("answer")).toHaveText(/^Cristiano Ronaldo has scored \d+ official goals in June/);
+    const grid = page.getByRole("list", { name: "June dates" });
+    await expect(grid.getByRole("link")).toHaveCount(30);
+    await expect(grid.getByRole("link", { name: "23 June, 4 goals" })).toHaveAttribute("href", "/birthday/06-23");
+    await expect(page.getByRole("heading", { name: "Top June dates" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Rest days in June" })).toBeVisible();
+    const months = page.getByRole("navigation", { name: "Other months" });
+    await expect(months.getByRole("link", { name: "← May" })).toHaveAttribute("href", "/calendar/may");
+    await expect(months.getByRole("link", { name: "July →" })).toHaveAttribute("href", "/calendar/july");
+    const crumbs = page.getByRole("navigation", { name: "Breadcrumb" });
+    await expect(crumbs).toHaveText(/Home\s*\/\s*Calendar\s*\/\s*June/);
+    await expect(crumbs.getByRole("link", { name: "Calendar" })).toHaveAttribute("href", "/calendar");
+    const tabs = page.getByRole("navigation", { name: "Main" });
+    await expect(tabs.getByRole("link", { name: "Calendar" })).toHaveAttribute("aria-current", "true");
+  });
+
+  test("unknown month slugs 404", async ({ request }) => {
+    expect((await request.get("/calendar/smarch")).status()).toBe(404);
+  });
+
+  test("/calendar: every month heading links to its hub", async ({ page }) => {
+    await page.goto("/calendar");
+    const headings = page.getByRole("heading", { level: 2 });
+    await expect(headings).toHaveCount(12);
+    await expect(page.getByRole("heading", { level: 2, name: /June/ }).getByRole("link")).toHaveAttribute(
+      "href",
+      "/calendar/june",
+    );
+  });
+
+  test("home: Ronaldo by the numbers and five FAQ items without JS", async ({ page }) => {
+    await page.goto("/");
+    await expect(page.getByRole("heading", { name: "Ronaldo by the numbers" })).toBeVisible();
+    await expect(page.locator("details > summary")).toHaveCount(5);
+    const first = page.locator("details").first();
+    await first.locator("summary").click();
+    await expect(first).toContainText(/5 February/);
+    for (const box of await page.locator("details > summary").all()) {
+      expect((await box.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+    }
+  });
+
+  test("/about: #what-counts and #data anchors; the goal list downloads as ODbL JSON", async ({ page, request }) => {
+    await page.goto("/about");
+    await expect(page.locator("#what-counts")).toHaveText("What counts");
+    await expect(page.locator("#data")).toHaveText("The data");
+    await expect(page.getByRole("link", { name: "Download the goal list (JSON, ODbL)" })).toHaveAttribute(
+      "href",
+      "/data/goals.json",
+    );
+    const res = await request.get("/data/goals.json");
+    expect(res.status()).toBe(200);
+    expect(res.headers()["content-type"]).toContain("application/json");
+    expect(res.headers()["link"]).toContain("odbl");
+    expect(Array.isArray(await res.json())).toBe(true);
+  });
+});
+
 test.describe("crawl signals on every route type", () => {
-  for (const path of ["/", "/calendar", "/birthday/06-23", "/birthday/02-16", "/about"]) {
+  for (const path of ["/", "/calendar", "/calendar/june", "/birthday/06-23", "/birthday/02-16", "/about"]) {
     test(`${path}: one h1, canonical = og:url = page URL, JSON-LD parses, indexable`, async ({ page }) => {
       await page.goto(path);
       await expect(page.locator("h1")).toHaveCount(1);

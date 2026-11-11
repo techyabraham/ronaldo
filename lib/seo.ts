@@ -5,6 +5,7 @@ import { MONTH_NAMES, MONTH_SLUGS, formatMmdd, monthOf } from "./dates";
 import {
   TOTAL_GOALS,
   matchesForDate,
+  monthStats,
   nearestScoringDays,
   rankFamous,
   restDayCount,
@@ -156,10 +157,11 @@ export function dateDescription(mmdd: string): string {
   );
 }
 
-export function monthDescription(month: number, goals: number, dates: number) {
+export function monthDescription(month: number) {
   const name = MONTH_NAMES[month - 1];
+  const m = monthStats(month);
   return trimAt(
-    `Every official Cristiano Ronaldo goal scored in ${name}, date by date: ${plural(goals, "goal")} on ${plural(dates, "date")}. Find your birthday and watch the goals.`,
+    `Every official Cristiano Ronaldo goal scored in ${name}, date by date: ${plural(m.goals, "goal")} on ${plural(m.scoring.length, "date")}. Find your birthday and watch the goals.`,
     DESC_MAX,
   );
 }
@@ -195,6 +197,17 @@ export function dateAnswer(mmdd: string): string {
     `No. Cristiano Ronaldo has never scored an official goal on ${s.label}. ` +
     `It's one of ${restDayCount()} dates in the year without one.` +
     (near.length ? ` His nearest goals came on ${listJoin(near)}.` : "")
+  );
+}
+
+/** Month hub answer paragraph: complete sentences with the numbers in them. */
+export function monthAnswer(month: number): string {
+  const m = monthStats(month);
+  const name = MONTH_NAMES[month - 1];
+  if (!m.best) return `Cristiano Ronaldo has never scored an official goal in ${name}, on any of its ${m.days} dates.`;
+  return (
+    `Cristiano Ronaldo has scored ${plural(m.goals, "official goal")} in ${name}, on ${m.scoring.length} of its ` +
+    `${m.days} dates. His best ${name} date is ${m.best.label} with ${plural(m.best.count, "goal")}.`
   );
 }
 

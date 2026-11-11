@@ -7,7 +7,9 @@ import {
   TOTAL_GOALS,
   isoDay,
   lastModifiedFor,
+  lastModifiedForMonth,
   matchesForDate,
+  monthStats,
   scoringDayCount,
   type Match,
 } from "./goals";
@@ -21,6 +23,10 @@ import {
   dateDescription,
   dateTitle,
   matchPhrase,
+  monthCrumb,
+  monthCrumbs,
+  monthDescription,
+  monthTitle,
   plural,
   type Crumb,
 } from "./seo";
@@ -202,6 +208,39 @@ export function calendarGraph(): Graph {
       "Cristiano Ronaldo's goals by month",
       MONTH_NAMES.map((name, i) => ({ name: `Ronaldo goals in ${name}`, url: `${url}/${MONTH_SLUGS[i]}` })),
     ),
+  );
+}
+
+/** /calendar/{month}: CollectionPage + BreadcrumbList + ItemList of that month's scoring dates (calendar order). */
+export function monthGraph(month: number): Graph {
+  const url = `${SITE_URL}${monthCrumb(month).path}`;
+  const m = monthStats(month);
+  const name = MONTH_NAMES[month - 1];
+  return graph(
+    {
+      "@type": "CollectionPage",
+      "@id": `${url}#page`,
+      url,
+      name: monthTitle(month),
+      description: monthDescription(month),
+      isPartOf: ref(WEBSITE_ID),
+      about: ref(PERSON_CR7_ID),
+      dateModified: isoDay(lastModifiedForMonth(month)),
+      inLanguage: "en",
+      breadcrumb: ref(`${url}#breadcrumb`),
+      ...(m.scoring.length ? { mainEntity: ref(`${url}#dates`) } : {}),
+    },
+    breadcrumbList(`${url}#breadcrumb`, monthCrumbs(month)),
+    m.scoring.length
+      ? itemList(
+          `${url}#dates`,
+          `Dates Cristiano Ronaldo has scored on in ${name}`,
+          m.scoring.map((d) => ({
+            name: `${d.label}: ${plural(d.count, "goal")}`,
+            url: `${SITE_URL}/birthday/${d.mmdd}`,
+          })),
+        )
+      : null,
   );
 }
 

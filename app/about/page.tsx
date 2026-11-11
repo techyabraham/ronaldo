@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DATA_UPDATED, LATEST_GOAL_DATE, TOTAL_GOALS } from "@/lib/goals";
+import { DATA_UPDATED, FIRST_GOAL_DATE, LATEST_GOAL_DATE, TOTAL_GOALS, scoringDayCount } from "@/lib/goals";
 import { CORRECTIONS_URL, CREATOR, DISCLAIMER, SITE_URL } from "@/lib/site";
 import { ABOUT_DESCRIPTION, ABOUT_TITLE, socialMeta, withBrand } from "@/lib/seo";
 import { FlagBar } from "@/components/FlagBar";
@@ -12,6 +12,9 @@ export const metadata: Metadata = {
   description: ABOUT_DESCRIPTION,
   ...socialMeta({ title: withBrand(ABOUT_TITLE), description: ABOUT_DESCRIPTION, path: "/about", homeImage: true }),
 };
+
+/** The open goal list, served by app/data/goals.json/route.ts. */
+const DATA_PATH = "/data/goals.json";
 
 function fmt(iso: string) {
   return new Date(iso + "T12:00:00Z").toLocaleDateString("en-GB", {
@@ -88,6 +91,22 @@ export default function About() {
           </li>
         </ul>
 
+        <h2 id="data" className="scroll-mt-4">
+          The data
+        </h2>
+        <p>
+          The full goal list is open: all {TOTAL_GOALS} official goals from {fmt(FIRST_GOAL_DATE)} to{" "}
+          {fmt(LATEST_GOAL_DATE)}, one row per goal, with the date, team, opponent, competition, minute, goal type,
+          career goal number and sources. They fall on {scoringDayCount()} of the 366 calendar dates. It is released
+          under the <a href="https://opendatacommons.org/licenses/odbl/1-0/">Open Database License (ODbL)</a>, built
+          from the sources above.
+        </p>
+        <p className="mt-3">
+          <a href={DATA_PATH} type="application/json">
+            Download the goal list (JSON, ODbL)
+          </a>
+        </p>
+
         <h2>Spotted a mistake?</h2>
         <p>
           <a href={CORRECTIONS_URL}>Report a correction</a> with the date, the match and a source, and we&apos;ll fix
@@ -111,7 +130,7 @@ export default function About() {
         <p className="text-muted">{DISCLAIMER}</p>
       </article>
       <TabBar url={`${SITE_URL}/`} />
-      <JsonLd data={aboutGraph()} />
+      <JsonLd data={aboutGraph({ downloadUrl: `${SITE_URL}${DATA_PATH}` })} />
     </>
   );
 }

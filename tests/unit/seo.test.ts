@@ -16,6 +16,8 @@ import {
   dateOgAlt,
   dateTitle,
   isProductionDeploy,
+  monthAnswer,
+  monthDescription,
   monthTitle,
   robotsFor,
   socialMeta,
@@ -59,6 +61,18 @@ describe("descriptions", () => {
       expect(d, ALL_MMDD[i]).toMatch(/^(Yes|No)\. /);
     }
     expect(new Set(descs).size).toBe(366);
+  });
+
+  it("month hubs: in range, unique, and the answer paragraph carries the numbers", () => {
+    const ds = MONTH_NAMES.map((_, i) => monthDescription(i + 1));
+    expect(new Set(ds).size).toBe(12);
+    for (const d of ds) {
+      expect(d.length, d).toBeGreaterThanOrEqual(DESC_MIN);
+      expect(d.length, d).toBeLessThanOrEqual(DESC_MAX);
+    }
+    expect(monthAnswer(6)).toMatch(
+      /^Cristiano Ronaldo has scored \d+ official goals in June, on \d+ of its 30 dates\. His best June date is \d+ June with \d+ goals\.$/,
+    );
   });
 
   it("static routes are in range too", () => {
