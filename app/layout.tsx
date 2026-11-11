@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Anton, Archivo } from "next/font/google";
+import { Anton, Archivo, Space_Grotesk } from "next/font/google";
 import Link from "next/link";
 import { Analytics } from "@vercel/analytics/next";
 import { FlagBar } from "@/components/FlagBar";
@@ -22,6 +22,15 @@ const anton = Anton({
   subsets: ["latin"],
   display: "swap",
   weight: "400",
+});
+
+// SkillsAir sponsor banners only (components/partner). Not preloaded: it downloads only where a banner renders.
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
+  subsets: ["latin"],
+  display: "swap",
+  weight: "700",
+  preload: false,
 });
 
 export const metadata: Metadata = {
@@ -50,7 +59,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${archivo.variable} ${anton.variable} antialiased`}>
+    <html lang="en" className={`${archivo.variable} ${anton.variable} ${spaceGrotesk.variable} antialiased`}>
       <body className="flex min-h-dvh flex-col bg-bg text-text">
         <a
           href="#main"
