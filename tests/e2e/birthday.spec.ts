@@ -108,9 +108,20 @@ test.describe("GOAT Day on a 360px phone", () => {
 
   test("watch and share are balanced on the first screen", async ({ page }) => {
     await page.goto("/birthday/05-02");
+    // First viewport on load: the h1, the hero's Watch button, and the sticky bar's Watch + Share.
+    await expect(page.getByTestId("headline")).toBeAttached();
     await expect(page.getByRole("link", { name: "Watch the goals" }).first()).toBeInViewport();
-    // The quick-share row (the sticky bar has no X button, so this is the in-page row).
-    await expect(page.getByRole("link", { name: "Share on X" }).first()).toBeInViewport();
+    const stickyBar = page.getByRole("region", { name: "Watch and share" });
+    await expect(stickyBar.getByText("Watch", { exact: true })).toBeInViewport();
+    await expect(stickyBar.getByRole("button", { name: /^share$/i })).toBeInViewport();
+
+    // The sponsor card sits between the hero and the quick-share row, which is one scroll away.
+    const cardTop = (await page.locator('[data-partner="result-yes"]').boundingBox())!.y;
+    const quickTop = (await page.locator("#quick-share").boundingBox())!.y;
+    expect(cardTop).toBeLessThan(quickTop);
+    await page.locator("#quick-share").scrollIntoViewIfNeeded();
+    await expect(page.locator("#quick-share")).toBeVisible();
+    await page.evaluate(() => window.scrollTo(0, 0));
 
     // The goals come before the long share panel.
     const firstEpisodeTop = (await page.locator("#episodes article").first().boundingBox())!.y;

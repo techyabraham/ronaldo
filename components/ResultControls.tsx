@@ -63,7 +63,7 @@ const round = "flex h-12 w-12 items-center justify-center rounded-full border bo
 export function QuickShare({ mmdd, payload, imagePath }: { mmdd: string; payload: SharePayload; imagePath: string }) {
   const s = useShare({ mmdd, payload, placement: "quick", imagePath });
   return (
-    <div>
+    <div id="quick-share">
       <p className="text-[13px] font-bold text-muted">Share your result</p>
       <div className="mt-2 flex items-center justify-between gap-2">
         <a

@@ -13,6 +13,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:e2e": "playwright test",
+    "test:e2e:partner-off": "playwright test -c playwright.partner-off.config.ts",
     "data:fetch": "tsx scripts/fetch-international.ts && tsx scripts/fetch-club-historic.ts && tsx scripts/fetch-club-recent.ts",
     "data:refresh": "tsx scripts/refresh.ts",
     "data:build": "tsx scripts/build-dataset.ts && tsx scripts/build-index.ts",
