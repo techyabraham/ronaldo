@@ -130,19 +130,44 @@ export function itemList(id: string, name: string, items: { name: string; url: s
 }
 
 /** One VideoObject for a match with a saved (verified/auto) video; null otherwise. */
-export function videoObject(pageUrl: string, m: Match): Node | null {
+export type VideoMeta = {
+  title: string;
+  description: string;
+  thumbnailUrl: string;
+  embedUrl: string;
+  /** ISO 8601 with time zone. */
+  uploadDate: string;
+  /** True when uploadDate is YouTube's real publish time (not the match-date fallback). */
+  realUploadDate: boolean;
+};
+
+/** Shared by the VideoObject JSON-LD and the video sitemap, so they always agree. Null without a saved video. */
+export function videoMeta(m: Match): VideoMeta | null {
   if (!m.video) return null;
   const n = m.goals.length;
   const id = m.video.youtubeId;
   return {
-    "@type": "VideoObject",
-    "@id": `${pageUrl}#video-${m.matchId}`,
-    name: `Cristiano Ronaldo vs ${m.opponent}, ${m.year}: ${plural(n, "goal")}`,
+    title: `Cristiano Ronaldo vs ${m.opponent}, ${m.year}: ${plural(n, "goal")}`,
     description: `Cristiano Ronaldo scored ${plural(n, "goal")} in ${matchPhrase(m)}, played on ${formatLongDate(m.date)}.`,
-    thumbnailUrl: [`https://i.ytimg.com/vi/${id}/hqdefault.jpg`],
+    thumbnailUrl: `https://i.ytimg.com/vi/${id}/hqdefault.jpg`,
+    embedUrl: `https://www.youtube-nocookie.com/embed/${id}`,
     // Prefer the real YouTube publish time; the match date (UTC midnight) is only a fallback.
     uploadDate: m.video.publishedAt ?? `${m.date}T00:00:00Z`,
-    embedUrl: `https://www.youtube-nocookie.com/embed/${id}`,
+    realUploadDate: !!m.video.publishedAt,
+  };
+}
+
+export function videoObject(pageUrl: string, m: Match): Node | null {
+  const v = videoMeta(m);
+  if (!v) return null;
+  return {
+    "@type": "VideoObject",
+    "@id": `${pageUrl}#video-${m.matchId}`,
+    name: v.title,
+    description: v.description,
+    thumbnailUrl: [v.thumbnailUrl],
+    uploadDate: v.uploadDate,
+    embedUrl: v.embedUrl,
     url: `${pageUrl}#m-${m.matchId}`,
     isPartOf: ref(`${pageUrl}#page`),
     about: ref(PERSON_CR7_ID),

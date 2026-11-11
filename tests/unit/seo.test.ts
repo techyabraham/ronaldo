@@ -127,5 +127,7 @@ describe("site-wide", () => {
     expect(prod.sitemap).toContain(`${www}/sitemap.xml`);
     expect(prod.host).toBe(www);
     expect(robotsFor(false, www)).toEqual({ rules: { userAgent: "*", disallow: "/" } });
+    expect(prod.sitemap).toEqual([`${www}/sitemap.xml`]);
+    expect(robotsFor(true, www, true).sitemap).toEqual([`${www}/sitemap.xml`, `${www}/video-sitemap.xml`]);
   });
 });

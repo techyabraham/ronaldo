@@ -41,6 +41,7 @@ jobs:
 
       - name: Open a pull request (never pushes to main)
         uses: peter-evans/create-pull-request@v7
+        # No IndexNow ping here: this only opens a PR. .github/workflows/indexnow.yml pings once it's merged to master.
         with:
           # A fine-grained PAT (contents + pull-requests: write) lets the PR trigger CI; GITHUB_TOKEN-created PRs do not.
           token: ${{ secrets.REFRESH_TOKEN || github.token }}

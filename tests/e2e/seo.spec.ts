@@ -115,6 +115,28 @@ test.describe("month hubs, calendar links, home facts, about data", () => {
   });
 });
 
+test.describe("discovery files", () => {
+  test("sitemap, video sitemap, robots, llms.txt and the IndexNow key are served", async ({ request }) => {
+    const sitemap = await request.get("/sitemap.xml");
+    expect(sitemap.status()).toBe(200);
+    const xml = await sitemap.text();
+    expect(xml.match(/<url>/g)).toHaveLength(381);
+    expect(xml).toContain(`<loc>${ORIGIN}/calendar/june</loc>`);
+    expect(xml).not.toContain("<priority>");
+
+    const video = await request.get("/video-sitemap.xml");
+    expect(video.status()).toBe(200);
+    expect(video.headers()["content-type"]).toContain("xml");
+    expect(await video.text()).toContain('xmlns:video="http://www.google.com/schemas/sitemap-video/1.1"');
+
+    expect(await (await request.get("/robots.txt")).text()).toContain(`Sitemap: ${ORIGIN}/sitemap.xml`);
+    expect(await (await request.get("/llms.txt")).text()).toMatch(/^# GOAT Day/);
+
+    const key = "4e29cc1e77e75ad0112c667337177c0a";
+    expect((await (await request.get(`/${key}.txt`)).text()).trim()).toBe(key);
+  });
+});
+
 test.describe("crawl signals on every route type", () => {
   for (const path of ["/", "/calendar", "/calendar/june", "/birthday/06-23", "/birthday/02-16", "/about"]) {
     test(`${path}: one h1, canonical = og:url = page URL, JSON-LD parses, indexable`, async ({ page }) => {

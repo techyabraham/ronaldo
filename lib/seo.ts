@@ -41,11 +41,12 @@ export function isProductionDeploy(env: Record<string, string | undefined> = pro
  * crawlers fetch them), and no search or AI crawler is singled out: we want the citations.
  * Previews and local builds: block everything.
  */
-export function robotsFor(production: boolean, siteUrl: string): MetadataRoute.Robots {
+export function robotsFor(production: boolean, siteUrl: string, hasVideos = false): MetadataRoute.Robots {
   if (!production) return { rules: { userAgent: "*", disallow: "/" } };
   return {
     rules: { userAgent: "*", allow: "/", disallow: ["/admin/", "/api/"] },
-    sitemap: [`${siteUrl}/sitemap.xml`],
+    // The video sitemap is listed once there is something in it (an empty one only adds Search Console noise).
+    sitemap: [`${siteUrl}/sitemap.xml`, ...(hasVideos ? [`${siteUrl}/video-sitemap.xml`] : [])],
     host: siteUrl,
   };
 }
